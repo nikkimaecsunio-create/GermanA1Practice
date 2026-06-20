@@ -1,0 +1,640 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3ECDB;
+    --paper-deep:#EAE1CB;
+    --ink:#221C14;
+    --ink-soft:#4A4233;
+    --muted:#83785F;
+    --tag:#F0C93B;
+    --tag-dark:#C99A1E;
+    --tag-shadow:rgba(34,28,20,.22);
+    --stamp:#B23B2C;
+    --stamp-dark:#8E2E22;
+    --line:#D8CCA9;
+    --white:#FFFCF4;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:0;background:transparent;}
+  #app{
+    font-family:'Inter',sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 500px at 10% -10%, rgba(240,201,59,.10), transparent 60%),
+      var(--paper);
+    min-height:100%;
+    padding:28px 18px 60px;
+    border-radius:18px;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  header{display:flex;align-items:center;gap:16px;margin-bottom:26px;flex-wrap:wrap;}
+  .stamp-badge{
+    width:62px;height:62px;border-radius:50%;
+    border:3px solid var(--stamp);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Mono',monospace;font-weight:700;font-size:15px;
+    color:var(--stamp);transform:rotate(-9deg);flex-shrink:0;
+    background:repeating-radial-gradient(circle, transparent 0 2px, rgba(178,59,44,.04) 2px 3px);
+  }
+  h1{font-family:'Space Mono',monospace;font-size:26px;margin:0;letter-spacing:-0.5px;}
+  .subtitle{margin:4px 0 0;color:var(--muted);font-size:13.5px;font-family:'Space Mono',monospace;}
+
+  #tabsBar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+  .tab-btn{
+    font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.3px;
+    padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);
+    background:var(--white);color:var(--ink-soft);cursor:pointer;
+    transition:.15s ease;
+  }
+  .tab-btn:hover{border-color:var(--tag-dark);}
+  .tab-btn.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .tab-btn.add-tab{background:transparent;border-style:dashed;color:var(--stamp);border-color:var(--stamp);}
+  .tab-btn:focus-visible{outline:2.5px solid var(--stamp);outline-offset:2px;}
+
+  #addPanel{
+    background:var(--white);border:1.5px dashed var(--line);border-radius:var(--radius);
+    padding:24px 26px;
+  }
+  #addPanel h2{font-family:'Space Mono',monospace;font-size:16px;margin:0 0 14px;}
+  #addPanel ol{margin:0;padding-left:20px;}
+  #addPanel li{margin-bottom:10px;font-size:14.5px;line-height:1.5;color:var(--ink-soft);}
+  #addPanel li b{color:var(--ink);}
+  .panel-hint{margin-top:16px;font-size:13px;color:var(--muted);}
+
+  .corrections-box{
+    background:#FFF6DD;border:1px solid var(--tag-dark);border-radius:10px;
+    padding:12px 14px;margin-bottom:18px;font-size:13.5px;
+  }
+  .eyebrow{
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:1.4px;
+    color:var(--muted);text-transform:uppercase;margin:0 0 8px;display:block;
+  }
+  .correction-item{margin:3px 0;color:var(--ink-soft);}
+
+  .controls-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px;}
+  .seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden;background:var(--white);}
+  .seg button{
+    font-family:'Space Mono',monospace;font-size:12.5px;padding:8px 16px;border:none;background:transparent;
+    color:var(--ink-soft);cursor:pointer;
+  }
+  .seg button.active{background:var(--ink);color:var(--paper);}
+  .seg button:focus-visible{outline:2.5px solid var(--stamp);outline-offset:-2px;}
+
+  #cardsGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:22px;perspective:1200px;}
+  .tag-card{position:relative;height:178px;cursor:pointer;transform:rotate(var(--rot,0deg));}
+  .tag-inner{position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
+  .tag-card.flipped .tag-inner{transform:rotateY(180deg);}
+  .tag-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:10px;background:var(--tag);box-shadow:0 10px 18px -8px var(--tag-shadow), inset 0 0 0 1px rgba(0,0,0,.05);padding:16px 14px 14px;}
+  .tag-back{transform:rotateY(180deg);background:var(--white);border:1.5px dashed var(--tag-dark);}
+  .tag-hole{position:absolute;top:10px;left:10px;width:11px;height:11px;border-radius:50%;background:var(--paper);box-shadow:0 0 0 2px var(--tag-dark);}
+  .tag-back .tag-hole{box-shadow:0 0 0 2px var(--line);}
+  .tag-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.5px;color:var(--ink-soft);opacity:.7;margin-left:24px;text-transform:uppercase;}
+  .tag-word{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;margin:6px 0 8px;}
+  .tag-question{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px;}
+  .tag-answer{font-size:14.5px;font-weight:600;line-height:1.35;margin:14px 0 6px;color:var(--ink);}
+  .tag-en{font-size:11px;color:var(--ink-soft);font-style:italic;line-height:1.25;}
+  .tag-flip-hint{position:absolute;bottom:10px;left:14px;right:14px;font-size:10px;color:var(--ink-soft);opacity:.65;font-family:'Space Mono',monospace;}
+  .variant-dots{position:absolute;top:9px;right:10px;display:flex;gap:4px;z-index:2;}
+  .variant-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--tag-dark);background:transparent;color:var(--ink-soft);font-family:'Space Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;}
+  .variant-dot.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+  .variant-dot:hover{border-color:var(--stamp);}
+
+  #practiceArea{display:flex;flex-direction:column;align-items:center;gap:18px;padding:10px 0 30px;}
+  .practice-counter{font-family:'Space Mono',monospace;font-size:12.5px;color:var(--muted);}
+  .practice-card{width:100%;max-width:420px;min-height:240px;background:var(--tag);border-radius:16px;box-shadow:0 16px 30px -14px var(--tag-shadow);padding:26px 24px;position:relative;}
+  .practice-card .tag-hole{top:14px;left:14px;width:13px;height:13px;}
+  .practice-word{font-family:'Space Mono',monospace;font-weight:700;font-size:12px;margin:8px 0 16px 26px;text-transform:uppercase;letter-spacing:.5px;opacity:.75;}
+  .practice-question{font-size:21px;font-weight:700;line-height:1.4;margin-bottom:8px;}
+  .practice-en{font-size:12.5px;color:var(--ink-soft);font-style:italic;}
+  .practice-answer-box{margin-top:18px;padding-top:16px;border-top:1.5px dashed var(--tag-dark);}
+  .practice-answer-box[hidden]{display:none;}
+  .practice-answer{font-size:18px;font-weight:600;margin-bottom:6px;}
+  .reveal-btn{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.4px;background:var(--ink);color:var(--paper);border:none;border-radius:9px;padding:11px 20px;cursor:pointer;}
+  .reveal-btn:hover{background:var(--ink-soft);}
+  .practice-nav{display:flex;align-items:center;gap:16px;}
+  .nav-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:var(--white);cursor:pointer;font-size:16px;color:var(--ink-soft);display:flex;align-items:center;justify-content:center;}
+  .nav-btn:hover{border-color:var(--stamp);color:var(--stamp);}
+  .shuffle-btn{font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;}
+
+  .practice-input-row{display:flex;gap:8px;margin-top:18px;padding-top:16px;border-top:1.5px dashed var(--tag-dark);}
+  .practice-input{flex:1;font-family:'Inter',sans-serif;font-size:15px;padding:10px 12px;border:1.5px solid var(--tag-dark);border-radius:9px;background:var(--white);color:var(--ink);}
+  .practice-input:focus-visible{outline:2.5px solid var(--stamp);outline-offset:1px;}
+  .practice-input:disabled{opacity:.7;}
+  .check-btn{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;background:var(--stamp);color:var(--white);border:none;border-radius:9px;padding:0 18px;cursor:pointer;}
+  .check-btn:hover{background:var(--stamp-dark);}
+  .check-btn:disabled{opacity:.5;cursor:default;}
+  .skip-link{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;margin-top:8px;align-self:flex-start;}
+  .practice-feedback{margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--tag-dark);}
+  .practice-feedback[hidden]{display:none;}
+  .feedback-status{font-family:'Space Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.3px;margin-bottom:8px;padding:4px 10px;border-radius:6px;display:inline-block;}
+  .feedback-correct{background:#DCEFD9;color:#2E6B2A;}
+  .feedback-wrong{background:#FBE0DC;color:var(--stamp-dark);}
+  .feedback-skip{background:var(--paper-deep);color:var(--ink-soft);}
+
+  @media (max-width:520px){
+    h1{font-size:21px;}
+    #cardsGrid{grid-template-columns:1fr 1fr;gap:14px;}
+    .tag-card{height:148px;}
+  }
+</style>
+
+<div id="app">
+  <div class="wrap">
+    <header>
+      <div class="stamp-badge">A1</div>
+      <div>
+        <h1>Sprechprüfung Trainer</h1>
+        <p class="subtitle">Goethe A1 · W-Fragen &amp; Thema</p>
+      </div>
+    </header>
+
+    <div id="tabsBar"></div>
+
+    <div id="addPanel" hidden>
+      <h2>Neue Runde hinzufügen</h2>
+      <ol>
+        <li><b>Foto schicken</b> — Lade ein Foto deiner Vokabelkarten direkt im Chat hoch (nicht hier in der App).</li>
+        <li><b>Claude erstellt die Karten</b> — Frage, Antwort, Du- und Sie-Form, Übersetzung.</li>
+        <li><b>Neuer Tab erscheint</b> — Claude baut die Runde direkt in diese App ein.</li>
+      </ol>
+      <p class="panel-hint">Diese App speichert keine Daten selbst — jede Runde wird von Claude im Chat vorbereitet und fest eingebaut.</p>
+    </div>
+
+    <section id="resultsSection">
+      <div class="corrections-box" id="correctionsBox" style="display:none;">
+        <span class="eyebrow">Korrigiert</span>
+        <div id="correctionsList"></div>
+      </div>
+
+      <div class="controls-row">
+        <div class="seg" id="viewSeg">
+          <button data-view="cards" class="active">Karten</button>
+          <button data-view="practice">Übung</button>
+        </div>
+        <div class="seg" id="anredeSeg">
+          <button data-anrede="du" class="active">Du</button>
+          <button data-anrede="sie">Sie</button>
+        </div>
+      </div>
+
+      <div id="cardsGrid"></div>
+
+      <div id="practiceArea" hidden>
+        <div class="practice-counter" id="practiceCounter">1 / 1</div>
+        <div class="practice-card">
+          <div class="tag-hole"></div>
+          <div class="practice-word" id="practiceWord"></div>
+          <div class="practice-question" id="practiceQuestion"></div>
+          <div class="practice-en" id="practiceQuestionEn"></div>
+
+          <div class="practice-input-row">
+            <input type="text" id="practiceInput" class="practice-input" placeholder="Deine Antwort auf Deutsch..." autocomplete="off" autocapitalize="off" spellcheck="false" />
+            <button class="check-btn" id="checkBtn">Prüfen</button>
+          </div>
+          <button class="skip-link" id="skipBtn">Ich weiß es nicht</button>
+
+          <div class="practice-feedback" id="practiceFeedback" hidden>
+            <span class="feedback-status" id="feedbackStatus"></span>
+            <div class="practice-answer" id="practiceAnswer"></div>
+            <div class="practice-en" id="practiceAnswerEn"></div>
+          </div>
+        </div>
+        <div class="practice-nav">
+          <button class="nav-btn" id="prevBtn">‹</button>
+          <button class="shuffle-btn" id="shuffleBtn">mischen</button>
+          <button class="nav-btn" id="nextBtn">›</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+  const ROUNDS = [
+    {
+      thema: "Essen und Trinken",
+      corrections: [
+        '"Essen und trinken" → "Essen und Trinken" (beide Wörter sind hier Nomen)',
+        '"Helfen" → "helfen" (Verb, klein geschrieben)',
+        '"durst" → "Durst" (Nomen, groß geschrieben)',
+        '"Gemuse" → "Gemüse" (fehlender Umlaut)'
+      ],
+      items: [
+        {wort:"Kuchen", variants:[{frage_du:"Wie schmeckt dir der Kuchen?", antwort_du:"Der Kuchen schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen der Kuchen?", antwort_sie:"Der Kuchen schmeckt mir gut.", frage_en:"How does the cake taste to you?", antwort_en:"The cake tastes good to me."}, {frage_du:"Wann isst du Kuchen?", antwort_du:"Ich esse Kuchen am Sonntag.", frage_sie:"Wann essen Sie Kuchen?", antwort_sie:"Ich esse Kuchen am Sonntag.", frage_en:"When do you eat cake?", antwort_en:"I eat cake on Sunday."}, {frage_du:"Wo kaufst du den Kuchen?", antwort_du:"Ich kaufe den Kuchen in der Bäckerei.", frage_sie:"Wo kaufen Sie den Kuchen?", antwort_sie:"Ich kaufe den Kuchen in der Bäckerei.", frage_en:"Where do you buy the cake?", antwort_en:"I buy the cake at the bakery."}]},
+        {wort:"Orange", variants:[{frage_du:"Was machst du mit der Orange?", antwort_du:"Ich esse die Orange zum Frühstück.", frage_sie:"Was machen Sie mit der Orange?", antwort_sie:"Ich esse die Orange zum Frühstück.", frage_en:"What do you do with the orange?", antwort_en:"I eat the orange for breakfast."}, {frage_du:"Wie viele Orangen isst du pro Woche?", antwort_du:"Ich esse drei Orangen pro Woche.", frage_sie:"Wie viele Orangen essen Sie pro Woche?", antwort_sie:"Ich esse drei Orangen pro Woche.", frage_en:"How many oranges do you eat per week?", antwort_en:"I eat three oranges per week."}, {frage_du:"Wo kaufst du die Orange?", antwort_du:"Ich kaufe die Orange auf dem Markt.", frage_sie:"Wo kaufen Sie die Orange?", antwort_sie:"Ich kaufe die Orange auf dem Markt.", frage_en:"Where do you buy the orange?", antwort_en:"I buy the orange at the market."}]},
+        {wort:"Wein", variants:[{frage_du:"Wie schmeckt dir der Wein?", antwort_du:"Der Wein schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen der Wein?", antwort_sie:"Der Wein schmeckt mir gut.", frage_en:"How does the wine taste to you?", antwort_en:"The wine tastes good to me."}, {frage_du:"Wann trinkst du Wein?", antwort_du:"Ich trinke Wein am Abend.", frage_sie:"Wann trinken Sie Wein?", antwort_sie:"Ich trinke Wein am Abend.", frage_en:"When do you drink wine?", antwort_en:"I drink wine in the evening."}, {frage_du:"Wer trinkt den Wein?", antwort_du:"Mein Vater trinkt den Wein.", frage_sie:"Wer trinkt den Wein?", antwort_sie:"Mein Vater trinkt den Wein.", frage_en:"Who drinks the wine?", antwort_en:"My father drinks the wine."}]},
+        {wort:"Saft", variants:[{frage_du:"Wie schmeckt dir der Saft?", antwort_du:"Der Saft schmeckt mir süß.", frage_sie:"Wie schmeckt Ihnen der Saft?", antwort_sie:"Der Saft schmeckt mir süß.", frage_en:"How does the juice taste to you?", antwort_en:"The juice tastes sweet to me."}, {frage_du:"Wann trinkst du Saft?", antwort_du:"Ich trinke Saft am Morgen.", frage_sie:"Wann trinken Sie Saft?", antwort_sie:"Ich trinke Saft am Morgen.", frage_en:"When do you drink juice?", antwort_en:"I drink juice in the morning."}, {frage_du:"Wie viel Saft trinkst du am Tag?", antwort_du:"Ich trinke ein Glas Saft am Tag.", frage_sie:"Wie viel Saft trinken Sie am Tag?", antwort_sie:"Ich trinke ein Glas Saft am Tag.", frage_en:"How much juice do you drink per day?", antwort_en:"I drink one glass of juice per day."}]},
+        {wort:"kosten", variants:[{frage_du:"Wie viel kostet der Kaffee?", antwort_du:"Der Kaffee kostet drei Euro.", frage_sie:"Wie viel kostet der Kaffee?", antwort_sie:"Der Kaffee kostet drei Euro.", frage_en:"How much does the coffee cost?", antwort_en:"The coffee costs three euros."}, {frage_du:"Wie viel kostet die Suppe im Restaurant?", antwort_du:"Die Suppe kostet fünf Euro.", frage_sie:"Wie viel kostet die Suppe im Restaurant?", antwort_sie:"Die Suppe kostet fünf Euro.", frage_en:"How much does the soup cost at the restaurant?", antwort_en:"The soup costs five euros."}, {frage_du:"Warum kostet der Fisch so viel?", antwort_du:"Der Fisch kostet viel, weil er frisch ist.", frage_sie:"Warum kostet der Fisch so viel?", antwort_sie:"Der Fisch kostet viel, weil er frisch ist.", frage_en:"Why does the fish cost so much?", antwort_en:"The fish costs a lot because it's fresh."}]},
+        {wort:"Fisch", variants:[{frage_du:"Wie schmeckt dir der Fisch?", antwort_du:"Der Fisch schmeckt mir lecker.", frage_sie:"Wie schmeckt Ihnen der Fisch?", antwort_sie:"Der Fisch schmeckt mir lecker.", frage_en:"How does the fish taste to you?", antwort_en:"The fish tastes delicious to me."}, {frage_du:"Wann isst du Fisch?", antwort_du:"Ich esse Fisch am Freitag.", frage_sie:"Wann essen Sie Fisch?", antwort_sie:"Ich esse Fisch am Freitag.", frage_en:"When do you eat fish?", antwort_en:"I eat fish on Friday."}, {frage_du:"Wo kaufst du den Fisch?", antwort_du:"Ich kaufe den Fisch im Supermarkt.", frage_sie:"Wo kaufen Sie den Fisch?", antwort_sie:"Ich kaufe den Fisch im Supermarkt.", frage_en:"Where do you buy the fish?", antwort_en:"I buy the fish at the supermarket."}]},
+        {wort:"Supermarkt", variants:[{frage_du:"Was kaufst du im Supermarkt?", antwort_du:"Ich kaufe Brot im Supermarkt.", frage_sie:"Was kaufen Sie im Supermarkt?", antwort_sie:"Ich kaufe Brot im Supermarkt.", frage_en:"What do you buy at the supermarket?", antwort_en:"I buy bread at the supermarket."}, {frage_du:"Wann gehst du in den Supermarkt?", antwort_du:"Ich gehe am Samstag in den Supermarkt.", frage_sie:"Wann gehen Sie in den Supermarkt?", antwort_sie:"Ich gehe am Samstag in den Supermarkt.", frage_en:"When do you go to the supermarket?", antwort_en:"I go to the supermarket on Saturday."}, {frage_du:"Wie oft gehst du in den Supermarkt?", antwort_du:"Ich gehe zweimal pro Woche in den Supermarkt.", frage_sie:"Wie oft gehen Sie in den Supermarkt?", antwort_sie:"Ich gehe zweimal pro Woche in den Supermarkt.", frage_en:"How often do you go to the supermarket?", antwort_en:"I go to the supermarket twice a week."}]},
+        {wort:"Wasser", variants:[{frage_du:"Wie viel Wasser trinkst du am Tag?", antwort_du:"Ich trinke zwei Liter Wasser am Tag.", frage_sie:"Wie viel Wasser trinken Sie am Tag?", antwort_sie:"Ich trinke zwei Liter Wasser am Tag.", frage_en:"How much water do you drink per day?", antwort_en:"I drink two liters of water per day."}, {frage_du:"Wann trinkst du Wasser?", antwort_du:"Ich trinke Wasser beim Essen.", frage_sie:"Wann trinken Sie Wasser?", antwort_sie:"Ich trinke Wasser beim Essen.", frage_en:"When do you drink water?", antwort_en:"I drink water with my meals."}, {frage_du:"Warum trinkst du viel Wasser?", antwort_du:"Ich trinke viel Wasser, weil ich Sport mache.", frage_sie:"Warum trinken Sie viel Wasser?", antwort_sie:"Ich trinke viel Wasser, weil ich Sport mache.", frage_en:"Why do you drink a lot of water?", antwort_en:"I drink a lot of water because I exercise."}]},
+        {wort:"helfen", variants:[{frage_du:"Wer hilft dir beim Kochen?", antwort_du:"Meine Mutter hilft mir beim Kochen.", frage_sie:"Wer hilft Ihnen beim Kochen?", antwort_sie:"Meine Mutter hilft mir beim Kochen.", frage_en:"Who helps you with cooking?", antwort_en:"My mother helps me with cooking."}, {frage_du:"Wann hilfst du in der Küche?", antwort_du:"Ich helfe am Abend in der Küche.", frage_sie:"Wann helfen Sie in der Küche?", antwort_sie:"Ich helfe am Abend in der Küche.", frage_en:"When do you help in the kitchen?", antwort_en:"I help in the kitchen in the evening."}, {frage_du:"Wie hilfst du beim Essen?", antwort_du:"Ich helfe, den Tisch zu decken.", frage_sie:"Wie helfen Sie beim Essen?", antwort_sie:"Ich helfe, den Tisch zu decken.", frage_en:"How do you help with the meal?", antwort_en:"I help set the table."}]},
+        {wort:"Kilo", variants:[{frage_du:"Wie viele Kilo Äpfel isst du?", antwort_du:"Ich esse zwei Kilo Äpfel.", frage_sie:"Wie viele Kilo Äpfel essen Sie?", antwort_sie:"Ich esse zwei Kilo Äpfel.", frage_en:"How many kilos of apples do you eat?", antwort_en:"I eat two kilos of apples."}, {frage_du:"Wie viel Kilo Fleisch isst du pro Woche?", antwort_du:"Ich esse ein Kilo Fleisch pro Woche.", frage_sie:"Wie viel Kilo Fleisch essen Sie pro Woche?", antwort_sie:"Ich esse ein Kilo Fleisch pro Woche.", frage_en:"How many kilos of meat do you eat per week?", antwort_en:"I eat one kilo of meat per week."}, {frage_du:"Wie viele Kilo Obst kaufst du zum Essen?", antwort_du:"Ich kaufe drei Kilo Obst zum Essen.", frage_sie:"Wie viele Kilo Obst kaufen Sie zum Essen?", antwort_sie:"Ich kaufe drei Kilo Obst zum Essen.", frage_en:"How many kilos of fruit do you buy for eating?", antwort_en:"I buy three kilos of fruit for eating."}]},
+        {wort:"Sonntag", variants:[{frage_du:"Was isst du am Sonntag?", antwort_du:"Ich esse Kuchen am Sonntag.", frage_sie:"Was essen Sie am Sonntag?", antwort_sie:"Ich esse Kuchen am Sonntag.", frage_en:"What do you eat on Sunday?", antwort_en:"I eat cake on Sunday."}, {frage_du:"Wann isst du Frühstück am Sonntag?", antwort_du:"Ich esse am Sonntag spät Frühstück.", frage_sie:"Wann essen Sie Frühstück am Sonntag?", antwort_sie:"Ich esse am Sonntag spät Frühstück.", frage_en:"When do you eat breakfast on Sunday?", antwort_en:"I eat breakfast late on Sunday."}, {frage_du:"Mit wem isst du am Sonntag?", antwort_du:"Ich esse am Sonntag mit meiner Familie.", frage_sie:"Mit wem essen Sie am Sonntag?", antwort_sie:"Ich esse am Sonntag mit meiner Familie.", frage_en:"Who do you eat with on Sunday?", antwort_en:"I eat with my family on Sunday."}]},
+        {wort:"Kaffee", variants:[{frage_du:"Wann trinkst du Kaffee?", antwort_du:"Ich trinke Kaffee am Morgen.", frage_sie:"Wann trinken Sie Kaffee?", antwort_sie:"Ich trinke Kaffee am Morgen.", frage_en:"When do you drink coffee?", antwort_en:"I drink coffee in the morning."}, {frage_du:"Wie viele Tassen Kaffee trinkst du?", antwort_du:"Ich trinke zwei Tassen Kaffee.", frage_sie:"Wie viele Tassen Kaffee trinken Sie?", antwort_sie:"Ich trinke zwei Tassen Kaffee.", frage_en:"How many cups of coffee do you drink?", antwort_en:"I drink two cups of coffee."}, {frage_du:"Wie trinkst du deinen Kaffee?", antwort_du:"Ich trinke meinen Kaffee mit Milch.", frage_sie:"Wie trinken Sie Ihren Kaffee?", antwort_sie:"Ich trinke meinen Kaffee mit Milch.", frage_en:"How do you drink your coffee?", antwort_en:"I drink my coffee with milk."}]},
+        {wort:"Lebensmittel", variants:[{frage_du:"Wo kaufst du Lebensmittel?", antwort_du:"Ich kaufe Lebensmittel im Supermarkt.", frage_sie:"Wo kaufen Sie Lebensmittel?", antwort_sie:"Ich kaufe Lebensmittel im Supermarkt.", frage_en:"Where do you buy groceries?", antwort_en:"I buy groceries at the supermarket."}, {frage_du:"Wie viele Lebensmittel kaufst du pro Woche?", antwort_du:"Ich kaufe viele Lebensmittel pro Woche.", frage_sie:"Wie viele Lebensmittel kaufen Sie pro Woche?", antwort_sie:"Ich kaufe viele Lebensmittel pro Woche.", frage_en:"How many groceries do you buy per week?", antwort_en:"I buy a lot of groceries per week."}, {frage_du:"Wann kaufst du Lebensmittel?", antwort_du:"Ich kaufe Lebensmittel am Freitag.", frage_sie:"Wann kaufen Sie Lebensmittel?", antwort_sie:"Ich kaufe Lebensmittel am Freitag.", frage_en:"When do you buy groceries?", antwort_en:"I buy groceries on Friday."}]},
+        {wort:"Preis", variants:[{frage_du:"Wie ist der Preis vom Brot?", antwort_du:"Der Preis vom Brot ist günstig.", frage_sie:"Wie ist der Preis vom Brot?", antwort_sie:"Der Preis vom Brot ist günstig.", frage_en:"How is the price of the bread?", antwort_en:"The price of the bread is cheap."}, {frage_du:"Wie hoch ist der Preis für die Suppe?", antwort_du:"Der Preis für die Suppe ist niedrig.", frage_sie:"Wie hoch ist der Preis für die Suppe?", antwort_sie:"Der Preis für die Suppe ist niedrig.", frage_en:"How high is the price for the soup?", antwort_en:"The price for the soup is low."}, {frage_du:"Warum ist der Preis für Fisch so hoch?", antwort_du:"Der Preis für Fisch ist hoch, weil er frisch ist.", frage_sie:"Warum ist der Preis für Fisch so hoch?", antwort_sie:"Der Preis für Fisch ist hoch, weil er frisch ist.", frage_en:"Why is the price for fish so high?", antwort_en:"The price for fish is high because it's fresh."}]},
+        {wort:"Lieblingsessen", variants:[{frage_du:"Was ist dein Lieblingsessen?", antwort_du:"Mein Lieblingsessen ist Pizza.", frage_sie:"Was ist Ihr Lieblingsessen?", antwort_sie:"Mein Lieblingsessen ist Pizza.", frage_en:"What is your favorite food?", antwort_en:"My favorite food is pizza."}, {frage_du:"Warum magst du dein Lieblingsessen?", antwort_du:"Ich mag mein Lieblingsessen, weil es lecker ist.", frage_sie:"Warum mögen Sie Ihr Lieblingsessen?", antwort_sie:"Ich mag mein Lieblingsessen, weil es lecker ist.", frage_en:"Why do you like your favorite food?", antwort_en:"I like my favorite food because it's delicious."}, {frage_du:"Wann isst du dein Lieblingsessen?", antwort_du:"Ich esse mein Lieblingsessen am Wochenende.", frage_sie:"Wann essen Sie Ihr Lieblingsessen?", antwort_sie:"Ich esse mein Lieblingsessen am Wochenende.", frage_en:"When do you eat your favorite food?", antwort_en:"I eat my favorite food on the weekend."}]},
+        {wort:"Frühstück", variants:[{frage_du:"Was isst du zum Frühstück?", antwort_du:"Ich esse Brot zum Frühstück.", frage_sie:"Was essen Sie zum Frühstück?", antwort_sie:"Ich esse Brot zum Frühstück.", frage_en:"What do you eat for breakfast?", antwort_en:"I eat bread for breakfast."}, {frage_du:"Wann isst du Frühstück?", antwort_du:"Ich esse um acht Uhr Frühstück.", frage_sie:"Wann essen Sie Frühstück?", antwort_sie:"Ich esse um acht Uhr Frühstück.", frage_en:"When do you eat breakfast?", antwort_en:"I eat breakfast at eight o'clock."}, {frage_du:"Wo isst du dein Frühstück?", antwort_du:"Ich esse mein Frühstück in der Küche.", frage_sie:"Wo essen Sie Ihr Frühstück?", antwort_sie:"Ich esse mein Frühstück in der Küche.", frage_en:"Where do you eat your breakfast?", antwort_en:"I eat my breakfast in the kitchen."}]},
+        {wort:"kochen", variants:[{frage_du:"Wer kocht das Essen zu Hause?", antwort_du:"Meine Mutter kocht das Essen.", frage_sie:"Wer kocht das Essen zu Hause?", antwort_sie:"Meine Mutter kocht das Essen.", frage_en:"Who cooks the food at home?", antwort_en:"My mother cooks the food."}, {frage_du:"Was kochst du gern?", antwort_du:"Ich koche gern Suppe.", frage_sie:"Was kochen Sie gern?", antwort_sie:"Ich koche gern Suppe.", frage_en:"What do you like to cook?", antwort_en:"I like to cook soup."}, {frage_du:"Wann kochst du das Abendessen?", antwort_du:"Ich koche das Abendessen um sechs Uhr.", frage_sie:"Wann kochen Sie das Abendessen?", antwort_sie:"Ich koche das Abendessen um sechs Uhr.", frage_en:"When do you cook dinner?", antwort_en:"I cook dinner at six o'clock."}]},
+        {wort:"Wild", variants:[{frage_du:"Wie oft isst du Wild?", antwort_du:"Ich esse Wild im Restaurant.", frage_sie:"Wie oft essen Sie Wild?", antwort_sie:"Ich esse Wild im Restaurant.", frage_en:"How often do you eat venison?", antwort_en:"I eat venison at the restaurant."}, {frage_du:"Wann isst du Wild?", antwort_du:"Ich esse Wild im Winter.", frage_sie:"Wann essen Sie Wild?", antwort_sie:"Ich esse Wild im Winter.", frage_en:"When do you eat venison?", antwort_en:"I eat venison in winter."}, {frage_du:"Wie schmeckt dir das Wild?", antwort_du:"Das Wild schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen das Wild?", antwort_sie:"Das Wild schmeckt mir gut.", frage_en:"How does the venison taste to you?", antwort_en:"The venison tastes good to me."}]},
+        {wort:"Fleisch", variants:[{frage_du:"Was machst du mit dem Fleisch?", antwort_du:"Ich koche das Fleisch.", frage_sie:"Was machen Sie mit dem Fleisch?", antwort_sie:"Ich koche das Fleisch.", frage_en:"What do you do with the meat?", antwort_en:"I cook the meat."}, {frage_du:"Wie viel Fleisch isst du pro Woche?", antwort_du:"Ich esse wenig Fleisch pro Woche.", frage_sie:"Wie viel Fleisch essen Sie pro Woche?", antwort_sie:"Ich esse wenig Fleisch pro Woche.", frage_en:"How much meat do you eat per week?", antwort_en:"I eat little meat per week."}, {frage_du:"Warum isst du wenig Fleisch?", antwort_du:"Ich esse wenig Fleisch, weil es teuer ist.", frage_sie:"Warum essen Sie wenig Fleisch?", antwort_sie:"Ich esse wenig Fleisch, weil es teuer ist.", frage_en:"Why do you eat little meat?", antwort_en:"I eat little meat because it's expensive."}]},
+        {wort:"Gramm", variants:[{frage_du:"Wie viel Gramm Wurst möchtest du?", antwort_du:"Ich möchte zweihundert Gramm Wurst.", frage_sie:"Wie viel Gramm Wurst möchten Sie?", antwort_sie:"Ich möchte zweihundert Gramm Wurst.", frage_en:"How many grams of sausage would you like?", antwort_en:"I would like two hundred grams of sausage."}, {frage_du:"Wie viel Gramm Käse isst du zum Frühstück?", antwort_du:"Ich esse fünfzig Gramm Käse zum Frühstück.", frage_sie:"Wie viel Gramm Käse essen Sie zum Frühstück?", antwort_sie:"Ich esse fünfzig Gramm Käse zum Frühstück.", frage_en:"How many grams of cheese do you eat for breakfast?", antwort_en:"I eat fifty grams of cheese for breakfast."}, {frage_du:"Wie viel Gramm Reis kochst du?", antwort_du:"Ich koche hundert Gramm Reis.", frage_sie:"Wie viel Gramm Reis kochen Sie?", antwort_sie:"Ich koche hundert Gramm Reis.", frage_en:"How many grams of rice do you cook?", antwort_en:"I cook one hundred grams of rice."}]},
+        {wort:"Geflügel", variants:[{frage_du:"Wie schmeckt dir das Geflügel?", antwort_du:"Das Geflügel schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen das Geflügel?", antwort_sie:"Das Geflügel schmeckt mir gut.", frage_en:"How does the poultry taste to you?", antwort_en:"The poultry tastes good to me."}, {frage_du:"Wann isst du Geflügel?", antwort_du:"Ich esse Geflügel am Sonntag.", frage_sie:"Wann essen Sie Geflügel?", antwort_sie:"Ich esse Geflügel am Sonntag.", frage_en:"When do you eat poultry?", antwort_en:"I eat poultry on Sunday."}, {frage_du:"Wo kaufst du das Geflügel?", antwort_du:"Ich kaufe das Geflügel beim Metzger.", frage_sie:"Wo kaufen Sie das Geflügel?", antwort_sie:"Ich kaufe das Geflügel beim Metzger.", frage_en:"Where do you buy the poultry?", antwort_en:"I buy the poultry at the butcher's."}]},
+        {wort:"Brot", variants:[{frage_du:"Wie viel kostet das Brot?", antwort_du:"Das Brot kostet zwei Euro.", frage_sie:"Wie viel kostet das Brot?", antwort_sie:"Das Brot kostet zwei Euro.", frage_en:"How much does the bread cost?", antwort_en:"The bread costs two euros."}, {frage_du:"Wann isst du Brot?", antwort_du:"Ich esse Brot zum Frühstück.", frage_sie:"Wann essen Sie Brot?", antwort_sie:"Ich esse Brot zum Frühstück.", frage_en:"When do you eat bread?", antwort_en:"I eat bread for breakfast."}, {frage_du:"Wo kaufst du das Brot?", antwort_du:"Ich kaufe das Brot in der Bäckerei.", frage_sie:"Wo kaufen Sie das Brot?", antwort_sie:"Ich kaufe das Brot in der Bäckerei.", frage_en:"Where do you buy the bread?", antwort_en:"I buy the bread at the bakery."}]},
+        {wort:"Suppe", variants:[{frage_du:"Wie schmeckt dir die Suppe?", antwort_du:"Die Suppe schmeckt mir warm und gut.", frage_sie:"Wie schmeckt Ihnen die Suppe?", antwort_sie:"Die Suppe schmeckt mir warm und gut.", frage_en:"How does the soup taste to you?", antwort_en:"The soup tastes warm and good to me."}, {frage_du:"Wann isst du Suppe?", antwort_du:"Ich esse Suppe am Abend.", frage_sie:"Wann essen Sie Suppe?", antwort_sie:"Ich esse Suppe am Abend.", frage_en:"When do you eat soup?", antwort_en:"I eat soup in the evening."}, {frage_du:"Wo isst du die Suppe?", antwort_du:"Ich esse die Suppe im Restaurant.", frage_sie:"Wo essen Sie die Suppe?", antwort_sie:"Ich esse die Suppe im Restaurant.", frage_en:"Where do you eat the soup?", antwort_en:"I eat the soup at the restaurant."}]},
+        {wort:"Wurst", variants:[{frage_du:"Wie schmeckt dir die Wurst?", antwort_du:"Die Wurst schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen die Wurst?", antwort_sie:"Die Wurst schmeckt mir gut.", frage_en:"How does the sausage taste to you?", antwort_en:"The sausage tastes good to me."}, {frage_du:"Wann isst du Wurst?", antwort_du:"Ich esse Wurst zum Mittagessen.", frage_sie:"Wann essen Sie Wurst?", antwort_sie:"Ich esse Wurst zum Mittagessen.", frage_en:"When do you eat sausage?", antwort_en:"I eat sausage for lunch."}, {frage_du:"Wo kaufst du die Wurst?", antwort_du:"Ich kaufe die Wurst beim Metzger.", frage_sie:"Wo kaufen Sie die Wurst?", antwort_sie:"Ich kaufe die Wurst beim Metzger.", frage_en:"Where do you buy the sausage?", antwort_en:"I buy the sausage at the butcher's."}]},
+        {wort:"Durst", variants:[{frage_du:"Was machst du, wenn du Durst hast?", antwort_du:"Ich trinke Wasser, wenn ich Durst habe.", frage_sie:"Was machen Sie, wenn Sie Durst haben?", antwort_sie:"Ich trinke Wasser, wenn ich Durst habe.", frage_en:"What do you do when you're thirsty?", antwort_en:"I drink water when I'm thirsty."}, {frage_du:"Wann hast du Durst?", antwort_du:"Ich habe Durst nach dem Sport.", frage_sie:"Wann haben Sie Durst?", antwort_sie:"Ich habe Durst nach dem Sport.", frage_en:"When are you thirsty?", antwort_en:"I'm thirsty after sports."}, {frage_du:"Was trinkst du gegen den Durst?", antwort_du:"Ich trinke Wasser gegen den Durst.", frage_sie:"Was trinken Sie gegen den Durst?", antwort_sie:"Ich trinke Wasser gegen den Durst.", frage_en:"What do you drink for thirst?", antwort_en:"I drink water for thirst."}]},
+        {wort:"Obst", variants:[{frage_du:"Wie viel Obst isst du pro Tag?", antwort_du:"Ich esse viel Obst pro Tag.", frage_sie:"Wie viel Obst essen Sie pro Tag?", antwort_sie:"Ich esse viel Obst pro Tag.", frage_en:"How much fruit do you eat per day?", antwort_en:"I eat a lot of fruit per day."}, {frage_du:"Wo kaufst du Obst?", antwort_du:"Ich kaufe Obst auf dem Markt.", frage_sie:"Wo kaufen Sie Obst?", antwort_sie:"Ich kaufe Obst auf dem Markt.", frage_en:"Where do you buy fruit?", antwort_en:"I buy fruit at the market."}, {frage_du:"Was für Obst magst du?", antwort_du:"Ich mag Obst wie Äpfel und Bananen.", frage_sie:"Was für Obst mögen Sie?", antwort_sie:"Ich mag Obst wie Äpfel und Bananen.", frage_en:"What kind of fruit do you like?", antwort_en:"I like fruit like apples and bananas."}]},
+        {wort:"Restaurant", variants:[{frage_du:"Wie ist das Essen im Restaurant?", antwort_du:"Das Essen im Restaurant ist lecker.", frage_sie:"Wie ist das Essen im Restaurant?", antwort_sie:"Das Essen im Restaurant ist lecker.", frage_en:"How is the food at the restaurant?", antwort_en:"The food at the restaurant is delicious."}, {frage_du:"Wie oft isst du im Restaurant?", antwort_du:"Ich esse einmal pro Woche im Restaurant.", frage_sie:"Wie oft essen Sie im Restaurant?", antwort_sie:"Ich esse einmal pro Woche im Restaurant.", frage_en:"How often do you eat at a restaurant?", antwort_en:"I eat at a restaurant once a week."}, {frage_du:"Was isst du im Restaurant?", antwort_du:"Ich esse Fisch im Restaurant.", frage_sie:"Was essen Sie im Restaurant?", antwort_sie:"Ich esse Fisch im Restaurant.", frage_en:"What do you eat at the restaurant?", antwort_en:"I eat fish at the restaurant."}]},
+        {wort:"Abend", variants:[{frage_du:"Was isst du am Abend?", antwort_du:"Ich esse Suppe am Abend.", frage_sie:"Was essen Sie am Abend?", antwort_sie:"Ich esse Suppe am Abend.", frage_en:"What do you eat in the evening?", antwort_en:"I eat soup in the evening."}, {frage_du:"Um wie viel Uhr isst du am Abend?", antwort_du:"Ich esse am Abend um sieben Uhr.", frage_sie:"Um wie viel Uhr essen Sie am Abend?", antwort_sie:"Ich esse am Abend um sieben Uhr.", frage_en:"At what time do you eat in the evening?", antwort_en:"I eat at seven o'clock in the evening."}, {frage_du:"Mit wem isst du am Abend?", antwort_du:"Ich esse am Abend mit meiner Familie.", frage_sie:"Mit wem essen Sie am Abend?", antwort_sie:"Ich esse am Abend mit meiner Familie.", frage_en:"Who do you eat with in the evening?", antwort_en:"I eat with my family in the evening."}]},
+        {wort:"Gemüse", variants:[{frage_du:"Was für Gemüse kaufst du?", antwort_du:"Ich kaufe Gemüse wie Karotten.", frage_sie:"Was für Gemüse kaufen Sie?", antwort_sie:"Ich kaufe Gemüse wie Karotten.", frage_en:"What kind of vegetables do you buy?", antwort_en:"I buy vegetables like carrots."}, {frage_du:"Wie viel Gemüse isst du am Tag?", antwort_du:"Ich esse viel Gemüse am Tag.", frage_sie:"Wie viel Gemüse essen Sie am Tag?", antwort_sie:"Ich esse viel Gemüse am Tag.", frage_en:"How many vegetables do you eat per day?", antwort_en:"I eat a lot of vegetables per day."}, {frage_du:"Wo kaufst du das Gemüse?", antwort_du:"Ich kaufe das Gemüse auf dem Markt.", frage_sie:"Wo kaufen Sie das Gemüse?", antwort_sie:"Ich kaufe das Gemüse auf dem Markt.", frage_en:"Where do you buy the vegetables?", antwort_en:"I buy the vegetables at the market."}]},
+        {wort:"Bier", variants:[{frage_du:"Wie schmeckt dir das Bier?", antwort_du:"Das Bier schmeckt mir gut.", frage_sie:"Wie schmeckt Ihnen das Bier?", antwort_sie:"Das Bier schmeckt mir gut.", frage_en:"How does the beer taste to you?", antwort_en:"The beer tastes good to me."}, {frage_du:"Wann trinkst du Bier?", antwort_du:"Ich trinke Bier am Wochenende.", frage_sie:"Wann trinken Sie Bier?", antwort_sie:"Ich trinke Bier am Wochenende.", frage_en:"When do you drink beer?", antwort_en:"I drink beer on the weekend."}, {frage_du:"Wie viel Bier trinkst du?", antwort_du:"Ich trinke ein Glas Bier.", frage_sie:"Wie viel Bier trinken Sie?", antwort_sie:"Ich trinke ein Glas Bier.", frage_en:"How much beer do you drink?", antwort_en:"I drink one glass of beer."}]},
+        {wort:"Hunger", variants:[{frage_du:"Was machst du, wenn du Hunger hast?", antwort_du:"Ich esse etwas, wenn ich Hunger habe.", frage_sie:"Was machen Sie, wenn Sie Hunger haben?", antwort_sie:"Ich esse etwas, wenn ich Hunger habe.", frage_en:"What do you do when you're hungry?", antwort_en:"I eat something when I'm hungry."}, {frage_du:"Wann hast du Hunger?", antwort_du:"Ich habe am Mittag Hunger.", frage_sie:"Wann haben Sie Hunger?", antwort_sie:"Ich habe am Mittag Hunger.", frage_en:"When are you hungry?", antwort_en:"I'm hungry at noon."}, {frage_du:"Was isst du gegen den Hunger?", antwort_du:"Ich esse ein Brot gegen den Hunger.", frage_sie:"Was essen Sie gegen den Hunger?", antwort_sie:"Ich esse ein Brot gegen den Hunger.", frage_en:"What do you eat for hunger?", antwort_en:"I eat a bread for hunger."}]},
+        {wort:"Lieblingsgetränk", variants:[{frage_du:"Was ist dein Lieblingsgetränk?", antwort_du:"Mein Lieblingsgetränk ist Tee.", frage_sie:"Was ist Ihr Lieblingsgetränk?", antwort_sie:"Mein Lieblingsgetränk ist Tee.", frage_en:"What is your favorite drink?", antwort_en:"My favorite drink is tea."}, {frage_du:"Warum magst du dein Lieblingsgetränk?", antwort_du:"Ich mag mein Lieblingsgetränk, weil es warm ist.", frage_sie:"Warum mögen Sie Ihr Lieblingsgetränk?", antwort_sie:"Ich mag mein Lieblingsgetränk, weil es warm ist.", frage_en:"Why do you like your favorite drink?", antwort_en:"I like my favorite drink because it's warm."}, {frage_du:"Wann trinkst du dein Lieblingsgetränk?", antwort_du:"Ich trinke mein Lieblingsgetränk am Morgen.", frage_sie:"Wann trinken Sie Ihr Lieblingsgetränk?", antwort_sie:"Ich trinke mein Lieblingsgetränk am Morgen.", frage_en:"When do you drink your favorite drink?", antwort_en:"I drink my favorite drink in the morning."}]},
+        {wort:"Tee", variants:[{frage_du:"Wann trinkst du Tee?", antwort_du:"Ich trinke Tee am Nachmittag.", frage_sie:"Wann trinken Sie Tee?", antwort_sie:"Ich trinke Tee am Nachmittag.", frage_en:"When do you drink tea?", antwort_en:"I drink tea in the afternoon."}, {frage_du:"Wie trinkst du deinen Tee?", antwort_du:"Ich trinke meinen Tee mit Honig.", frage_sie:"Wie trinken Sie Ihren Tee?", antwort_sie:"Ich trinke meinen Tee mit Honig.", frage_en:"How do you drink your tea?", antwort_en:"I drink my tea with honey."}, {frage_du:"Wo trinkst du Tee?", antwort_du:"Ich trinke Tee zu Hause.", frage_sie:"Wo trinken Sie Tee?", antwort_sie:"Ich trinke Tee zu Hause.", frage_en:"Where do you drink tea?", antwort_en:"I drink tea at home."}]}
+      ]
+    },
+    {
+      thema: "Familie",
+      corrections: [],
+      items: [
+        {wort:"besuchen", variants:[{frage_du:"Wie oft besuchst du deine Familie?", antwort_du:"Ich besuche meine Familie jeden Monat.", frage_sie:"Wie oft besuchen Sie Ihre Familie?", antwort_sie:"Ich besuche meine Familie jeden Monat.", frage_en:"How often do you visit your family?", antwort_en:"I visit my family every month."}, {frage_du:"Wen besuchst du am Wochenende?", antwort_du:"Ich besuche meine Großeltern.", frage_sie:"Wen besuchen Sie am Wochenende?", antwort_sie:"Ich besuche meine Großeltern.", frage_en:"Who do you visit on the weekend?", antwort_en:"I visit my grandparents."}, {frage_du:"Warum besuchst du deine Tante?", antwort_du:"Ich besuche meine Tante, weil ich sie mag.", frage_sie:"Warum besuchen Sie Ihre Tante?", antwort_sie:"Ich besuche meine Tante, weil ich sie mag.", frage_en:"Why do you visit your aunt?", antwort_en:"I visit my aunt because I like her."}]},
+        {wort:"Vater", variants:[{frage_du:"Wie heißt dein Vater?", antwort_du:"Mein Vater heißt Thomas.", frage_sie:"Wie heißt Ihr Vater?", antwort_sie:"Mein Vater heißt Thomas.", frage_en:"What's your father's name?", antwort_en:"My father's name is Thomas."}, {frage_du:"Wo arbeitet dein Vater?", antwort_du:"Mein Vater arbeitet in einer Firma.", frage_sie:"Wo arbeitet Ihr Vater?", antwort_sie:"Mein Vater arbeitet in einer Firma.", frage_en:"Where does your father work?", antwort_en:"My father works at a company."}, {frage_du:"Wie alt ist dein Vater?", antwort_du:"Mein Vater ist fünfzig Jahre alt.", frage_sie:"Wie alt ist Ihr Vater?", antwort_sie:"Mein Vater ist fünfzig Jahre alt.", frage_en:"How old is your father?", antwort_en:"My father is fifty years old."}]},
+        {wort:"Frau", variants:[{frage_du:"Wer ist die Frau dort?", antwort_du:"Die Frau dort ist meine Mutter.", frage_sie:"Wer ist die Frau dort?", antwort_sie:"Die Frau dort ist meine Mutter.", frage_en:"Who is the woman there?", antwort_en:"The woman there is my mother."}, {frage_du:"Wie heißt die Frau neben dir?", antwort_du:"Die Frau neben mir heißt Lisa.", frage_sie:"Wie heißt die Frau neben Ihnen?", antwort_sie:"Die Frau neben mir heißt Lisa.", frage_en:"What's the name of the woman next to you?", antwort_en:"The woman next to me is named Lisa."}, {frage_du:"Woher kommt die Frau?", antwort_du:"Die Frau kommt aus Berlin.", frage_sie:"Woher kommt die Frau?", antwort_sie:"Die Frau kommt aus Berlin.", frage_en:"Where does the woman come from?", antwort_en:"The woman comes from Berlin."}]},
+        {wort:"feiern", variants:[{frage_du:"Was feierst du mit deiner Familie?", antwort_du:"Ich feiere Weihnachten mit meiner Familie.", frage_sie:"Was feiern Sie mit Ihrer Familie?", antwort_sie:"Ich feiere Weihnachten mit meiner Familie.", frage_en:"What do you celebrate with your family?", antwort_en:"I celebrate Christmas with my family."}, {frage_du:"Wann feierst du deinen Geburtstag?", antwort_du:"Ich feiere meinen Geburtstag im Mai.", frage_sie:"Wann feiern Sie Ihren Geburtstag?", antwort_sie:"Ich feiere meinen Geburtstag im Mai.", frage_en:"When do you celebrate your birthday?", antwort_en:"I celebrate my birthday in May."}, {frage_du:"Wo feierst du mit deiner Familie?", antwort_du:"Ich feiere zu Hause mit meiner Familie.", frage_sie:"Wo feiern Sie mit Ihrer Familie?", antwort_sie:"Ich feiere zu Hause mit meiner Familie.", frage_en:"Where do you celebrate with your family?", antwort_en:"I celebrate at home with my family."}]},
+        {wort:"Schwester", variants:[{frage_du:"Wie alt ist deine Schwester?", antwort_du:"Meine Schwester ist zwanzig Jahre alt.", frage_sie:"Wie alt ist Ihre Schwester?", antwort_sie:"Meine Schwester ist zwanzig Jahre alt.", frage_en:"How old is your sister?", antwort_en:"My sister is twenty years old."}, {frage_du:"Wo wohnt deine Schwester?", antwort_du:"Meine Schwester wohnt in Hamburg.", frage_sie:"Wo wohnt Ihre Schwester?", antwort_sie:"Meine Schwester wohnt in Hamburg.", frage_en:"Where does your sister live?", antwort_en:"My sister lives in Hamburg."}, {frage_du:"Wie heißt deine Schwester?", antwort_du:"Meine Schwester heißt Lena.", frage_sie:"Wie heißt Ihre Schwester?", antwort_sie:"Meine Schwester heißt Lena.", frage_en:"What's your sister's name?", antwort_en:"My sister's name is Lena."}]},
+        {wort:"Großeltern", variants:[{frage_du:"Wo wohnen deine Großeltern?", antwort_du:"Meine Großeltern wohnen in München.", frage_sie:"Wo wohnen Ihre Großeltern?", antwort_sie:"Meine Großeltern wohnen in München.", frage_en:"Where do your grandparents live?", antwort_en:"My grandparents live in Munich."}, {frage_du:"Wie oft besuchst du deine Großeltern?", antwort_du:"Ich besuche meine Großeltern oft.", frage_sie:"Wie oft besuchen Sie Ihre Großeltern?", antwort_sie:"Ich besuche meine Großeltern oft.", frage_en:"How often do you visit your grandparents?", antwort_en:"I visit my grandparents often."}, {frage_du:"Wie alt sind deine Großeltern?", antwort_du:"Meine Großeltern sind achtzig Jahre alt.", frage_sie:"Wie alt sind Ihre Großeltern?", antwort_sie:"Meine Großeltern sind achtzig Jahre alt.", frage_en:"How old are your grandparents?", antwort_en:"My grandparents are eighty years old."}]},
+        {wort:"Geschwister", variants:[{frage_du:"Wie viele Geschwister hast du?", antwort_du:"Ich habe zwei Geschwister.", frage_sie:"Wie viele Geschwister haben Sie?", antwort_sie:"Ich habe zwei Geschwister.", frage_en:"How many siblings do you have?", antwort_en:"I have two siblings."}, {frage_du:"Wo wohnen deine Geschwister?", antwort_du:"Meine Geschwister wohnen in Berlin.", frage_sie:"Wo wohnen Ihre Geschwister?", antwort_sie:"Meine Geschwister wohnen in Berlin.", frage_en:"Where do your siblings live?", antwort_en:"My siblings live in Berlin."}, {frage_du:"Wie heißen deine Geschwister?", antwort_du:"Meine Geschwister heißen Lena und Paul.", frage_sie:"Wie heißen Ihre Geschwister?", antwort_sie:"Meine Geschwister heißen Lena und Paul.", frage_en:"What are your siblings' names?", antwort_en:"My siblings are named Lena and Paul."}]},
+        {wort:"Onkel", variants:[{frage_du:"Wo arbeitet dein Onkel?", antwort_du:"Mein Onkel arbeitet im Krankenhaus.", frage_sie:"Wo arbeitet Ihr Onkel?", antwort_sie:"Mein Onkel arbeitet im Krankenhaus.", frage_en:"Where does your uncle work?", antwort_en:"My uncle works at the hospital."}, {frage_du:"Wie heißt dein Onkel?", antwort_du:"Mein Onkel heißt Peter.", frage_sie:"Wie heißt Ihr Onkel?", antwort_sie:"Mein Onkel heißt Peter.", frage_en:"What's your uncle's name?", antwort_en:"My uncle's name is Peter."}, {frage_du:"Wie alt ist dein Onkel?", antwort_du:"Mein Onkel ist fünfundvierzig Jahre alt.", frage_sie:"Wie alt ist Ihr Onkel?", antwort_sie:"Mein Onkel ist fünfundvierzig Jahre alt.", frage_en:"How old is your uncle?", antwort_en:"My uncle is forty-five years old."}]},
+        {wort:"Bruder", variants:[{frage_du:"Wie heißt dein Bruder?", antwort_du:"Mein Bruder heißt Paul.", frage_sie:"Wie heißt Ihr Bruder?", antwort_sie:"Mein Bruder heißt Paul.", frage_en:"What's your brother's name?", antwort_en:"My brother's name is Paul."}, {frage_du:"Wie alt ist dein Bruder?", antwort_du:"Mein Bruder ist fünfzehn Jahre alt.", frage_sie:"Wie alt ist Ihr Bruder?", antwort_sie:"Mein Bruder ist fünfzehn Jahre alt.", frage_en:"How old is your brother?", antwort_en:"My brother is fifteen years old."}, {frage_du:"Wo wohnt dein Bruder?", antwort_du:"Mein Bruder wohnt in Köln.", frage_sie:"Wo wohnt Ihr Bruder?", antwort_sie:"Mein Bruder wohnt in Köln.", frage_en:"Where does your brother live?", antwort_en:"My brother lives in Cologne."}]},
+        {wort:"Kinder", variants:[{frage_du:"Wie viele Kinder hat deine Schwester?", antwort_du:"Meine Schwester hat zwei Kinder.", frage_sie:"Wie viele Kinder hat Ihre Schwester?", antwort_sie:"Meine Schwester hat zwei Kinder.", frage_en:"How many children does your sister have?", antwort_en:"My sister has two children."}, {frage_du:"Wie heißen die Kinder?", antwort_du:"Die Kinder heißen Max und Mia.", frage_sie:"Wie heißen die Kinder?", antwort_sie:"Die Kinder heißen Max und Mia.", frage_en:"What are the children's names?", antwort_en:"The children are named Max and Mia."}, {frage_du:"Wie alt sind die Kinder?", antwort_du:"Die Kinder sind fünf und sieben Jahre alt.", frage_sie:"Wie alt sind die Kinder?", antwort_sie:"Die Kinder sind fünf und sieben Jahre alt.", frage_en:"How old are the children?", antwort_en:"The children are five and seven years old."}]},
+        {wort:"Mann", variants:[{frage_du:"Wie heißt dein Mann?", antwort_du:"Mein Mann heißt Michael.", frage_sie:"Wie heißt Ihr Mann?", antwort_sie:"Mein Mann heißt Michael.", frage_en:"What's your husband's name?", antwort_en:"My husband's name is Michael."}, {frage_du:"Wo arbeitet dein Mann?", antwort_du:"Mein Mann arbeitet in einer Bank.", frage_sie:"Wo arbeitet Ihr Mann?", antwort_sie:"Mein Mann arbeitet in einer Bank.", frage_en:"Where does your husband work?", antwort_en:"My husband works at a bank."}, {frage_du:"Wie alt ist dein Mann?", antwort_du:"Mein Mann ist vierzig Jahre alt.", frage_sie:"Wie alt ist Ihr Mann?", antwort_sie:"Mein Mann ist vierzig Jahre alt.", frage_en:"How old is your husband?", antwort_en:"My husband is forty years old."}]},
+        {wort:"Wochenende", variants:[{frage_du:"Was machst du am Wochenende?", antwort_du:"Am Wochenende besuche ich meine Familie.", frage_sie:"Was machen Sie am Wochenende?", antwort_sie:"Am Wochenende besuche ich meine Familie.", frage_en:"What do you do on the weekend?", antwort_en:"On the weekend I visit my family."}, {frage_du:"Mit wem feierst du am Wochenende?", antwort_du:"Ich feiere am Wochenende mit meiner Familie.", frage_sie:"Mit wem feiern Sie am Wochenende?", antwort_sie:"Ich feiere am Wochenende mit meiner Familie.", frage_en:"Who do you celebrate with on the weekend?", antwort_en:"I celebrate with my family on the weekend."}, {frage_du:"Wo bist du am Wochenende?", antwort_du:"Am Wochenende bin ich bei meinen Eltern.", frage_sie:"Wo sind Sie am Wochenende?", antwort_sie:"Am Wochenende bin ich bei meinen Eltern.", frage_en:"Where are you on the weekend?", antwort_en:"On the weekend I'm at my parents'."}]},
+        {wort:"Tante", variants:[{frage_du:"Wo wohnt deine Tante?", antwort_du:"Meine Tante wohnt in Berlin.", frage_sie:"Wo wohnt Ihre Tante?", antwort_sie:"Meine Tante wohnt in Berlin.", frage_en:"Where does your aunt live?", antwort_en:"My aunt lives in Berlin."}, {frage_du:"Wie heißt deine Tante?", antwort_du:"Meine Tante heißt Maria.", frage_sie:"Wie heißt Ihre Tante?", antwort_sie:"Meine Tante heißt Maria.", frage_en:"What's your aunt's name?", antwort_en:"My aunt's name is Maria."}, {frage_du:"Wie oft besuchst du deine Tante?", antwort_du:"Ich besuche meine Tante einmal im Monat.", frage_sie:"Wie oft besuchen Sie Ihre Tante?", antwort_sie:"Ich besuche meine Tante einmal im Monat.", frage_en:"How often do you visit your aunt?", antwort_en:"I visit my aunt once a month."}]},
+        {wort:"Opa", variants:[{frage_du:"Wie alt ist dein Opa?", antwort_du:"Mein Opa ist achtzig Jahre alt.", frage_sie:"Wie alt ist Ihr Opa?", antwort_sie:"Mein Opa ist achtzig Jahre alt.", frage_en:"How old is your grandpa?", antwort_en:"My grandpa is eighty years old."}, {frage_du:"Wo wohnt dein Opa?", antwort_du:"Mein Opa wohnt auf dem Land.", frage_sie:"Wo wohnt Ihr Opa?", antwort_sie:"Mein Opa wohnt auf dem Land.", frage_en:"Where does your grandpa live?", antwort_en:"My grandpa lives in the countryside."}, {frage_du:"Wie heißt dein Opa?", antwort_du:"Mein Opa heißt Hans.", frage_sie:"Wie heißt Ihr Opa?", antwort_sie:"Mein Opa heißt Hans.", frage_en:"What's your grandpa's name?", antwort_en:"My grandpa's name is Hans."}]},
+        {wort:"Mutter", variants:[{frage_du:"Wie heißt deine Mutter?", antwort_du:"Meine Mutter heißt Anna.", frage_sie:"Wie heißt Ihre Mutter?", antwort_sie:"Meine Mutter heißt Anna.", frage_en:"What's your mother's name?", antwort_en:"My mother's name is Anna."}, {frage_du:"Wo arbeitet deine Mutter?", antwort_du:"Meine Mutter arbeitet in einer Schule.", frage_sie:"Wo arbeitet Ihre Mutter?", antwort_sie:"Meine Mutter arbeitet in einer Schule.", frage_en:"Where does your mother work?", antwort_en:"My mother works at a school."}, {frage_du:"Wie alt ist deine Mutter?", antwort_du:"Meine Mutter ist fünfundvierzig Jahre alt.", frage_sie:"Wie alt ist Ihre Mutter?", antwort_sie:"Meine Mutter ist fünfundvierzig Jahre alt.", frage_en:"How old is your mother?", antwort_en:"My mother is forty-five years old."}]}
+      ]
+    },
+    {
+      thema: "Sprachkurs",
+      corrections: [
+        '"Lernen" → "lernen" (Verb, klein geschrieben)',
+        '"Lesen" → "lesen" (Verb, klein geschrieben)'
+      ],
+      items: [
+        {wort:"lernen", variants:[{frage_du:"Was lernst du im Kurs?", antwort_du:"Ich lerne Deutsch im Kurs.", frage_sie:"Was lernen Sie im Kurs?", antwort_sie:"Ich lerne Deutsch im Kurs.", frage_en:"What are you learning in the course?", antwort_en:"I am learning German in the course."}, {frage_du:"Wo lernst du Deutsch?", antwort_du:"Ich lerne Deutsch in der Schule.", frage_sie:"Wo lernen Sie Deutsch?", antwort_sie:"Ich lerne Deutsch in der Schule.", frage_en:"Where do you learn German?", antwort_en:"I learn German at school."}, {frage_du:"Wie lange lernst du schon Deutsch?", antwort_du:"Ich lerne schon zwei Jahre Deutsch.", frage_sie:"Wie lange lernen Sie schon Deutsch?", antwort_sie:"Ich lerne schon zwei Jahre Deutsch.", frage_en:"How long have you been learning German?", antwort_en:"I've been learning German for two years already."}]},
+        {wort:"anmelden", variants:[{frage_du:"Wo meldest du dich an?", antwort_du:"Ich melde mich im Büro an.", frage_sie:"Wo melden Sie sich an?", antwort_sie:"Ich melde mich im Büro an.", frage_en:"Where do you register?", antwort_en:"I register at the office."}, {frage_du:"Wann meldest du dich für den Kurs an?", antwort_du:"Ich melde mich im August an.", frage_sie:"Wann melden Sie sich für den Kurs an?", antwort_sie:"Ich melde mich im August an.", frage_en:"When do you register for the course?", antwort_en:"I register in August."}, {frage_du:"Warum meldest du dich für den Kurs an?", antwort_du:"Ich melde mich an, weil ich Deutsch lernen will.", frage_sie:"Warum melden Sie sich für den Kurs an?", antwort_sie:"Ich melde mich an, weil ich Deutsch lernen will.", frage_en:"Why are you registering for the course?", antwort_en:"I'm registering because I want to learn German."}]},
+        {wort:"Lehrerin", variants:[{frage_du:"Wie heißt deine Lehrerin?", antwort_du:"Meine Lehrerin heißt Frau Schmidt.", frage_sie:"Wie heißt Ihre Lehrerin?", antwort_sie:"Meine Lehrerin heißt Frau Schmidt.", frage_en:"What's your teacher's name?", antwort_en:"My teacher's name is Mrs. Schmidt."}, {frage_du:"Woher kommt deine Lehrerin?", antwort_du:"Meine Lehrerin kommt aus Deutschland.", frage_sie:"Woher kommt Ihre Lehrerin?", antwort_sie:"Meine Lehrerin kommt aus Deutschland.", frage_en:"Where does your teacher come from?", antwort_en:"My teacher comes from Germany."}, {frage_du:"Wie unterrichtet deine Lehrerin?", antwort_du:"Meine Lehrerin unterrichtet sehr gut.", frage_sie:"Wie unterrichtet Ihre Lehrerin?", antwort_sie:"Meine Lehrerin unterrichtet sehr gut.", frage_en:"How does your teacher teach?", antwort_en:"My teacher teaches very well."}]},
+        {wort:"lesen", variants:[{frage_du:"Was liest du gern?", antwort_du:"Ich lese gern Bücher.", frage_sie:"Was lesen Sie gern?", antwort_sie:"Ich lese gern Bücher.", frage_en:"What do you like to read?", antwort_en:"I like to read books."}, {frage_du:"Wann liest du im Kurs?", antwort_du:"Ich lese am Anfang des Kurses.", frage_sie:"Wann lesen Sie im Kurs?", antwort_sie:"Ich lese am Anfang des Kurses.", frage_en:"When do you read in the course?", antwort_en:"I read at the beginning of the course."}, {frage_du:"Wie oft liest du Deutsch?", antwort_du:"Ich lese jeden Tag Deutsch.", frage_sie:"Wie oft lesen Sie Deutsch?", antwort_sie:"Ich lese jeden Tag Deutsch.", frage_en:"How often do you read German?", antwort_en:"I read German every day."}]},
+        {wort:"Beruf", variants:[{frage_du:"Was ist dein Beruf?", antwort_du:"Mein Beruf ist Lehrer.", frage_sie:"Was ist Ihr Beruf?", antwort_sie:"Mein Beruf ist Lehrer.", frage_en:"What is your profession?", antwort_en:"My profession is teacher."}, {frage_du:"Brauchst du Deutsch für deinen Beruf?", antwort_du:"Ja, ich brauche Deutsch für meinen Beruf.", frage_sie:"Brauchen Sie Deutsch für Ihren Beruf?", antwort_sie:"Ja, ich brauche Deutsch für meinen Beruf.", frage_en:"Do you need German for your profession?", antwort_en:"Yes, I need German for my profession."}, {frage_du:"Welchen Beruf möchtest du lernen?", antwort_du:"Ich möchte den Beruf Krankenpfleger lernen.", frage_sie:"Welchen Beruf möchten Sie lernen?", antwort_sie:"Ich möchte den Beruf Krankenpfleger lernen.", frage_en:"Which profession do you want to learn?", antwort_en:"I want to learn the profession of nurse."}]},
+        {wort:"Pause", variants:[{frage_du:"Wann ist die Pause?", antwort_du:"Die Pause ist um zehn Uhr.", frage_sie:"Wann ist die Pause?", antwort_sie:"Die Pause ist um zehn Uhr.", frage_en:"When is the break?", antwort_en:"The break is at ten o'clock."}, {frage_du:"Wie lange ist die Pause?", antwort_du:"Die Pause ist fünfzehn Minuten lang.", frage_sie:"Wie lange ist die Pause?", antwort_sie:"Die Pause ist fünfzehn Minuten lang.", frage_en:"How long is the break?", antwort_en:"The break is fifteen minutes long."}, {frage_du:"Was machst du in der Pause?", antwort_du:"Ich trinke Kaffee in der Pause.", frage_sie:"Was machen Sie in der Pause?", antwort_sie:"Ich trinke Kaffee in der Pause.", frage_en:"What do you do during the break?", antwort_en:"I drink coffee during the break."}]},
+        {wort:"Uhrzeit", variants:[{frage_du:"Wie ist die Uhrzeit für den Kurs?", antwort_du:"Die Uhrzeit für den Kurs ist neun Uhr.", frage_sie:"Wie ist die Uhrzeit für den Kurs?", antwort_sie:"Die Uhrzeit für den Kurs ist neun Uhr.", frage_en:"What is the time for the course?", antwort_en:"The time for the course is nine o'clock."}, {frage_du:"Um welche Uhrzeit beginnt der Unterricht?", antwort_du:"Die Uhrzeit ist neun Uhr.", frage_sie:"Um welche Uhrzeit beginnt der Unterricht?", antwort_sie:"Die Uhrzeit ist neun Uhr.", frage_en:"At what time does class start?", antwort_en:"The time is nine o'clock."}, {frage_du:"Welche Uhrzeit hat der Kurs am Montag?", antwort_du:"Die Uhrzeit ist zehn Uhr am Montag.", frage_sie:"Welche Uhrzeit hat der Kurs am Montag?", antwort_sie:"Die Uhrzeit ist zehn Uhr am Montag.", frage_en:"What time is the course on Monday?", antwort_en:"The time is ten o'clock on Monday."}]},
+        {wort:"Lehrer", variants:[{frage_du:"Wie heißt dein Lehrer?", antwort_du:"Mein Lehrer heißt Herr Müller.", frage_sie:"Wie heißt Ihr Lehrer?", antwort_sie:"Mein Lehrer heißt Herr Müller.", frage_en:"What's your teacher's name?", antwort_en:"My teacher's name is Mr. Müller."}, {frage_du:"Wie unterrichtet dein Lehrer?", antwort_du:"Mein Lehrer unterrichtet klar und freundlich.", frage_sie:"Wie unterrichtet Ihr Lehrer?", antwort_sie:"Mein Lehrer unterrichtet klar und freundlich.", frage_en:"How does your teacher teach?", antwort_en:"My teacher teaches clearly and kindly."}, {frage_du:"Woher kommt dein Lehrer?", antwort_du:"Mein Lehrer kommt aus Österreich.", frage_sie:"Woher kommt Ihr Lehrer?", antwort_sie:"Mein Lehrer kommt aus Österreich.", frage_en:"Where does your teacher come from?", antwort_en:"My teacher comes from Austria."}]},
+        {wort:"Anmeldung", variants:[{frage_du:"Wo ist die Anmeldung?", antwort_du:"Die Anmeldung ist im ersten Stock.", frage_sie:"Wo ist die Anmeldung?", antwort_sie:"Die Anmeldung ist im ersten Stock.", frage_en:"Where is the registration desk?", antwort_en:"The registration desk is on the first floor."}, {frage_du:"Wann ist die Anmeldung?", antwort_du:"Die Anmeldung ist am Montag.", frage_sie:"Wann ist die Anmeldung?", antwort_sie:"Die Anmeldung ist am Montag.", frage_en:"When is registration?", antwort_en:"Registration is on Monday."}, {frage_du:"Wie funktioniert die Anmeldung?", antwort_du:"Die Anmeldung funktioniert online.", frage_sie:"Wie funktioniert die Anmeldung?", antwort_sie:"Die Anmeldung funktioniert online.", frage_en:"How does registration work?", antwort_en:"Registration works online."}]},
+        {wort:"Unterricht", variants:[{frage_du:"Wann beginnt der Unterricht?", antwort_du:"Der Unterricht beginnt um acht Uhr.", frage_sie:"Wann beginnt der Unterricht?", antwort_sie:"Der Unterricht beginnt um acht Uhr.", frage_en:"When does class start?", antwort_en:"Class starts at eight o'clock."}, {frage_du:"Wie lange dauert der Unterricht?", antwort_du:"Der Unterricht dauert zwei Stunden.", frage_sie:"Wie lange dauert der Unterricht?", antwort_sie:"Der Unterricht dauert zwei Stunden.", frage_en:"How long does class last?", antwort_en:"Class lasts two hours."}, {frage_du:"Wie findest du den Unterricht?", antwort_du:"Ich finde den Unterricht interessant.", frage_sie:"Wie finden Sie den Unterricht?", antwort_sie:"Ich finde den Unterricht interessant.", frage_en:"What do you think of the class?", antwort_en:"I find the class interesting."}]},
+        {wort:"Schule", variants:[{frage_du:"Wann beginnt die Schule?", antwort_du:"Die Schule beginnt um halb neun.", frage_sie:"Wann beginnt die Schule?", antwort_sie:"Die Schule beginnt um halb neun.", frage_en:"When does school start?", antwort_en:"School starts at half past eight."}, {frage_du:"Wo ist die Schule?", antwort_du:"Die Schule ist in der Stadtmitte.", frage_sie:"Wo ist die Schule?", antwort_sie:"Die Schule ist in der Stadtmitte.", frage_en:"Where is the school?", antwort_en:"The school is in the city center."}, {frage_du:"Wie weit ist die Schule von zu Hause?", antwort_du:"Die Schule ist zehn Minuten von zu Hause.", frage_sie:"Wie weit ist die Schule von zu Hause?", antwort_sie:"Die Schule ist zehn Minuten von zu Hause.", frage_en:"How far is the school from home?", antwort_en:"The school is ten minutes from home."}]}
+      ]
+    },
+    {
+      thema: "Wohnen",
+      corrections: [],
+      items: [
+        {wort:"spielen", variants:[{frage_du:"Spielst du gern im Garten?", antwort_du:"Ja, ich spiele gern im Garten.", frage_sie:"Spielen Sie gern im Garten?", antwort_sie:"Ja, ich spiele gern im Garten.", frage_en:"Do you like to play in the garden?", antwort_en:"Yes, I like to play in the garden."}, {frage_du:"Wo spielen die Kinder zu Hause?", antwort_du:"Die Kinder spielen im Zimmer.", frage_sie:"Wo spielen die Kinder zu Hause?", antwort_sie:"Die Kinder spielen im Zimmer.", frage_en:"Where do the children play at home?", antwort_en:"The children play in the room."}, {frage_du:"Wann spielst du im Garten?", antwort_du:"Ich spiele am Nachmittag im Garten.", frage_sie:"Wann spielen Sie im Garten?", antwort_sie:"Ich spiele am Nachmittag im Garten.", frage_en:"When do you play in the garden?", antwort_en:"I play in the garden in the afternoon."}]},
+        {wort:"Miete", variants:[{frage_du:"Wie hoch ist die Miete?", antwort_du:"Die Miete ist sechshundert Euro.", frage_sie:"Wie hoch ist die Miete?", antwort_sie:"Die Miete ist sechshundert Euro.", frage_en:"How much is the rent?", antwort_en:"The rent is six hundred euros."}, {frage_du:"Wann bezahlst du die Miete?", antwort_du:"Ich bezahle die Miete am Ersten.", frage_sie:"Wann bezahlen Sie die Miete?", antwort_sie:"Ich bezahle die Miete am Ersten.", frage_en:"When do you pay the rent?", antwort_en:"I pay the rent on the first."}, {frage_du:"Wie findest du die Miete?", antwort_du:"Ich finde die Miete günstig.", frage_sie:"Wie finden Sie die Miete?", antwort_sie:"Ich finde die Miete günstig.", frage_en:"What do you think of the rent?", antwort_en:"I think the rent is affordable."}]},
+        {wort:"Möbel", variants:[{frage_du:"Wie findest du die Möbel?", antwort_du:"Ich finde die Möbel schön.", frage_sie:"Wie finden Sie die Möbel?", antwort_sie:"Ich finde die Möbel schön.", frage_en:"What do you think of the furniture?", antwort_en:"I think the furniture is nice."}, {frage_du:"Wo kaufst du deine Möbel?", antwort_du:"Ich kaufe meine Möbel im Möbelhaus.", frage_sie:"Wo kaufen Sie Ihre Möbel?", antwort_sie:"Ich kaufe meine Möbel im Möbelhaus.", frage_en:"Where do you buy your furniture?", antwort_en:"I buy my furniture at the furniture store."}, {frage_du:"Welche Möbel hast du im Zimmer?", antwort_du:"Ich habe ein Bett und einen Schrank als Möbel.", frage_sie:"Welche Möbel haben Sie im Zimmer?", antwort_sie:"Ich habe ein Bett und einen Schrank als Möbel.", frage_en:"What furniture do you have in the room?", antwort_en:"I have a bed and a wardrobe as furniture."}]},
+        {wort:"Nachbarn", variants:[{frage_du:"Sind deine Nachbarn nett?", antwort_du:"Ja, meine Nachbarn sind nett.", frage_sie:"Sind Ihre Nachbarn nett?", antwort_sie:"Ja, meine Nachbarn sind nett.", frage_en:"Are your neighbors nice?", antwort_en:"Yes, my neighbors are nice."}, {frage_du:"Wie heißen deine Nachbarn?", antwort_du:"Meine Nachbarn heißen Familie Berger.", frage_sie:"Wie heißen Ihre Nachbarn?", antwort_sie:"Meine Nachbarn heißen Familie Berger.", frage_en:"What are your neighbors' names?", antwort_en:"My neighbors are named the Berger family."}, {frage_du:"Wie oft triffst du deine Nachbarn?", antwort_du:"Ich treffe meine Nachbarn jede Woche.", frage_sie:"Wie oft treffen Sie Ihre Nachbarn?", antwort_sie:"Ich treffe meine Nachbarn jede Woche.", frage_en:"How often do you meet your neighbors?", antwort_en:"I meet my neighbors every week."}]},
+        {wort:"Haus", variants:[{frage_du:"Wie groß ist dein Haus?", antwort_du:"Mein Haus ist sehr groß.", frage_sie:"Wie groß ist Ihr Haus?", antwort_sie:"Mein Haus ist sehr groß.", frage_en:"How big is your house?", antwort_en:"My house is very big."}, {frage_du:"Wo steht dein Haus?", antwort_du:"Mein Haus steht in der Stadt.", frage_sie:"Wo steht Ihr Haus?", antwort_sie:"Mein Haus steht in der Stadt.", frage_en:"Where is your house located?", antwort_en:"My house is located in the city."}, {frage_du:"Wie viele Zimmer hat dein Haus?", antwort_du:"Mein Haus hat fünf Zimmer.", frage_sie:"Wie viele Zimmer hat Ihr Haus?", antwort_sie:"Mein Haus hat fünf Zimmer.", frage_en:"How many rooms does your house have?", antwort_en:"My house has five rooms."}]},
+        {wort:"Garten", variants:[{frage_du:"Hast du einen Garten?", antwort_du:"Ja, ich habe einen Garten.", frage_sie:"Haben Sie einen Garten?", antwort_sie:"Ja, ich habe einen Garten.", frage_en:"Do you have a garden?", antwort_en:"Yes, I have a garden."}, {frage_du:"Was machst du im Garten?", antwort_du:"Ich pflanze Blumen im Garten.", frage_sie:"Was machen Sie im Garten?", antwort_sie:"Ich pflanze Blumen im Garten.", frage_en:"What do you do in the garden?", antwort_en:"I plant flowers in the garden."}, {frage_du:"Wie groß ist dein Garten?", antwort_du:"Mein Garten ist klein.", frage_sie:"Wie groß ist Ihr Garten?", antwort_sie:"Mein Garten ist klein.", frage_en:"How big is your garden?", antwort_en:"My garden is small."}]},
+        {wort:"Computer", variants:[{frage_du:"Wo steht dein Computer?", antwort_du:"Mein Computer steht im Zimmer.", frage_sie:"Wo steht Ihr Computer?", antwort_sie:"Mein Computer steht im Zimmer.", frage_en:"Where is your computer?", antwort_en:"My computer is in the room."}, {frage_du:"Wie oft nutzt du den Computer?", antwort_du:"Ich nutze den Computer jeden Tag.", frage_sie:"Wie oft nutzen Sie den Computer?", antwort_sie:"Ich nutze den Computer jeden Tag.", frage_en:"How often do you use the computer?", antwort_en:"I use the computer every day."}, {frage_du:"Wofür brauchst du den Computer zu Hause?", antwort_du:"Ich brauche den Computer für die Arbeit.", frage_sie:"Wofür brauchen Sie den Computer zu Hause?", antwort_sie:"Ich brauche den Computer für die Arbeit.", frage_en:"What do you need the computer for at home?", antwort_en:"I need the computer for work."}]},
+        {wort:"Wohnung", variants:[{frage_du:"Wie groß ist deine Wohnung?", antwort_du:"Meine Wohnung ist sechzig Quadratmeter groß.", frage_sie:"Wie groß ist Ihre Wohnung?", antwort_sie:"Meine Wohnung ist sechzig Quadratmeter groß.", frage_en:"How big is your apartment?", antwort_en:"My apartment is sixty square meters."}, {frage_du:"Wo ist deine Wohnung?", antwort_du:"Meine Wohnung ist in der Stadtmitte.", frage_sie:"Wo ist Ihre Wohnung?", antwort_sie:"Meine Wohnung ist in der Stadtmitte.", frage_en:"Where is your apartment?", antwort_en:"My apartment is in the city center."}, {frage_du:"Wie viele Zimmer hat deine Wohnung?", antwort_du:"Meine Wohnung hat drei Zimmer.", frage_sie:"Wie viele Zimmer hat Ihre Wohnung?", antwort_sie:"Meine Wohnung hat drei Zimmer.", frage_en:"How many rooms does your apartment have?", antwort_en:"My apartment has three rooms."}]},
+        {wort:"Hausnummer", variants:[{frage_du:"Wie ist deine Hausnummer?", antwort_du:"Meine Hausnummer ist zwölf.", frage_sie:"Wie ist Ihre Hausnummer?", antwort_sie:"Meine Hausnummer ist zwölf.", frage_en:"What is your house number?", antwort_en:"My house number is twelve."}, {frage_du:"Wo finde ich die Hausnummer?", antwort_du:"Die Hausnummer ist an der Tür.", frage_sie:"Wo finde ich die Hausnummer?", antwort_sie:"Die Hausnummer ist an der Tür.", frage_en:"Where do I find the house number?", antwort_en:"The house number is on the door."}, {frage_du:"Welche Hausnummer hat dein Haus?", antwort_du:"Mein Haus hat die Hausnummer fünf.", frage_sie:"Welche Hausnummer hat Ihr Haus?", antwort_sie:"Mein Haus hat die Hausnummer fünf.", frage_en:"What house number does your house have?", antwort_en:"My house has house number five."}]},
+        {wort:"Familie", variants:[{frage_du:"Wie groß ist deine Familie?", antwort_du:"Meine Familie ist groß.", frage_sie:"Wie groß ist Ihre Familie?", antwort_sie:"Meine Familie ist groß.", frage_en:"How big is your family?", antwort_en:"My family is big."}, {frage_du:"Wo wohnt deine Familie?", antwort_du:"Meine Familie wohnt in einem Haus.", frage_sie:"Wo wohnt Ihre Familie?", antwort_sie:"Meine Familie wohnt in einem Haus.", frage_en:"Where does your family live?", antwort_en:"My family lives in a house."}, {frage_du:"Mit wem wohnst du in deiner Familie?", antwort_du:"Ich wohne mit meiner Familie zusammen.", frage_sie:"Mit wem wohnen Sie in Ihrer Familie?", antwort_sie:"Ich wohne mit meiner Familie zusammen.", frage_en:"Who do you live with in your family?", antwort_en:"I live together with my family."}]},
+        {wort:"Balkon", variants:[{frage_du:"Hast du einen Balkon?", antwort_du:"Ja, ich habe einen Balkon.", frage_sie:"Haben Sie einen Balkon?", antwort_sie:"Ja, ich habe einen Balkon.", frage_en:"Do you have a balcony?", antwort_en:"Yes, I have a balcony."}, {frage_du:"Was machst du auf dem Balkon?", antwort_du:"Ich sitze gern auf dem Balkon.", frage_sie:"Was machen Sie auf dem Balkon?", antwort_sie:"Ich sitze gern auf dem Balkon.", frage_en:"What do you do on the balcony?", antwort_en:"I like to sit on the balcony."}, {frage_du:"Wie groß ist dein Balkon?", antwort_du:"Mein Balkon ist klein.", frage_sie:"Wie groß ist Ihr Balkon?", antwort_sie:"Mein Balkon ist klein.", frage_en:"How big is your balcony?", antwort_en:"My balcony is small."}]},
+        {wort:"Stadt", variants:[{frage_du:"In welcher Stadt wohnst du?", antwort_du:"Ich wohne in der Stadt Berlin.", frage_sie:"In welcher Stadt wohnen Sie?", antwort_sie:"Ich wohne in der Stadt Berlin.", frage_en:"In which city do you live?", antwort_en:"I live in the city of Berlin."}, {frage_du:"Wie gefällt dir die Stadt?", antwort_du:"Die Stadt gefällt mir gut.", frage_sie:"Wie gefällt Ihnen die Stadt?", antwort_sie:"Die Stadt gefällt mir gut.", frage_en:"How do you like the city?", antwort_en:"I like the city."}, {frage_du:"Wie groß ist deine Stadt?", antwort_du:"Meine Stadt ist sehr groß.", frage_sie:"Wie groß ist Ihre Stadt?", antwort_sie:"Meine Stadt ist sehr groß.", frage_en:"How big is your city?", antwort_en:"My city is very big."}]},
+        {wort:"Freundinnen/Freunde einladen", variants:[{frage_du:"Lädst du gern Freundinnen/Freunde ein?", antwort_du:"Ja, ich lade gern Freundinnen/Freunde ein.", frage_sie:"Laden Sie gern Freundinnen/Freunde ein?", antwort_sie:"Ja, ich lade gern Freundinnen/Freunde ein.", frage_en:"Do you like to invite friends?", antwort_en:"Yes, I like to invite friends."}, {frage_du:"Wann lädst du Freundinnen/Freunde ein?", antwort_du:"Ich lade Freundinnen/Freunde am Wochenende ein.", frage_sie:"Wann laden Sie Freundinnen/Freunde ein?", antwort_sie:"Ich lade Freundinnen/Freunde am Wochenende ein.", frage_en:"When do you invite friends?", antwort_en:"I invite friends on the weekend."}, {frage_du:"Wie viele Freundinnen/Freunde lädst du ein?", antwort_du:"Ich lade fünf Freundinnen/Freunde ein.", frage_sie:"Wie viele Freundinnen/Freunde laden Sie ein?", antwort_sie:"Ich lade fünf Freundinnen/Freunde ein.", frage_en:"How many friends do you invite?", antwort_en:"I invite five friends."}]},
+        {wort:"Küche", variants:[{frage_du:"Wie groß ist deine Küche?", antwort_du:"Meine Küche ist klein.", frage_sie:"Wie groß ist Ihre Küche?", antwort_sie:"Meine Küche ist klein.", frage_en:"How big is your kitchen?", antwort_en:"My kitchen is small."}, {frage_du:"Was machst du in der Küche?", antwort_du:"Ich koche gern in der Küche.", frage_sie:"Was machen Sie in der Küche?", antwort_sie:"Ich koche gern in der Küche.", frage_en:"What do you do in the kitchen?", antwort_en:"I like to cook in the kitchen."}, {frage_du:"Wie ist deine Küche eingerichtet?", antwort_du:"Meine Küche ist modern eingerichtet.", frage_sie:"Wie ist Ihre Küche eingerichtet?", antwort_sie:"Meine Küche ist modern eingerichtet.", frage_en:"How is your kitchen furnished?", antwort_en:"My kitchen is furnished modernly."}]},
+        {wort:"Zimmer", variants:[{frage_du:"Wie viele Zimmer hat deine Wohnung?", antwort_du:"Meine Wohnung hat drei Zimmer.", frage_sie:"Wie viele Zimmer hat Ihre Wohnung?", antwort_sie:"Meine Wohnung hat drei Zimmer.", frage_en:"How many rooms does your apartment have?", antwort_en:"My apartment has three rooms."}, {frage_du:"Wie groß ist dein Zimmer?", antwort_du:"Mein Zimmer ist zwölf Quadratmeter groß.", frage_sie:"Wie groß ist Ihr Zimmer?", antwort_sie:"Mein Zimmer ist zwölf Quadratmeter groß.", frage_en:"How big is your room?", antwort_en:"My room is twelve square meters."}, {frage_du:"Was steht in deinem Zimmer?", antwort_du:"In meinem Zimmer steht ein Bett.", frage_sie:"Was steht in Ihrem Zimmer?", antwort_sie:"In meinem Zimmer steht ein Bett.", frage_en:"What's in your room?", antwort_en:"There's a bed in my room."}]},
+        {wort:"Haustier", variants:[{frage_du:"Hast du ein Haustier?", antwort_du:"Ja, ich habe ein Haustier.", frage_sie:"Haben Sie ein Haustier?", antwort_sie:"Ja, ich habe ein Haustier.", frage_en:"Do you have a pet?", antwort_en:"Yes, I have a pet."}, {frage_du:"Was für ein Haustier hast du?", antwort_du:"Ich habe eine Katze als Haustier.", frage_sie:"Was für ein Haustier haben Sie?", antwort_sie:"Ich habe eine Katze als Haustier.", frage_en:"What kind of pet do you have?", antwort_en:"I have a cat as a pet."}, {frage_du:"Wo schläft dein Haustier?", antwort_du:"Mein Haustier schläft in meinem Zimmer.", frage_sie:"Wo schläft Ihr Haustier?", antwort_sie:"Mein Haustier schläft in meinem Zimmer.", frage_en:"Where does your pet sleep?", antwort_en:"My pet sleeps in my room."}]}
+      ]
+    },
+    {
+      thema: "Einkaufen",
+      corrections: [
+        '"Passen" → "passen" (Verb, klein geschrieben)',
+        '"günslig" → "günstig" (Rechtschreibung)'
+      ],
+      items: [
+        {wort:"einkaufen", variants:[{frage_du:"Gehst du gern einkaufen?", antwort_du:"Ja, ich gehe gern einkaufen.", frage_sie:"Gehen Sie gern einkaufen?", antwort_sie:"Ja, ich gehe gern einkaufen.", frage_en:"Do you like to go shopping?", antwort_en:"Yes, I like to go shopping."}, {frage_du:"Wann gehst du einkaufen?", antwort_du:"Ich gehe samstags einkaufen.", frage_sie:"Wann gehen Sie einkaufen?", antwort_sie:"Ich gehe samstags einkaufen.", frage_en:"When do you go shopping?", antwort_en:"I go shopping on Saturdays."}, {frage_du:"Mit wem gehst du einkaufen?", antwort_du:"Ich gehe mit meiner Freundin einkaufen.", frage_sie:"Mit wem gehen Sie einkaufen?", antwort_sie:"Ich gehe mit meiner Freundin einkaufen.", frage_en:"Who do you go shopping with?", antwort_en:"I go shopping with my friend."}]},
+        {wort:"schön", variants:[{frage_du:"Findest du das Kleid schön?", antwort_du:"Ja, ich finde das Kleid schön.", frage_sie:"Finden Sie das Kleid schön?", antwort_sie:"Ja, ich finde das Kleid schön.", frage_en:"Do you think the dress is pretty?", antwort_en:"Yes, I think the dress is pretty."}, {frage_du:"Was findest du im Geschäft schön?", antwort_du:"Ich finde die Bluse schön.", frage_sie:"Was finden Sie im Geschäft schön?", antwort_sie:"Ich finde die Bluse schön.", frage_en:"What do you find pretty in the store?", antwort_en:"I find the blouse pretty."}, {frage_du:"Wie schön ist die neue Jacke?", antwort_du:"Die neue Jacke ist sehr schön.", frage_sie:"Wie schön ist die neue Jacke?", antwort_sie:"Die neue Jacke ist sehr schön.", frage_en:"How nice is the new jacket?", antwort_en:"The new jacket is very nice."}]},
+        {wort:"Geld", variants:[{frage_du:"Wie viel Geld hast du?", antwort_du:"Ich habe zwanzig Euro Geld.", frage_sie:"Wie viel Geld haben Sie?", antwort_sie:"Ich habe zwanzig Euro Geld.", frage_en:"How much money do you have?", antwort_en:"I have twenty euros."}, {frage_du:"Wofür gibst du dein Geld aus?", antwort_du:"Ich gebe mein Geld für Kleidung aus.", frage_sie:"Wofür geben Sie Ihr Geld aus?", antwort_sie:"Ich gebe mein Geld für Kleidung aus.", frage_en:"What do you spend your money on?", antwort_en:"I spend my money on clothing."}, {frage_du:"Wo bezahlst du mit Geld?", antwort_du:"Ich bezahle an der Kasse mit Geld.", frage_sie:"Wo bezahlen Sie mit Geld?", antwort_sie:"Ich bezahle an der Kasse mit Geld.", frage_en:"Where do you pay with money?", antwort_en:"I pay with money at the checkout."}]},
+        {wort:"Kaufhaus", variants:[{frage_du:"Was kaufst du im Kaufhaus?", antwort_du:"Ich kaufe Schuhe im Kaufhaus.", frage_sie:"Was kaufen Sie im Kaufhaus?", antwort_sie:"Ich kaufe Schuhe im Kaufhaus.", frage_en:"What do you buy at the department store?", antwort_en:"I buy shoes at the department store."}, {frage_du:"Wo ist das Kaufhaus?", antwort_du:"Das Kaufhaus ist in der Stadtmitte.", frage_sie:"Wo ist das Kaufhaus?", antwort_sie:"Das Kaufhaus ist in der Stadtmitte.", frage_en:"Where is the department store?", antwort_en:"The department store is in the city center."}, {frage_du:"Wann öffnet das Kaufhaus?", antwort_du:"Das Kaufhaus öffnet um neun Uhr.", frage_sie:"Wann öffnet das Kaufhaus?", antwort_sie:"Das Kaufhaus öffnet um neun Uhr.", frage_en:"When does the department store open?", antwort_en:"The department store opens at nine o'clock."}]},
+        {wort:"hässlich", variants:[{frage_du:"Findest du die Jacke hässlich?", antwort_du:"Nein, ich finde die Jacke nicht hässlich.", frage_sie:"Finden Sie die Jacke hässlich?", antwort_sie:"Nein, ich finde die Jacke nicht hässlich.", frage_en:"Do you think the jacket is ugly?", antwort_en:"No, I don't think the jacket is ugly."}, {frage_du:"Welches Kleidungsstück findest du hässlich?", antwort_du:"Ich finde die grüne Hose hässlich.", frage_sie:"Welches Kleidungsstück finden Sie hässlich?", antwort_sie:"Ich finde die grüne Hose hässlich.", frage_en:"Which piece of clothing do you think is ugly?", antwort_en:"I think the green pants are ugly."}, {frage_du:"Warum findest du die Schuhe hässlich?", antwort_du:"Ich finde die Schuhe hässlich, weil die Farbe nicht gefällt.", frage_sie:"Warum finden Sie die Schuhe hässlich?", antwort_sie:"Ich finde die Schuhe hässlich, weil die Farbe nicht gefällt.", frage_en:"Why do you think the shoes are ugly?", antwort_en:"I think the shoes are ugly because I don't like the color."}]},
+        {wort:"Schirm", variants:[{frage_du:"Brauchst du einen Schirm?", antwort_du:"Ja, ich brauche einen Schirm.", frage_sie:"Brauchen Sie einen Schirm?", antwort_sie:"Ja, ich brauche einen Schirm.", frage_en:"Do you need an umbrella?", antwort_en:"Yes, I need an umbrella."}, {frage_du:"Wo kaufst du einen Schirm?", antwort_du:"Ich kaufe einen Schirm im Kaufhaus.", frage_sie:"Wo kaufen Sie einen Schirm?", antwort_sie:"Ich kaufe einen Schirm im Kaufhaus.", frage_en:"Where do you buy an umbrella?", antwort_en:"I buy an umbrella at the department store."}, {frage_du:"Wie viel kostet der Schirm?", antwort_du:"Der Schirm kostet zehn Euro.", frage_sie:"Wie viel kostet der Schirm?", antwort_sie:"Der Schirm kostet zehn Euro.", frage_en:"How much does the umbrella cost?", antwort_en:"The umbrella costs ten euros."}]},
+        {wort:"kurze", variants:[{frage_du:"Möchtest du eine kurze Hose?", antwort_du:"Ja, ich möchte eine kurze Hose.", frage_sie:"Möchten Sie eine kurze Hose?", antwort_sie:"Ja, ich möchte eine kurze Hose.", frage_en:"Do you want short pants?", antwort_en:"Yes, I want short pants."}, {frage_du:"Magst du kurze Röcke?", antwort_du:"Ja, ich mag kurze Röcke.", frage_sie:"Mögen Sie kurze Röcke?", antwort_sie:"Ja, ich mag kurze Röcke.", frage_en:"Do you like short skirts?", antwort_en:"Yes, I like short skirts."}, {frage_du:"Wo findest du kurze Hosen?", antwort_du:"Ich finde kurze Hosen im Kaufhaus.", frage_sie:"Wo finden Sie kurze Hosen?", antwort_sie:"Ich finde kurze Hosen im Kaufhaus.", frage_en:"Where do you find short pants?", antwort_en:"I find short pants at the department store."}]},
+        {wort:"mögen", variants:[{frage_du:"Magst du die Bluse?", antwort_du:"Ja, ich mag die Bluse.", frage_sie:"Mögen Sie die Bluse?", antwort_sie:"Ja, ich mag die Bluse.", frage_en:"Do you like the blouse?", antwort_en:"Yes, I like the blouse."}, {frage_du:"Welche Farbe magst du?", antwort_du:"Ich mag die Farbe Blau.", frage_sie:"Welche Farbe mögen Sie?", antwort_sie:"Ich mag die Farbe Blau.", frage_en:"Which color do you like?", antwort_en:"I like the color blue."}, {frage_du:"Was magst du beim Einkaufen?", antwort_du:"Ich mag neue Kleidung beim Einkaufen.", frage_sie:"Was mögen Sie beim Einkaufen?", antwort_sie:"Ich mag neue Kleidung beim Einkaufen.", frage_en:"What do you like when shopping?", antwort_en:"I like new clothing when shopping."}]},
+        {wort:"teuer", variants:[{frage_du:"Ist das Kleid teuer?", antwort_du:"Ja, das Kleid ist teuer.", frage_sie:"Ist das Kleid teuer?", antwort_sie:"Ja, das Kleid ist teuer.", frage_en:"Is the dress expensive?", antwort_en:"Yes, the dress is expensive."}, {frage_du:"Was ist im Kaufhaus teuer?", antwort_du:"Die Jacke ist im Kaufhaus teuer.", frage_sie:"Was ist im Kaufhaus teuer?", antwort_sie:"Die Jacke ist im Kaufhaus teuer.", frage_en:"What is expensive at the department store?", antwort_en:"The jacket is expensive at the department store."}, {frage_du:"Warum ist die Jeans so teuer?", antwort_du:"Die Jeans ist teuer, weil sie neu ist.", frage_sie:"Warum ist die Jeans so teuer?", antwort_sie:"Die Jeans ist teuer, weil sie neu ist.", frage_en:"Why are the jeans so expensive?", antwort_en:"The jeans are expensive because they're new."}]},
+        {wort:"bezahlen", variants:[{frage_du:"Wo bezahlst du die Jacke?", antwort_du:"Ich bezahle die Jacke an der Kasse.", frage_sie:"Wo bezahlen Sie die Jacke?", antwort_sie:"Ich bezahle die Jacke an der Kasse.", frage_en:"Where do you pay for the jacket?", antwort_en:"I pay for the jacket at the checkout."}, {frage_du:"Wie bezahlst du im Geschäft?", antwort_du:"Ich bezahle mit Karte im Geschäft.", frage_sie:"Wie bezahlen Sie im Geschäft?", antwort_sie:"Ich bezahle mit Karte im Geschäft.", frage_en:"How do you pay at the store?", antwort_en:"I pay with a card at the store."}, {frage_du:"Wie viel bezahlst du für die Schuhe?", antwort_du:"Ich bezahle fünfzig Euro für die Schuhe.", frage_sie:"Wie viel bezahlen Sie für die Schuhe?", antwort_sie:"Ich bezahle fünfzig Euro für die Schuhe.", frage_en:"How much do you pay for the shoes?", antwort_en:"I pay fifty euros for the shoes."}]},
+        {wort:"Fundbüro", variants:[{frage_du:"Wo ist das Fundbüro?", antwort_du:"Das Fundbüro ist im Erdgeschoss.", frage_sie:"Wo ist das Fundbüro?", antwort_sie:"Das Fundbüro ist im Erdgeschoss.", frage_en:"Where is the lost-and-found office?", antwort_en:"The lost-and-found office is on the ground floor."}, {frage_du:"Wann ist das Fundbüro geöffnet?", antwort_du:"Das Fundbüro ist von neun bis fünf geöffnet.", frage_sie:"Wann ist das Fundbüro geöffnet?", antwort_sie:"Das Fundbüro ist von neun bis fünf geöffnet.", frage_en:"When is the lost-and-found office open?", antwort_en:"The lost-and-found office is open from nine to five."}, {frage_du:"Was machst du im Fundbüro?", antwort_du:"Ich suche meine Tasche im Fundbüro.", frage_sie:"Was machen Sie im Fundbüro?", antwort_sie:"Ich suche meine Tasche im Fundbüro.", frage_en:"What are you doing at the lost-and-found office?", antwort_en:"I'm looking for my bag at the lost-and-found office."}]},
+        {wort:"Jeans", variants:[{frage_du:"Magst du die Jeans?", antwort_du:"Ja, ich mag die Jeans.", frage_sie:"Mögen Sie die Jeans?", antwort_sie:"Ja, ich mag die Jeans.", frage_en:"Do you like the jeans?", antwort_en:"Yes, I like the jeans."}, {frage_du:"Welche Größe hat die Jeans?", antwort_du:"Die Jeans hat Größe achtunddreißig.", frage_sie:"Welche Größe hat die Jeans?", antwort_sie:"Die Jeans hat Größe achtunddreißig.", frage_en:"What size are the jeans?", antwort_en:"The jeans are size thirty-eight."}, {frage_du:"Wie viel kostet die Jeans?", antwort_du:"Die Jeans kostet vierzig Euro.", frage_sie:"Wie viel kostet die Jeans?", antwort_sie:"Die Jeans kostet vierzig Euro.", frage_en:"How much do the jeans cost?", antwort_en:"The jeans cost forty euros."}]},
+        {wort:"Zeitung", variants:[{frage_du:"Wo kaufst du die Zeitung?", antwort_du:"Ich kaufe die Zeitung im Geschäft.", frage_sie:"Wo kaufen Sie die Zeitung?", antwort_sie:"Ich kaufe die Zeitung im Geschäft.", frage_en:"Where do you buy the newspaper?", antwort_en:"I buy the newspaper at the store."}, {frage_du:"Wann liest du die Zeitung?", antwort_du:"Ich lese die Zeitung am Morgen.", frage_sie:"Wann lesen Sie die Zeitung?", antwort_sie:"Ich lese die Zeitung am Morgen.", frage_en:"When do you read the newspaper?", antwort_en:"I read the newspaper in the morning."}, {frage_du:"Wie viel kostet die Zeitung?", antwort_du:"Die Zeitung kostet zwei Euro.", frage_sie:"Wie viel kostet die Zeitung?", antwort_sie:"Die Zeitung kostet zwei Euro.", frage_en:"How much does the newspaper cost?", antwort_en:"The newspaper costs two euros."}]},
+        {wort:"Schuhe", variants:[{frage_du:"Wie viel kosten die Schuhe?", antwort_du:"Die Schuhe kosten fünfzig Euro.", frage_sie:"Wie viel kosten die Schuhe?", antwort_sie:"Die Schuhe kosten fünfzig Euro.", frage_en:"How much do the shoes cost?", antwort_en:"The shoes cost fifty euros."}, {frage_du:"Welche Farbe haben die Schuhe?", antwort_du:"Die Schuhe sind schwarz.", frage_sie:"Welche Farbe haben die Schuhe?", antwort_sie:"Die Schuhe sind schwarz.", frage_en:"What color are the shoes?", antwort_en:"The shoes are black."}, {frage_du:"Wo kaufst du deine Schuhe?", antwort_du:"Ich kaufe meine Schuhe im Kaufhaus.", frage_sie:"Wo kaufen Sie Ihre Schuhe?", antwort_sie:"Ich kaufe meine Schuhe im Kaufhaus.", frage_en:"Where do you buy your shoes?", antwort_en:"I buy my shoes at the department store."}]},
+        {wort:"Feuerzeug", variants:[{frage_du:"Hast du ein Feuerzeug?", antwort_du:"Nein, ich habe kein Feuerzeug.", frage_sie:"Haben Sie ein Feuerzeug?", antwort_sie:"Nein, ich habe kein Feuerzeug.", frage_en:"Do you have a lighter?", antwort_en:"No, I don't have a lighter."}, {frage_du:"Wo kaufst du ein Feuerzeug?", antwort_du:"Ich kaufe ein Feuerzeug im Geschäft.", frage_sie:"Wo kaufen Sie ein Feuerzeug?", antwort_sie:"Ich kaufe ein Feuerzeug im Geschäft.", frage_en:"Where do you buy a lighter?", antwort_en:"I buy a lighter at the store."}, {frage_du:"Wie viel kostet ein Feuerzeug?", antwort_du:"Ein Feuerzeug kostet zwei Euro.", frage_sie:"Wie viel kostet ein Feuerzeug?", antwort_sie:"Ein Feuerzeug kostet zwei Euro.", frage_en:"How much does a lighter cost?", antwort_en:"A lighter costs two euros."}]},
+        {wort:"lange", variants:[{frage_du:"Möchtest du eine lange Hose?", antwort_du:"Ja, ich möchte eine lange Hose.", frage_sie:"Möchten Sie eine lange Hose?", antwort_sie:"Ja, ich möchte eine lange Hose.", frage_en:"Do you want long pants?", antwort_en:"Yes, I want long pants."}, {frage_du:"Magst du lange Kleider?", antwort_du:"Ja, ich mag lange Kleider.", frage_sie:"Mögen Sie lange Kleider?", antwort_sie:"Ja, ich mag lange Kleider.", frage_en:"Do you like long dresses?", antwort_en:"Yes, I like long dresses."}, {frage_du:"Wie lange suchst du schon eine Jacke?", antwort_du:"Ich suche schon lange eine Jacke.", frage_sie:"Wie lange suchen Sie schon eine Jacke?", antwort_sie:"Ich suche schon lange eine Jacke.", frage_en:"How long have you been looking for a jacket?", antwort_en:"I've been looking for a jacket for a long time."}]},
+        {wort:"Buch", variants:[{frage_du:"Welches Buch kaufst du?", antwort_du:"Ich kaufe ein Buch über Deutschland.", frage_sie:"Welches Buch kaufen Sie?", antwort_sie:"Ich kaufe ein Buch über Deutschland.", frage_en:"Which book are you buying?", antwort_en:"I'm buying a book about Germany."}, {frage_du:"Wo kaufst du das Buch?", antwort_du:"Ich kaufe das Buch in der Buchhandlung.", frage_sie:"Wo kaufen Sie das Buch?", antwort_sie:"Ich kaufe das Buch in der Buchhandlung.", frage_en:"Where do you buy the book?", antwort_en:"I buy the book at the bookstore."}, {frage_du:"Wie viel kostet das Buch?", antwort_du:"Das Buch kostet fünfzehn Euro.", frage_sie:"Wie viel kostet das Buch?", antwort_sie:"Das Buch kostet fünfzehn Euro.", frage_en:"How much does the book cost?", antwort_en:"The book costs fifteen euros."}]},
+        {wort:"Bluse", variants:[{frage_du:"Welche Farbe hat die Bluse?", antwort_du:"Die Bluse ist blau.", frage_sie:"Welche Farbe hat die Bluse?", antwort_sie:"Die Bluse ist blau.", frage_en:"What color is the blouse?", antwort_en:"The blouse is blue."}, {frage_du:"Wie viel kostet die Bluse?", antwort_du:"Die Bluse kostet dreißig Euro.", frage_sie:"Wie viel kostet die Bluse?", antwort_sie:"Die Bluse kostet dreißig Euro.", frage_en:"How much does the blouse cost?", antwort_en:"The blouse costs thirty euros."}, {frage_du:"Wo kaufst du die Bluse?", antwort_du:"Ich kaufe die Bluse im Kaufhaus.", frage_sie:"Wo kaufen Sie die Bluse?", antwort_sie:"Ich kaufe die Bluse im Kaufhaus.", frage_en:"Where do you buy the blouse?", antwort_en:"I buy the blouse at the department store."}]},
+        {wort:"Geschäft", variants:[{frage_du:"Wann öffnet das Geschäft?", antwort_du:"Das Geschäft öffnet um neun Uhr.", frage_sie:"Wann öffnet das Geschäft?", antwort_sie:"Das Geschäft öffnet um neun Uhr.", frage_en:"When does the shop open?", antwort_en:"The shop opens at nine o'clock."}, {frage_du:"Was kaufst du im Geschäft?", antwort_du:"Ich kaufe Kleidung im Geschäft.", frage_sie:"Was kaufen Sie im Geschäft?", antwort_sie:"Ich kaufe Kleidung im Geschäft.", frage_en:"What do you buy at the shop?", antwort_en:"I buy clothing at the shop."}, {frage_du:"Wo ist das Geschäft?", antwort_du:"Das Geschäft ist in der Stadtmitte.", frage_sie:"Wo ist das Geschäft?", antwort_sie:"Das Geschäft ist in der Stadtmitte.", frage_en:"Where is the shop?", antwort_en:"The shop is in the city center."}]},
+        {wort:"Obst", variants:[{frage_du:"Wo kaufst du Obst?", antwort_du:"Ich kaufe Obst auf dem Markt.", frage_sie:"Wo kaufen Sie Obst?", antwort_sie:"Ich kaufe Obst auf dem Markt.", frage_en:"Where do you buy fruit?", antwort_en:"I buy fruit at the market."}, {frage_du:"Wie viel Obst kaufst du?", antwort_du:"Ich kaufe zwei Kilo Obst.", frage_sie:"Wie viel Obst kaufen Sie?", antwort_sie:"Ich kaufe zwei Kilo Obst.", frage_en:"How much fruit do you buy?", antwort_en:"I buy two kilos of fruit."}, {frage_du:"Welches Obst magst du?", antwort_du:"Ich mag Obst wie Äpfel.", frage_sie:"Welches Obst mögen Sie?", antwort_sie:"Ich mag Obst wie Äpfel.", frage_en:"What fruit do you like?", antwort_en:"I like fruit like apples."}]},
+        {wort:"Bäckerei", variants:[{frage_du:"Was kaufst du in der Bäckerei?", antwort_du:"Ich kaufe Brot in der Bäckerei.", frage_sie:"Was kaufen Sie in der Bäckerei?", antwort_sie:"Ich kaufe Brot in der Bäckerei.", frage_en:"What do you buy at the bakery?", antwort_en:"I buy bread at the bakery."}, {frage_du:"Wann öffnet die Bäckerei?", antwort_du:"Die Bäckerei öffnet um sechs Uhr.", frage_sie:"Wann öffnet die Bäckerei?", antwort_sie:"Die Bäckerei öffnet um sechs Uhr.", frage_en:"When does the bakery open?", antwort_en:"The bakery opens at six o'clock."}, {frage_du:"Wo ist die Bäckerei?", antwort_du:"Die Bäckerei ist neben dem Supermarkt.", frage_sie:"Wo ist die Bäckerei?", antwort_sie:"Die Bäckerei ist neben dem Supermarkt.", frage_en:"Where is the bakery?", antwort_en:"The bakery is next to the supermarket."}]},
+        {wort:"geöffnet", variants:[{frage_du:"Ist der Supermarkt geöffnet?", antwort_du:"Ja, der Supermarkt ist geöffnet.", frage_sie:"Ist der Supermarkt geöffnet?", antwort_sie:"Ja, der Supermarkt ist geöffnet.", frage_en:"Is the supermarket open?", antwort_en:"Yes, the supermarket is open."}, {frage_du:"Bis wann ist das Geschäft geöffnet?", antwort_du:"Das Geschäft ist bis acht Uhr geöffnet.", frage_sie:"Bis wann ist das Geschäft geöffnet?", antwort_sie:"Das Geschäft ist bis acht Uhr geöffnet.", frage_en:"Until when is the shop open?", antwort_en:"The shop is open until eight o'clock."}, {frage_du:"Ist das Kaufhaus sonntags geöffnet?", antwort_du:"Nein, das Kaufhaus ist sonntags nicht geöffnet.", frage_sie:"Ist das Kaufhaus sonntags geöffnet?", antwort_sie:"Nein, das Kaufhaus ist sonntags nicht geöffnet.", frage_en:"Is the department store open on Sundays?", antwort_en:"No, the department store is not open on Sundays."}]},
+        {wort:"Kleid", variants:[{frage_du:"Wie viel kostet das Kleid?", antwort_du:"Das Kleid kostet vierzig Euro.", frage_sie:"Wie viel kostet das Kleid?", antwort_sie:"Das Kleid kostet vierzig Euro.", frage_en:"How much does the dress cost?", antwort_en:"The dress costs forty euros."}, {frage_du:"Welche Farbe hat das Kleid?", antwort_du:"Das Kleid ist rot.", frage_sie:"Welche Farbe hat das Kleid?", antwort_sie:"Das Kleid ist rot.", frage_en:"What color is the dress?", antwort_en:"The dress is red."}, {frage_du:"Wo kaufst du das Kleid?", antwort_du:"Ich kaufe das Kleid im Kaufhaus.", frage_sie:"Wo kaufen Sie das Kleid?", antwort_sie:"Ich kaufe das Kleid im Kaufhaus.", frage_en:"Where do you buy the dress?", antwort_en:"I buy the dress at the department store."}]},
+        {wort:"Supermarkt", variants:[{frage_du:"Was kaufst du im Supermarkt?", antwort_du:"Ich kaufe Milch im Supermarkt.", frage_sie:"Was kaufen Sie im Supermarkt?", antwort_sie:"Ich kaufe Milch im Supermarkt.", frage_en:"What do you buy at the supermarket?", antwort_en:"I buy milk at the supermarket."}, {frage_du:"Wann gehst du in den Supermarkt?", antwort_du:"Ich gehe samstags in den Supermarkt.", frage_sie:"Wann gehen Sie in den Supermarkt?", antwort_sie:"Ich gehe samstags in den Supermarkt.", frage_en:"When do you go to the supermarket?", antwort_en:"I go to the supermarket on Saturdays."}, {frage_du:"Wie weit ist der Supermarkt?", antwort_du:"Der Supermarkt ist fünf Minuten entfernt.", frage_sie:"Wie weit ist der Supermarkt?", antwort_sie:"Der Supermarkt ist fünf Minuten entfernt.", frage_en:"How far is the supermarket?", antwort_en:"The supermarket is five minutes away."}]},
+        {wort:"Kasse", variants:[{frage_du:"Wo ist die Kasse?", antwort_du:"Die Kasse ist dort vorne.", frage_sie:"Wo ist die Kasse?", antwort_sie:"Die Kasse ist dort vorne.", frage_en:"Where is the checkout?", antwort_en:"The checkout is up front."}, {frage_du:"Wie lange wartest du an der Kasse?", antwort_du:"Ich warte fünf Minuten an der Kasse.", frage_sie:"Wie lange warten Sie an der Kasse?", antwort_sie:"Ich warte fünf Minuten an der Kasse.", frage_en:"How long do you wait at the checkout?", antwort_en:"I wait five minutes at the checkout."}, {frage_du:"Wer steht an der Kasse?", antwort_du:"Eine Verkäuferin steht an der Kasse.", frage_sie:"Wer steht an der Kasse?", antwort_sie:"Eine Verkäuferin steht an der Kasse.", frage_en:"Who is standing at the checkout?", antwort_en:"A saleswoman is standing at the checkout."}]},
+        {wort:"Jacke", variants:[{frage_du:"Welche Größe hat die Jacke?", antwort_du:"Die Jacke hat Größe vierzig.", frage_sie:"Welche Größe hat die Jacke?", antwort_sie:"Die Jacke hat Größe vierzig.", frage_en:"What size is the jacket?", antwort_en:"The jacket is size forty."}, {frage_du:"Wie viel kostet die Jacke?", antwort_du:"Die Jacke kostet sechzig Euro.", frage_sie:"Wie viel kostet die Jacke?", antwort_sie:"Die Jacke kostet sechzig Euro.", frage_en:"How much does the jacket cost?", antwort_en:"The jacket costs sixty euros."}, {frage_du:"Welche Farbe hat die Jacke?", antwort_du:"Die Jacke ist schwarz.", frage_sie:"Welche Farbe hat die Jacke?", antwort_sie:"Die Jacke ist schwarz.", frage_en:"What color is the jacket?", antwort_en:"The jacket is black."}]},
+        {wort:"Fisch", variants:[{frage_du:"Kaufst du gern Fisch?", antwort_du:"Ja, ich kaufe gern Fisch.", frage_sie:"Kaufen Sie gern Fisch?", antwort_sie:"Ja, ich kaufe gern Fisch.", frage_en:"Do you like to buy fish?", antwort_en:"Yes, I like to buy fish."}, {frage_du:"Wo kaufst du Fisch?", antwort_du:"Ich kaufe Fisch im Supermarkt.", frage_sie:"Wo kaufen Sie Fisch?", antwort_sie:"Ich kaufe Fisch im Supermarkt.", frage_en:"Where do you buy fish?", antwort_en:"I buy fish at the supermarket."}, {frage_du:"Wie viel kostet der Fisch?", antwort_du:"Der Fisch kostet zwölf Euro.", frage_sie:"Wie viel kostet der Fisch?", antwort_sie:"Der Fisch kostet zwölf Euro.", frage_en:"How much does the fish cost?", antwort_en:"The fish costs twelve euros."}]},
+        {wort:"passen", variants:[{frage_du:"Passt dir die Hose?", antwort_du:"Ja, die Hose passt mir gut.", frage_sie:"Passt Ihnen die Hose?", antwort_sie:"Ja, die Hose passt mir gut.", frage_en:"Do the pants fit you?", antwort_en:"Yes, the pants fit me well."}, {frage_du:"Welche Größe passt dir?", antwort_du:"Größe achtunddreißig passt mir.", frage_sie:"Welche Größe passt Ihnen?", antwort_sie:"Größe achtunddreißig passt mir.", frage_en:"What size fits you?", antwort_en:"Size thirty-eight fits me."}, {frage_du:"Passen dir die Schuhe?", antwort_du:"Nein, die Schuhe passen mir nicht.", frage_sie:"Passen Ihnen die Schuhe?", antwort_sie:"Nein, die Schuhe passen mir nicht.", frage_en:"Do the shoes fit you?", antwort_en:"No, the shoes don't fit me."}]},
+        {wort:"stehen", variants:[{frage_du:"Wie lange stehst du an der Kasse?", antwort_du:"Ich stehe fünf Minuten an der Kasse.", frage_sie:"Wie lange stehen Sie an der Kasse?", antwort_sie:"Ich stehe fünf Minuten an der Kasse.", frage_en:"How long do you stand at the checkout?", antwort_en:"I stand at the checkout for five minutes."}, {frage_du:"Wo stehst du beim Einkaufen?", antwort_du:"Ich stehe an der Kasse beim Einkaufen.", frage_sie:"Wo stehen Sie beim Einkaufen?", antwort_sie:"Ich stehe an der Kasse beim Einkaufen.", frage_en:"Where do you stand while shopping?", antwort_en:"I stand at the checkout while shopping."}, {frage_du:"Wie steht dir das Kleid?", antwort_du:"Das Kleid steht mir gut.", frage_sie:"Wie steht Ihnen das Kleid?", antwort_sie:"Das Kleid steht mir gut.", frage_en:"How does the dress suit you?", antwort_en:"The dress suits me well."}]},
+        {wort:"günstig", variants:[{frage_du:"Ist das Hemd günstig?", antwort_du:"Ja, das Hemd ist günstig.", frage_sie:"Ist das Hemd günstig?", antwort_sie:"Ja, das Hemd ist günstig.", frage_en:"Is the shirt affordable?", antwort_en:"Yes, the shirt is affordable."}, {frage_du:"Was ist im Geschäft günstig?", antwort_du:"Die Schuhe sind im Geschäft günstig.", frage_sie:"Was ist im Geschäft günstig?", antwort_sie:"Die Schuhe sind im Geschäft günstig.", frage_en:"What is affordable at the store?", antwort_en:"The shoes are affordable at the store."}, {frage_du:"Wo findest du günstige Kleidung?", antwort_du:"Ich finde günstige Kleidung im Kaufhaus.", frage_sie:"Wo finden Sie günstige Kleidung?", antwort_sie:"Ich finde günstige Kleidung im Kaufhaus.", frage_en:"Where do you find affordable clothing?", antwort_en:"I find affordable clothing at the department store."}]},
+        {wort:"Obergeschoss", variants:[{frage_du:"Was ist im Obergeschoss?", antwort_du:"Im Obergeschoss sind die Schuhe.", frage_sie:"Was ist im Obergeschoss?", antwort_sie:"Im Obergeschoss sind die Schuhe.", frage_en:"What is on the upper floor?", antwort_en:"The shoes are on the upper floor."}, {frage_du:"Wo finde ich Kleider im Obergeschoss?", antwort_du:"Die Kleider sind im Obergeschoss links.", frage_sie:"Wo finde ich Kleider im Obergeschoss?", antwort_sie:"Die Kleider sind im Obergeschoss links.", frage_en:"Where do I find dresses on the upper floor?", antwort_en:"The dresses are on the upper floor to the left."}, {frage_du:"Wie komme ich ins Obergeschoss?", antwort_du:"Du kommst mit der Treppe ins Obergeschoss.", frage_sie:"Wie komme ich ins Obergeschoss?", antwort_sie:"Sie kommen mit der Treppe ins Obergeschoss.", frage_en:"How do I get to the upper floor?", antwort_en:"You take the stairs to the upper floor."}]},
+        {wort:"Erdgeschoss", variants:[{frage_du:"Was ist im Erdgeschoss?", antwort_du:"Im Erdgeschoss ist die Kasse.", frage_sie:"Was ist im Erdgeschoss?", antwort_sie:"Im Erdgeschoss ist die Kasse.", frage_en:"What is on the ground floor?", antwort_en:"The checkout is on the ground floor."}, {frage_du:"Wo ist der Eingang im Erdgeschoss?", antwort_du:"Der Eingang ist im Erdgeschoss rechts.", frage_sie:"Wo ist der Eingang im Erdgeschoss?", antwort_sie:"Der Eingang ist im Erdgeschoss rechts.", frage_en:"Where is the entrance on the ground floor?", antwort_en:"The entrance is on the ground floor to the right."}, {frage_du:"Was kaufst du im Erdgeschoss?", antwort_du:"Ich kaufe Bücher im Erdgeschoss.", frage_sie:"Was kaufen Sie im Erdgeschoss?", antwort_sie:"Ich kaufe Bücher im Erdgeschoss.", frage_en:"What do you buy on the ground floor?", antwort_en:"I buy books on the ground floor."}]},
+        {wort:"Untergeschoss", variants:[{frage_du:"Was ist im Untergeschoss?", antwort_du:"Im Untergeschoss ist der Supermarkt.", frage_sie:"Was ist im Untergeschoss?", antwort_sie:"Im Untergeschoss ist der Supermarkt.", frage_en:"What is on the basement floor?", antwort_en:"The supermarket is on the basement floor."}, {frage_du:"Wie komme ich ins Untergeschoss?", antwort_du:"Du kommst mit dem Aufzug ins Untergeschoss.", frage_sie:"Wie komme ich ins Untergeschoss?", antwort_sie:"Sie kommen mit dem Aufzug ins Untergeschoss.", frage_en:"How do I get to the basement floor?", antwort_en:"You take the elevator to the basement floor."}, {frage_du:"Was kaufst du im Untergeschoss?", antwort_du:"Ich kaufe Lebensmittel im Untergeschoss.", frage_sie:"Was kaufen Sie im Untergeschoss?", antwort_sie:"Ich kaufe Lebensmittel im Untergeschoss.", frage_en:"What do you buy on the basement floor?", antwort_en:"I buy groceries on the basement floor."}]},
+        {wort:"Stadtplan", variants:[{frage_du:"Brauchst du einen Stadtplan?", antwort_du:"Ja, ich brauche einen Stadtplan.", frage_sie:"Brauchen Sie einen Stadtplan?", antwort_sie:"Ja, ich brauche einen Stadtplan.", frage_en:"Do you need a city map?", antwort_en:"Yes, I need a city map."}, {frage_du:"Wo bekommst du einen Stadtplan?", antwort_du:"Ich bekomme einen Stadtplan an der Information.", frage_sie:"Wo bekommen Sie einen Stadtplan?", antwort_sie:"Ich bekomme einen Stadtplan an der Information.", frage_en:"Where do you get a city map?", antwort_en:"I get a city map at the information desk."}, {frage_du:"Wofür brauchst du den Stadtplan?", antwort_du:"Ich brauche den Stadtplan, um das Kaufhaus zu finden.", frage_sie:"Wofür brauchen Sie den Stadtplan?", antwort_sie:"Ich brauche den Stadtplan, um das Kaufhaus zu finden.", frage_en:"What do you need the city map for?", antwort_en:"I need the city map to find the department store."}]}
+      ]
+    }
+  ];
+
+  // Normalize legacy flat-format items (frage_du directly on item) into the
+  // variants format, so all rendering code can assume item.variants exists.
+  ROUNDS.forEach(round => {
+    round.items = round.items.map(it => {
+      if (it.variants) return it;
+      const { wort, ...rest } = it;
+      return { wort, variants: [rest] };
+    });
+  });
+
+  const els = {
+    tabsBar: document.getElementById('tabsBar'),
+    addPanel: document.getElementById('addPanel'),
+    resultsSection: document.getElementById('resultsSection'),
+    correctionsBox: document.getElementById('correctionsBox'),
+    correctionsList: document.getElementById('correctionsList'),
+    cardsGrid: document.getElementById('cardsGrid'),
+    practiceArea: document.getElementById('practiceArea'),
+    viewSeg: document.getElementById('viewSeg'),
+    anredeSeg: document.getElementById('anredeSeg'),
+    practiceCounter: document.getElementById('practiceCounter'),
+    practiceWord: document.getElementById('practiceWord'),
+    practiceQuestion: document.getElementById('practiceQuestion'),
+    practiceQuestionEn: document.getElementById('practiceQuestionEn'),
+    practiceInput: document.getElementById('practiceInput'),
+    checkBtn: document.getElementById('checkBtn'),
+    skipBtn: document.getElementById('skipBtn'),
+    practiceFeedback: document.getElementById('practiceFeedback'),
+    feedbackStatus: document.getElementById('feedbackStatus'),
+    practiceAnswer: document.getElementById('practiceAnswer'),
+    practiceAnswerEn: document.getElementById('practiceAnswerEn'),
+    prevBtn: document.getElementById('prevBtn'),
+    nextBtn: document.getElementById('nextBtn'),
+    shuffleBtn: document.getElementById('shuffleBtn'),
+  };
+
+  let activeRoundIndex = 0;
+  let showingAddPanel = false;
+  let anredeDisplay = 'du';
+  let currentView = 'cards';
+  let practiceItems = [];
+  let practiceIndex = 0;
+
+  function escapeHtml(s){
+    return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderTabs(){
+    els.tabsBar.innerHTML = '';
+    ROUNDS.forEach((r, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn' + (!showingAddPanel && i === activeRoundIndex ? ' active' : '');
+      btn.textContent = r.thema;
+      btn.addEventListener('click', () => { activeRoundIndex = i; showingAddPanel = false; renderTabs(); renderActiveRound(); });
+      els.tabsBar.appendChild(btn);
+    });
+    const addBtn = document.createElement('button');
+    addBtn.className = 'tab-btn add-tab' + (showingAddPanel ? ' active' : '');
+    addBtn.textContent = '+ Neue Runde';
+    addBtn.addEventListener('click', () => { showingAddPanel = true; renderTabs(); renderActiveRound(); });
+    els.tabsBar.appendChild(addBtn);
+  }
+
+  function renderActiveRound(){
+    els.addPanel.hidden = !showingAddPanel;
+    els.resultsSection.hidden = showingAddPanel;
+    if (showingAddPanel) return;
+
+    const round = ROUNDS[activeRoundIndex];
+    if (round.corrections && round.corrections.length) {
+      els.correctionsBox.style.display = 'block';
+      els.correctionsList.innerHTML = round.corrections.map(c => `<div class="correction-item">${escapeHtml(c)}</div>`).join('');
+    } else {
+      els.correctionsBox.style.display = 'none';
+    }
+
+    practiceItems = round.items.flatMap(item => item.variants.map(v => ({ ...v, wort: item.wort })));
+    practiceIndex = 0;
+    renderCardsGrid(round);
+    if (currentView === 'practice') renderPracticeCard();
+    applyView();
+  }
+
+  function applyView(){
+    els.cardsGrid.style.display = currentView === 'cards' ? 'grid' : 'none';
+    els.practiceArea.style.display = currentView === 'practice' ? 'flex' : 'none';
+  }
+
+  function renderCardsGrid(round){
+    els.cardsGrid.innerHTML = '';
+    round.items.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'tag-card';
+      card.style.setProperty('--rot', (Math.random()*6-3).toFixed(1)+'deg');
+
+      const dotsHtml = item.variants.length > 1
+        ? `<div class="variant-dots">${item.variants.map((_, i) => `<button type="button" class="variant-dot${i===0?' active':''}" data-i="${i}">${i+1}</button>`).join('')}</div>`
+        : '';
+
+      card.innerHTML = `
+        <div class="tag-inner">
+          <div class="tag-face tag-front">
+            <div class="tag-hole"></div>
+            ${dotsHtml}
+            <div class="tag-label">${escapeHtml(round.thema)}</div>
+            <div class="tag-word">${escapeHtml(item.wort)}</div>
+            <div class="tag-question"></div>
+            <div class="tag-en"></div>
+            <div class="tag-flip-hint">Tippen für Antwort ›</div>
+          </div>
+          <div class="tag-face tag-back">
+            <div class="tag-hole"></div>
+            <div class="tag-answer"></div>
+            <div class="tag-en"></div>
+          </div>
+        </div>`;
+
+      let activeVariant = 0;
+      function refreshCard(){
+        const v = item.variants[activeVariant];
+        const frage = anredeDisplay === 'sie' ? v.frage_sie : v.frage_du;
+        const antwort = anredeDisplay === 'sie' ? v.antwort_sie : v.antwort_du;
+        card.querySelector('.tag-front .tag-question').textContent = frage;
+        card.querySelector('.tag-front .tag-en').textContent = v.frage_en;
+        card.querySelector('.tag-back .tag-answer').textContent = antwort;
+        card.querySelector('.tag-back .tag-en').textContent = v.antwort_en;
+        card.querySelectorAll('.variant-dot').forEach((d,i) => d.classList.toggle('active', i===activeVariant));
+      }
+      card.querySelectorAll('.variant-dot').forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          e.stopPropagation();
+          activeVariant = Number(dot.dataset.i);
+          card.classList.remove('flipped');
+          refreshCard();
+        });
+      });
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+      refreshCard();
+      els.cardsGrid.appendChild(card);
+    });
+  }
+
+  els.viewSeg.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-view]');
+    if (!btn) return;
+    currentView = btn.dataset.view;
+    [...els.viewSeg.children].forEach(b => b.classList.toggle('active', b===btn));
+    applyView();
+    if (currentView === 'practice') renderPracticeCard();
+  });
+
+  els.anredeSeg.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-anrede]');
+    if (!btn) return;
+    anredeDisplay = btn.dataset.anrede;
+    [...els.anredeSeg.children].forEach(b => b.classList.toggle('active', b===btn));
+    renderCardsGrid(ROUNDS[activeRoundIndex]);
+    if (currentView === 'practice') renderPracticeCard();
+  });
+
+  function renderPracticeCard(){
+    if (!practiceItems.length) return;
+    const item = practiceItems[practiceIndex];
+    els.practiceCounter.textContent = (practiceIndex+1) + ' / ' + practiceItems.length;
+    els.practiceWord.textContent = item.wort;
+    els.practiceQuestion.textContent = anredeDisplay==='sie' ? item.frage_sie : item.frage_du;
+    els.practiceQuestionEn.textContent = item.frage_en;
+    els.practiceInput.value = '';
+    els.practiceInput.disabled = false;
+    els.checkBtn.disabled = false;
+    els.skipBtn.hidden = false;
+    els.practiceFeedback.hidden = true;
+    els.practiceInput.focus();
+  }
+
+  function normalizeAnswer(s){
+    return String(s||'')
+      .toLowerCase()
+      .replace(/[.,!?;:„"”'`]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function levenshtein(a, b){
+    const m = a.length, n = b.length;
+    const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+    for (let i=0;i<=m;i++) dp[i][0]=i;
+    for (let j=0;j<=n;j++) dp[0][j]=j;
+    for (let i=1;i<=m;i++){
+      for (let j=1;j<=n;j++){
+        dp[i][j] = a[i-1]===b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+      }
+    }
+    return dp[m][n];
+  }
+
+  function wordsClose(a, b){
+    if (a === b) return true;
+    const maxLen = Math.max(a.length, b.length);
+    const tolerance = maxLen <= 4 ? 1 : maxLen <= 8 ? 2 : 3;
+    return levenshtein(a, b) <= tolerance;
+  }
+
+  function isCloseEnough(input, correct){
+    const a = normalizeAnswer(input).split(' ').filter(Boolean);
+    const b = normalizeAnswer(correct).split(' ').filter(Boolean);
+    if (!a.length) return false;
+    if (a.length === b.length) return a.every((w,i) => wordsClose(w, b[i]));
+    if (Math.abs(a.length - b.length) === 1) {
+      const longer = a.length > b.length ? a : b;
+      const shorter = a.length > b.length ? b : a;
+      for (let skip = 0; skip < longer.length; skip++) {
+        const trimmed = longer.slice(0, skip).concat(longer.slice(skip+1));
+        if (trimmed.length === shorter.length && trimmed.every((w,i) => wordsClose(w, shorter[i]))) return true;
+      }
+    }
+    return false;
+  }
+
+  function showFeedback(status, correctText, correctEn){
+    els.practiceFeedback.hidden = false;
+    els.feedbackStatus.className = 'feedback-status feedback-' + status;
+    els.feedbackStatus.textContent = status === 'correct' ? 'Richtig ✓' : status === 'wrong' ? 'Nicht ganz richtig' : 'Richtige Antwort';
+    els.practiceAnswer.textContent = correctText;
+    els.practiceAnswerEn.textContent = correctEn;
+    els.practiceInput.disabled = true;
+    els.checkBtn.disabled = true;
+    els.skipBtn.hidden = true;
+  }
+
+  function checkAnswer(){
+    if (!practiceItems.length || els.practiceInput.disabled) return;
+    const value = els.practiceInput.value;
+    if (!value.trim()) return;
+    const item = practiceItems[practiceIndex];
+    const correct = anredeDisplay==='sie' ? item.antwort_sie : item.antwort_du;
+    const ok = isCloseEnough(value, correct);
+    showFeedback(ok ? 'correct' : 'wrong', correct, item.antwort_en);
+  }
+
+  els.checkBtn.addEventListener('click', checkAnswer);
+  els.practiceInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); checkAnswer(); }
+  });
+  els.skipBtn.addEventListener('click', () => {
+    if (!practiceItems.length) return;
+    const item = practiceItems[practiceIndex];
+    const correct = anredeDisplay==='sie' ? item.antwort_sie : item.antwort_du;
+    showFeedback('skip', correct, item.antwort_en);
+  });
+  els.prevBtn.addEventListener('click', () => {
+    practiceIndex = (practiceIndex - 1 + practiceItems.length) % practiceItems.length;
+    renderPracticeCard();
+  });
+  els.nextBtn.addEventListener('click', () => {
+    practiceIndex = (practiceIndex + 1) % practiceItems.length;
+    renderPracticeCard();
+  });
+  els.shuffleBtn.addEventListener('click', () => {
+    for (let i = practiceItems.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i+1));
+      [practiceItems[i], practiceItems[j]] = [practiceItems[j], practiceItems[i]];
+    }
+    practiceIndex = 0;
+    renderPracticeCard();
+  });
+
+  renderTabs();
+  renderActiveRound();
+})();
+</script>

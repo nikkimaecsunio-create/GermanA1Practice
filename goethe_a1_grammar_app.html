@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goethe A1 Grammar Gym</title>
+  <style>
+    :root {
+      --bg: #f7f3ef;
+      --card: #ffffff;
+      --ink: #221f1f;
+      --muted: #706b67;
+      --line: #e2d8d0;
+      --accent: #8b5e3c;
+      --accent2: #c9975d;
+      --good: #2f7d4f;
+      --bad: #b94b4b;
+      --warn: #b68122;
+      --soft: #fff8ef;
+      --shadow: 0 14px 35px rgba(55, 38, 26, 0.08);
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #fff7ed 0, var(--bg) 34%, #f8f6f3 100%);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    header {
+      padding: 28px 22px 18px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .hero-card, .panel, .topic-card, .exercise-card, .stat-card {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-card { padding: 26px; }
+    h1 { margin: 0 0 8px; font-size: clamp(30px, 4vw, 50px); line-height: 1.02; letter-spacing: -0.04em; }
+    h2 { margin: 0 0 14px; font-size: 26px; letter-spacing: -0.02em; }
+    h3 { margin: 0 0 9px; font-size: 18px; }
+    p { line-height: 1.55; color: var(--muted); margin: 0 0 12px; }
+    .tagrow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { padding: 7px 10px; border-radius: 999px; background: var(--soft); color: var(--accent); border: 1px solid #ead2b8; font-size: 13px; font-weight: 700; }
+    .hero-side { padding: 22px; display: flex; flex-direction: column; justify-content: space-between; }
+    .big-score { font-size: 46px; font-weight: 900; letter-spacing: -0.05em; color: var(--accent); }
+    .subtle { color: var(--muted); font-size: 14px; }
+    nav {
+      max-width: 1180px;
+      margin: 0 auto 18px;
+      padding: 0 22px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tab {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 13px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: 0.15s ease;
+    }
+    .tab:hover, .tab.active { background: var(--accent); color: white; border-color: var(--accent); transform: translateY(-1px); }
+    main { max-width: 1180px; margin: 0 auto; padding: 0 22px 50px; }
+    .view { display: none; }
+    .view.active { display: block; }
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .panel { padding: 20px; margin-bottom: 16px; }
+    .topic-card { padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .card-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; }
+    button, .btn {
+      border: 0;
+      background: var(--accent);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    button.secondary { background: #eee3da; color: var(--accent); }
+    button.ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+    button.good { background: var(--good); }
+    button.bad { background: var(--bad); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+    .progressbar { width: 100%; height: 10px; background: #efe8e1; border-radius: 999px; overflow: hidden; }
+    .progressbar > div { height: 100%; background: linear-gradient(90deg, var(--accent2), var(--accent)); width: 0%; border-radius: inherit; }
+    .lesson-box { background: var(--soft); border: 1px solid #ead2b8; padding: 14px; border-radius: 16px; margin: 12px 0; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; background: white; margin: 12px 0; }
+    th, td { text-align: left; border: 1px solid var(--line); padding: 10px; vertical-align: top; }
+    th { background: #f1e5d9; color: var(--accent); }
+    .exercise-card { padding: 18px; margin: 14px 0; }
+    .question { font-size: 20px; font-weight: 900; margin-bottom: 14px; }
+    .options { display: grid; gap: 9px; margin: 12px 0; }
+    .option { background: white; border: 1px solid var(--line); color: var(--ink); justify-content: flex-start; text-align: left; }
+    .option:hover { border-color: var(--accent2); background: var(--soft); color: var(--ink); }
+    .option.selected { background: #f2dfca; color: var(--ink); border-color: var(--accent); }
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      font: inherit;
+      background: white;
+      color: var(--ink);
+    }
+    textarea { min-height: 105px; resize: vertical; }
+    .feedback { border-radius: 16px; padding: 14px; margin-top: 14px; border: 1px solid var(--line); background: white; }
+    .feedback.correct { border-color: rgba(47,125,79,0.35); background: #f1fbf4; }
+    .feedback.wrong { border-color: rgba(185,75,75,0.35); background: #fff3f3; }
+    .pill { display: inline-flex; padding: 5px 9px; border-radius: 999px; font-size: 12px; font-weight: 900; background: #f0e6dc; color: var(--accent); margin-right: 6px; margin-bottom: 6px; }
+    .stat-card { padding: 18px; }
+    .stat-num { font-size: 32px; font-weight: 950; color: var(--accent); line-height: 1; }
+    .muted-list { margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.7; }
+    .flash { animation: flash 0.35s ease; }
+    @keyframes flash { 0% { transform: scale(0.99); opacity: .85; } 100% { transform: scale(1); opacity: 1; } }
+    .hidden { display: none !important; }
+    .footer-note { color: var(--muted); font-size: 13px; margin-top: 20px; }
+    @media (max-width: 900px) {
+      .hero, .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+      header, nav, main { padding-left: 14px; padding-right: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <section class="hero-card">
+        <h1>Goethe A1 Grammar Gym</h1>
+        <p>A focused practice app for German word order, cases, articles, possessive articles, and declension. Built for A1 writing accuracy, not random vocabulary chaos.</p>
+        <div class="tagrow">
+          <span class="tag">Word order</span>
+          <span class="tag">Nominative</span>
+          <span class="tag">Akkusative</span>
+          <span class="tag">Declension</span>
+          <span class="tag">Goethe A1</span>
+        </div>
+      </section>
+      <section class="hero-card hero-side">
+        <div>
+          <p class="subtle">Overall mastery</p>
+          <div class="big-score" id="overallMastery">0%</div>
+          <div class="progressbar"><div id="overallBar"></div></div>
+        </div>
+        <p class="footer-note">Practice by topic first. Mixed daily workout after. German grammar cannot jumpscare you forever.</p>
+      </section>
+    </div>
+  </header>
+
+  <nav id="tabs"></nav>
+
+  <main>
+    <section id="home" class="view active"></section>
+    <section id="topics" class="view"></section>
+    <section id="lesson" class="view"></section>
+    <section id="practice" class="view"></section>
+    <section id="daily" class="view"></section>
+    <section id="cheats" class="view"></section>
+    <section id="vocab" class="view"></section>
+    <section id="mistakes" class="view"></section>
+    <section id="settings" class="view"></section>
+  </main>
+
+<script>
+const TOPICS = [
+  {
+    id: 'word-order-basic',
+    title: 'Basic Word Order',
+    short: 'Normal A1 sentence pattern with verb in position 2.',
+    level: 'A1 Foundation',
+    focus: 'Word order',
+    lesson: `
+      <h2>Basic Word Order</h2>
+      <p>In a normal German sentence, the conjugated verb is usually in position 2.</p>
+      <div class="lesson-box"><strong>Pattern:</strong> Subject + Verb + Object or extra information</div>
+      <table><tr><th>German</th><th>Pattern</th><th>English</th></tr>
+      <tr><td>Ich trinke Wasser.</td><td>Ich + trinke + Wasser</td><td>I drink water.</td></tr>
+      <tr><td>Maria lernt Deutsch.</td><td>Subject + Verb + Object</td><td>Maria learns German.</td></tr>
+      <tr><td>Der Mann kauft Brot.</td><td>Subject + Verb + Object</td><td>The man buys bread.</td></tr></table>
+      <p><strong>Common mistake:</strong> Ich Wasser trinke. The verb must be second.</p>`,
+    exercises: [
+      exBuild('Order the sentence.', ['Ich','trinke','Wasser'], 'Ich trinke Wasser.', 'The verb trinke is in position 2.', 'I drink water.'),
+      exBuild('Order the sentence.', ['Maria','lernt','Deutsch'], 'Maria lernt Deutsch.', 'The verb lernt is in position 2.', 'Maria learns German.'),
+      exBuild('Order the sentence.', ['Der Mann','kauft','Brot'], 'Der Mann kauft Brot.', 'The verb kauft is in position 2.', 'The man buys bread.'),
+      exChoice('Choose the correct sentence.', ['Ich Kaffee trinke.','Ich trinke Kaffee.','Trinke ich Kaffee.'], 'Ich trinke Kaffee.', 'Normal statement: Subject + verb + object.', 'I drink coffee.'),
+      exInput('Write the correct sentence from: ich / esse / einen Apfel', 'Ich esse einen Apfel.', 'The verb esse is position 2.', 'I eat an apple.'),
+      exFix('Fix the sentence: Ich Deutsch lerne.', 'Ich lerne Deutsch.', 'The conjugated verb must be position 2.', 'I learn German.'),
+      exInput('Translate: I read a book.', 'Ich lese ein Buch.', 'Subject + verb + object.', 'I read a book.'),
+      exBuild('Order the sentence.', ['Wir','spielen','Fußball'], 'Wir spielen Fußball.', 'Verb spielen is position 2.', 'We play football.'),
+      exChoice('Which sentence is correct?', ['Du machst Hausaufgaben.','Du Hausaufgaben machst.','Machst du Hausaufgaben.'], 'Du machst Hausaufgaben.', 'A normal statement starts with subject then verb.', 'You do homework.'),
+      exFix('Fix the sentence: Sie Tee trinkt.', 'Sie trinkt Tee.', 'Verb must be second.', 'She drinks tea.')
+    ]
+  },
+  {
+    id: 'time-first',
+    title: 'Time First Sentences',
+    short: 'When time comes first, the verb still stays second.',
+    level: 'A1 Word Order',
+    focus: 'Word order',
+    lesson: `
+      <h2>Time First Sentences</h2>
+      <p>You can start a sentence with time. The verb must still be in position 2. This means the subject moves after the verb.</p>
+      <div class="lesson-box"><strong>Pattern:</strong> Time + Verb + Subject + Object</div>
+      <table><tr><th>German</th><th>English</th><th>Rule</th></tr>
+      <tr><td>Heute trinke ich Kaffee.</td><td>Today I drink coffee.</td><td>Heute is position 1, trinke is position 2.</td></tr>
+      <tr><td>Morgen kaufe ich Brot.</td><td>Tomorrow I buy bread.</td><td>Morgen first, verb second.</td></tr>
+      <tr><td>Um 8 Uhr gehe ich zur Schule.</td><td>At 8 o'clock I go to school.</td><td>Time first, verb second.</td></tr></table>
+      <p><strong>Common mistake:</strong> Heute ich trinke Kaffee. Correct: Heute trinke ich Kaffee.</p>`,
+    exercises: [
+      exBuild('Order the sentence.', ['Heute','trinke','ich','Kaffee'], 'Heute trinke ich Kaffee.', 'Heute is first, so the verb trinke is second.', 'Today I drink coffee.'),
+      exFix('Fix the sentence: Morgen ich kaufe Brot.', 'Morgen kaufe ich Brot.', 'The verb must be second after Morgen.', 'Tomorrow I buy bread.'),
+      exChoice('Choose the correct sentence.', ['Heute ich lerne Deutsch.','Heute lerne ich Deutsch.','Ich heute lerne Deutsch.'], 'Heute lerne ich Deutsch.', 'Time first, verb second, subject third.', 'Today I learn German.'),
+      exBuild('Order the sentence.', ['Am Montag','arbeite','ich'], 'Am Montag arbeite ich.', 'Time expression counts as position 1.', 'On Monday I work.'),
+      exInput('Translate: Tomorrow I visit my mother.', 'Morgen besuche ich meine Mutter.', 'Morgen is first, besuche is second.', 'Tomorrow I visit my mother.'),
+      exFix('Fix the sentence: Um 7 Uhr ich stehe auf.', 'Um 7 Uhr stehe ich auf.', 'The verb stehe is second. Auf goes to the end because aufstehen is separable.', 'At 7 o’clock I get up.'),
+      exChoice('Which is correct?', ['Heute esse ich Suppe.','Heute ich esse Suppe.','Ich heute esse Suppe.'], 'Heute esse ich Suppe.', 'Verb second rule.', 'Today I eat soup.'),
+      exInput('Write with time first: I go home today.', 'Heute gehe ich nach Hause.', 'Heute first, gehe second.', 'Today I go home.'),
+      exBuild('Order the sentence.', ['Abends','lese','ich','ein Buch'], 'Abends lese ich ein Buch.', 'Abends is position 1, lese is position 2.', 'In the evening I read a book.'),
+      exFix('Fix the sentence: Gestern ich hatte Zeit.', 'Gestern hatte ich Zeit.', 'With time first, the verb is second.', 'Yesterday I had time.')
+    ]
+  },
+  {
+    id: 'questions',
+    title: 'W-Fragen and Ja/Nein Questions',
+    short: 'Question word order for Goethe A1 speaking and writing.',
+    level: 'A1 Questions',
+    focus: 'Word order',
+    lesson: `
+      <h2>W-Fragen and Ja/Nein Questions</h2>
+      <p>For W questions, use question word + verb + subject. For yes or no questions, start with the verb.</p>
+      <table><tr><th>Type</th><th>Pattern</th><th>Example</th><th>English</th></tr>
+      <tr><td>W Frage</td><td>Was + trinkst + du?</td><td>Was trinkst du?</td><td>What do you drink?</td></tr>
+      <tr><td>Ja Nein</td><td>Trinkst + du + Kaffee?</td><td>Trinkst du Kaffee?</td><td>Do you drink coffee?</td></tr>
+      <tr><td>W Frage</td><td>Wo + wohnst + du?</td><td>Wo wohnst du?</td><td>Where do you live?</td></tr></table>
+      <p><strong>Common mistake:</strong> Was du trinkst? Correct: Was trinkst du?</p>`,
+    exercises: [
+      exBuild('Order the question.', ['Was','trinkst','du'], 'Was trinkst du?', 'W word first, verb second, subject third.', 'What do you drink?'),
+      exBuild('Order the yes or no question.', ['Kommst','du','heute'], 'Kommst du heute?', 'Yes or no question starts with the verb.', 'Are you coming today?'),
+      exFix('Fix the question: Wo du wohnst?', 'Wo wohnst du?', 'W question pattern: Wo + verb + subject.', 'Where do you live?'),
+      exChoice('Choose the correct question.', ['Was du isst?','Was isst du?','Du isst was?'], 'Was isst du?', 'W question needs verb in position 2.', 'What do you eat?'),
+      exInput('Ask: Where do you come from?', 'Woher kommst du?', 'Woher + verb + subject.', 'Where do you come from?'),
+      exInput('Make a yes or no question: Du lernst Deutsch.', 'Lernst du Deutsch?', 'Move the verb to the start.', 'Do you learn German?'),
+      exBuild('Order the question.', ['Wann','arbeitest','du'], 'Wann arbeitest du?', 'Wann + verb + subject.', 'When do you work?'),
+      exChoice('Correct yes or no question:', ['Hast du Zeit?','Du hast Zeit?','Zeit hast du?'], 'Hast du Zeit?', 'Yes or no question begins with the verb.', 'Do you have time?'),
+      exFix('Fix: Wie viel das Brot kostet?', 'Wie viel kostet das Brot?', 'W phrase first, verb second.', 'How much does the bread cost?'),
+      exInput('Ask: Who is your teacher?', 'Wer ist dein Lehrer?', 'Wer + verb + possessive article + noun.', 'Who is your teacher?')
+    ]
+  },
+  {
+    id: 'nominative',
+    title: 'Nominative Case',
+    short: 'The subject of the sentence. Who or what does the action?',
+    level: 'A1 Cases',
+    focus: 'Cases',
+    lesson: `
+      <h2>Nominative Case</h2>
+      <p>Nominative is the subject. It answers: Who or what is doing the action?</p>
+      <table><tr><th>Gender</th><th>Definite</th><th>Indefinite</th><th>Example</th></tr>
+      <tr><td>Masculine</td><td>der</td><td>ein</td><td>Der Mann ist hier.</td></tr>
+      <tr><td>Feminine</td><td>die</td><td>eine</td><td>Die Frau kocht.</td></tr>
+      <tr><td>Neuter</td><td>das</td><td>ein</td><td>Das Kind spielt.</td></tr>
+      <tr><td>Plural</td><td>die</td><td>none</td><td>Die Kinder lernen.</td></tr></table>
+      <p><strong>Memory rule:</strong> Nominative is the doer of the sentence.</p>`,
+    exercises: [
+      exChoice('Choose the correct article: ___ Mann ist groß.', ['Der','Den','Das'], 'Der', 'Mann is masculine and subject, so use der.', 'The man is tall.'),
+      exChoice('Choose the correct article: ___ Frau arbeitet.', ['Der','Die','Das'], 'Die', 'Frau is feminine and subject, so use die.', 'The woman works.'),
+      exInput('Fill in: ___ Kind spielt.', 'Das', 'Kind is neuter and subject.', 'The child plays.'),
+      exInput('Fill in: ___ Bruder ist jung.', 'Mein', 'Bruder is masculine and subject. Mein stays mein in nominative masculine.', 'My brother is young.'),
+      exChoice('Which noun is nominative? Der Vater kauft Brot.', ['Der Vater','Brot'], 'Der Vater', 'The father does the action, so he is nominative.', 'The father buys bread.'),
+      exFix('Fix: Den Mann ist müde.', 'Der Mann ist müde.', 'Mann is the subject, so use der.', 'The man is tired.'),
+      exInput('Translate: A woman is here.', 'Eine Frau ist hier.', 'Frau is feminine nominative, so use eine.', 'A woman is here.'),
+      exChoice('Choose: ___ Apfel ist rot.', ['Der','Den','Die'], 'Der', 'Apfel is masculine and subject.', 'The apple is red.'),
+      exInput('Fill in: ___ Tasche ist neu.', 'Die', 'Tasche is feminine and subject.', 'The bag is new.'),
+      exFix('Fix: Einen Hund ist klein.', 'Ein Hund ist klein.', 'Hund is subject, so use ein in nominative.', 'A dog is small.')
+    ]
+  },
+  {
+    id: 'akkusative',
+    title: 'Akkusative Case',
+    short: 'The direct object. The thing or person receiving the action.',
+    level: 'A1 Cases',
+    focus: 'Cases',
+    lesson: `
+      <h2>Akkusative Case</h2>
+      <p>Akkusative is the direct object. It receives the action.</p>
+      <div class="lesson-box"><strong>Big A1 rule:</strong> Masculine changes. der becomes den, ein becomes einen, kein becomes keinen, mein becomes meinen.</div>
+      <table><tr><th>Gender</th><th>Nominative</th><th>Akkusative</th><th>Example</th></tr>
+      <tr><td>Masculine</td><td>der Mann</td><td>den Mann</td><td>Ich sehe den Mann.</td></tr>
+      <tr><td>Feminine</td><td>die Frau</td><td>die Frau</td><td>Ich sehe die Frau.</td></tr>
+      <tr><td>Neuter</td><td>das Kind</td><td>das Kind</td><td>Ich sehe das Kind.</td></tr>
+      <tr><td>Plural</td><td>die Kinder</td><td>die Kinder</td><td>Ich sehe die Kinder.</td></tr></table>
+      <p>Common accusative verbs: haben, kaufen, essen, trinken, sehen, lesen, schreiben, brauchen, suchen, finden, nehmen.</p>`,
+    exercises: [
+      exChoice('Choose: Ich sehe ___ Mann.', ['der','den','das'], 'den', 'Mann is masculine direct object. der becomes den.', 'I see the man.'),
+      exChoice('Choose: Ich kaufe ___ Apfel.', ['ein','einen','eine'], 'einen', 'Apfel is masculine direct object. ein becomes einen.', 'I buy an apple.'),
+      exInput('Fill in: Ich habe ___ Bruder.', 'einen', 'Bruder is masculine direct object after haben.', 'I have a brother.'),
+      exInput('Fill in: Ich trinke ___ Wasser.', 'ein', 'Wasser is neuter. ein stays ein.', 'I drink a water.'),
+      exChoice('Choose: Ich sehe ___ Frau.', ['den','die','der'], 'die', 'Frau is feminine. die stays die in accusative.', 'I see the woman.'),
+      exFix('Fix: Ich habe ein Apfel.', 'Ich habe einen Apfel.', 'Apfel is masculine accusative, so ein becomes einen.', 'I have an apple.'),
+      exFix('Fix: Ich sehe der Mann.', 'Ich sehe den Mann.', 'Mann is masculine direct object, so der becomes den.', 'I see the man.'),
+      exInput('Translate: I need a bag.', 'Ich brauche eine Tasche.', 'Tasche is feminine accusative, so use eine.', 'I need a bag.'),
+      exChoice('Choose: Ich kaufe ___ Brot.', ['ein','einen','eine'], 'ein', 'Brot is neuter. ein stays ein.', 'I buy bread.'),
+      exInput('Fill in: Ich suche ___ Schlüssel.', 'den', 'Schlüssel is masculine direct object, so use den.', 'I am looking for the key.')
+    ]
+  },
+  {
+    id: 'nom-akk',
+    title: 'Nominative vs Akkusative',
+    short: 'Find the subject and the direct object in one sentence.',
+    level: 'A1 Cases',
+    focus: 'Cases',
+    lesson: `
+      <h2>Nominative vs Akkusative</h2>
+      <p>Nominative does the action. Akkusative receives the action.</p>
+      <table><tr><th>Sentence</th><th>Nominative</th><th>Akkusative</th><th>English</th></tr>
+      <tr><td>Der Mann kauft einen Apfel.</td><td>Der Mann</td><td>einen Apfel</td><td>The man buys an apple.</td></tr>
+      <tr><td>Die Frau liest ein Buch.</td><td>Die Frau</td><td>ein Buch</td><td>The woman reads a book.</td></tr>
+      <tr><td>Das Kind sieht den Hund.</td><td>Das Kind</td><td>den Hund</td><td>The child sees the dog.</td></tr></table>
+      <p>Ask: Who does the action? That is nominative. What or who receives the action? That is accusative.</p>`,
+    exercises: [
+      exChoice('In this sentence, which is nominative? Der Mann kauft einen Apfel.', ['Der Mann','einen Apfel'], 'Der Mann', 'Der Mann does the action.', 'The man buys an apple.'),
+      exChoice('In this sentence, which is accusative? Die Frau liest ein Buch.', ['Die Frau','ein Buch'], 'ein Buch', 'The book receives the action lesen.', 'The woman reads a book.'),
+      exInput('Fill in: ___ Mann kauft ___ Apfel.', 'Der Mann kauft einen Apfel.', 'Mann is subject, Apfel is masculine direct object.', 'The man buys an apple.'),
+      exFix('Fix: Den Vater sieht der Hund. Meaning wanted: The father sees the dog.', 'Der Vater sieht den Hund.', 'Vater is subject, Hund is masculine direct object.', 'The father sees the dog.'),
+      exChoice('Choose the correct sentence.', ['Der Junge hat einen Hund.','Den Junge hat ein Hund.','Der Junge hat ein Hund.'], 'Der Junge hat einen Hund.', 'Junge is subject. Hund is masculine direct object.', 'The boy has a dog.'),
+      exInput('Translate: The mother sees the son.', 'Die Mutter sieht den Sohn.', 'Mutter is feminine nominative. Sohn is masculine accusative.', 'The mother sees the son.'),
+      exChoice('What case is “einen Kaffee” in: Ich trinke einen Kaffee.', ['Nominative','Akkusative'], 'Akkusative', 'Coffee is what I drink, so it is the direct object.', 'I drink a coffee.'),
+      exFix('Fix: Die Schwester besucht der Bruder. Meaning wanted: The sister visits the brother.', 'Die Schwester besucht den Bruder.', 'Bruder is masculine direct object.', 'The sister visits the brother.'),
+      exInput('Fill in: Das Kind sieht ___ Hund.', 'den', 'Hund is masculine accusative.', 'The child sees the dog.'),
+      exChoice('Choose: ___ Katze sieht ___ Vogel.', ['Die Katze sieht den Vogel.','Der Katze sieht der Vogel.','Die Katze sieht der Vogel.'], 'Die Katze sieht den Vogel.', 'Katze is feminine subject. Vogel is masculine direct object.', 'The cat sees the bird.')
+    ]
+  },
+  {
+    id: 'kein',
+    title: 'Negative Articles: kein',
+    short: 'Practice kein, keine, keinen in nominative and accusative.',
+    level: 'A1 Declension',
+    focus: 'Declension',
+    lesson: `
+      <h2>Negative Articles: kein</h2>
+      <p>Use kein to negate a noun. It changes like ein.</p>
+      <table><tr><th>Case</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+      <tr><td>Nominative</td><td>kein Mann</td><td>keine Frau</td><td>kein Kind</td><td>keine Kinder</td></tr>
+      <tr><td>Akkusative</td><td>keinen Mann</td><td>keine Frau</td><td>kein Kind</td><td>keine Kinder</td></tr></table>
+      <p><strong>Memory rule:</strong> Only masculine accusative changes to keinen.</p>`,
+    exercises: [
+      exChoice('Choose: Ich habe ___ Bruder.', ['kein','keinen','keine'], 'keinen', 'Bruder is masculine accusative, so use keinen.', 'I have no brother.'),
+      exChoice('Choose: ___ Frau ist hier.', ['Kein','Keine','Keinen'], 'Keine', 'Frau is feminine nominative.', 'No woman is here.'),
+      exInput('Fill in: Ich sehe ___ Mann.', 'keinen', 'Mann is masculine accusative.', 'I see no man.'),
+      exInput('Fill in: Ich habe ___ Zeit.', 'keine', 'Zeit is feminine accusative.', 'I have no time.'),
+      exChoice('Choose: Das ist ___ Problem.', ['kein','keinen','keine'], 'kein', 'Problem is neuter nominative.', 'That is not a problem.'),
+      exFix('Fix: Ich habe kein Apfel.', 'Ich habe keinen Apfel.', 'Apfel is masculine accusative.', 'I have no apple.'),
+      exInput('Translate: I have no money.', 'Ich habe kein Geld.', 'Geld is neuter accusative, so use kein.', 'I have no money.'),
+      exChoice('Choose: Ich kaufe ___ Tasche.', ['kein','keinen','keine'], 'keine', 'Tasche is feminine accusative.', 'I buy no bag.'),
+      exFix('Fix: Ich brauche kein Schlüssel.', 'Ich brauche keinen Schlüssel.', 'Schlüssel is masculine accusative.', 'I need no key.'),
+      exInput('Fill in: Ich habe ___ Bücher.', 'keine', 'Plural with kein is keine.', 'I have no books.')
+    ]
+  },
+  {
+    id: 'possessive',
+    title: 'Possessive Article Declension',
+    short: 'Practice mein, meine, meinen and similar forms.',
+    level: 'A1 Declension',
+    focus: 'Declension',
+    lesson: `
+      <h2>Possessive Article Declension</h2>
+      <p>Possessive articles change like ein. Focus on mein first, then use the same pattern for dein, sein, ihr, unser.</p>
+      <table><tr><th>Case</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+      <tr><td>Nominative</td><td>mein Vater</td><td>meine Mutter</td><td>mein Kind</td><td>meine Eltern</td></tr>
+      <tr><td>Akkusative</td><td>meinen Vater</td><td>meine Mutter</td><td>mein Kind</td><td>meine Eltern</td></tr></table>
+      <p><strong>Memory rule:</strong> masculine accusative gets n: meinen Vater, deinen Bruder, seinen Hund.</p>`,
+    exercises: [
+      exChoice('Choose: ___ Vater ist nett.', ['Mein','Meinen','Meine'], 'Mein', 'Vater is masculine nominative.', 'My father is nice.'),
+      exChoice('Choose: Ich besuche ___ Vater.', ['mein','meinen','meine'], 'meinen', 'Vater is masculine accusative.', 'I visit my father.'),
+      exInput('Fill in: ___ Mutter kocht.', 'Meine', 'Mutter is feminine nominative.', 'My mother cooks.'),
+      exInput('Fill in: Ich besuche ___ Mutter.', 'meine', 'Mutter is feminine accusative. It stays meine.', 'I visit my mother.'),
+      exChoice('Choose: Ich sehe ___ Bruder.', ['mein','meinen','meine'], 'meinen', 'Bruder is masculine direct object.', 'I see my brother.'),
+      exFix('Fix: Ich besuche mein Vater.', 'Ich besuche meinen Vater.', 'Vater is masculine accusative, so mein becomes meinen.', 'I visit my father.'),
+      exInput('Translate: My sister is young.', 'Meine Schwester ist jung.', 'Schwester is feminine nominative.', 'My sister is young.'),
+      exChoice('Choose: Ich habe ___ Buch.', ['mein','meinen','meine'], 'mein', 'Buch is neuter accusative. mein stays mein.', 'I have my book.'),
+      exFix('Fix: Ich sehe dein Hund.', 'Ich sehe deinen Hund.', 'Hund is masculine accusative.', 'I see your dog.'),
+      exInput('Fill in: Wir besuchen ___ Oma.', 'unsere', 'Oma is feminine accusative, so unsere stays unsere.', 'We visit our grandma.')
+    ]
+  },
+  {
+    id: 'modal-order',
+    title: 'Modal Verb Word Order',
+    short: 'Modal verb in position 2, main verb at the end.',
+    level: 'A1 Word Order',
+    focus: 'Word order',
+    lesson: `
+      <h2>Modal Verb Word Order</h2>
+      <p>With modal verbs, the modal verb is conjugated in position 2. The main verb goes to the end in infinitive form.</p>
+      <div class="lesson-box"><strong>Pattern:</strong> Subject + modal verb + object or extra info + infinitive verb</div>
+      <table><tr><th>German</th><th>English</th><th>Rule</th></tr>
+      <tr><td>Ich möchte Wasser trinken.</td><td>I would like to drink water.</td><td>möchte position 2, trinken at the end.</td></tr>
+      <tr><td>Du musst Deutsch lernen.</td><td>You must learn German.</td><td>musst position 2, lernen at the end.</td></tr>
+      <tr><td>Wir können Pizza essen.</td><td>We can eat pizza.</td><td>können position 2, essen at the end.</td></tr></table>`,
+    exercises: [
+      exBuild('Order the sentence.', ['Ich','möchte','Wasser','trinken'], 'Ich möchte Wasser trinken.', 'Modal verb möchte is second. Infinitive trinken goes to the end.', 'I would like to drink water.'),
+      exFix('Fix: Ich möchte trinken Wasser.', 'Ich möchte Wasser trinken.', 'The main verb trinken goes to the end.', 'I would like to drink water.'),
+      exChoice('Choose the correct sentence.', ['Du musst lernen Deutsch.','Du musst Deutsch lernen.','Du Deutsch musst lernen.'], 'Du musst Deutsch lernen.', 'Modal verb second, main verb at the end.', 'You must learn German.'),
+      exInput('Translate: I can speak German.', 'Ich kann Deutsch sprechen.', 'Kann is second, sprechen is at the end.', 'I can speak German.'),
+      exBuild('Order the sentence.', ['Wir','wollen','Pizza','essen'], 'Wir wollen Pizza essen.', 'Wollen is second, essen is at the end.', 'We want to eat pizza.'),
+      exFix('Fix: Er kann fährt Auto.', 'Er kann Auto fahren.', 'After modal verb, use infinitive at the end.', 'He can drive a car.'),
+      exChoice('Choose: Ich ___ heute arbeiten.', ['muss','arbeite','gehen'], 'muss', 'Muss is the modal verb. Arbeiten is the infinitive.', 'I must work today.'),
+      exInput('Translate: She would like to buy bread.', 'Sie möchte Brot kaufen.', 'Möchte second, kaufen at end.', 'She would like to buy bread.'),
+      exBuild('Order the question.', ['Kannst','du','mir','helfen'], 'Kannst du mir helfen?', 'Yes or no modal question starts with modal verb.', 'Can you help me?'),
+      exFix('Fix: Heute ich muss lernen Deutsch.', 'Heute muss ich Deutsch lernen.', 'Heute first, modal verb second, infinitive at the end.', 'Today I must learn German.')
+    ]
+  }
+];
+
+const VOCAB = [
+  ['der Apfel','die Äpfel','apple','Ich esse einen Apfel.','I eat an apple.'],
+  ['das Brot','die Brote','bread','Ich kaufe ein Brot.','I buy bread.'],
+  ['die Tasche','die Taschen','bag','Ich brauche eine Tasche.','I need a bag.'],
+  ['der Mann','die Männer','man','Der Mann ist hier.','The man is here.'],
+  ['die Frau','die Frauen','woman','Die Frau arbeitet.','The woman works.'],
+  ['das Kind','die Kinder','child','Das Kind spielt.','The child plays.'],
+  ['der Bruder','die Brüder','brother','Ich habe einen Bruder.','I have a brother.'],
+  ['die Schwester','die Schwestern','sister','Meine Schwester ist nett.','My sister is nice.'],
+  ['der Hund','die Hunde','dog','Ich sehe den Hund.','I see the dog.'],
+  ['die Katze','die Katzen','cat','Die Katze ist klein.','The cat is small.'],
+  ['das Buch','die Bücher','book','Ich lese ein Buch.','I read a book.'],
+  ['der Kaffee','die Kaffees','coffee','Ich trinke einen Kaffee.','I drink a coffee.'],
+  ['das Wasser','none','water','Ich trinke Wasser.','I drink water.'],
+  ['die Schule','die Schulen','school','Ich gehe zur Schule.','I go to school.'],
+  ['die Arbeit','none','work','Ich habe Arbeit.','I have work.'],
+  ['der Schlüssel','die Schlüssel','key','Ich suche den Schlüssel.','I am looking for the key.'],
+  ['das Geld','none','money','Ich habe kein Geld.','I have no money.'],
+  ['die Zeit','none','time','Ich habe keine Zeit.','I have no time.'],
+  ['der Vater','die Väter','father','Mein Vater ist nett.','My father is nice.'],
+  ['die Mutter','die Mütter','mother','Ich besuche meine Mutter.','I visit my mother.']
+];
+
+const VERBS = [
+ ['sein','to be','ich bin, du bist, er ist, wir sind','Ich bin müde.','I am tired.'],
+ ['haben','to have','ich habe, du hast, er hat, wir haben','Ich habe Zeit.','I have time.'],
+ ['gehen','to go','ich gehe, du gehst, er geht, wir gehen','Ich gehe nach Hause.','I go home.'],
+ ['kommen','to come','ich komme, du kommst, er kommt, wir kommen','Ich komme heute.','I come today.'],
+ ['kaufen','to buy','ich kaufe, du kaufst, er kauft, wir kaufen','Ich kaufe einen Apfel.','I buy an apple.'],
+ ['sehen','to see','ich sehe, du siehst, er sieht, wir sehen','Ich sehe den Mann.','I see the man.'],
+ ['essen','to eat','ich esse, du isst, er isst, wir essen','Ich esse Brot.','I eat bread.'],
+ ['trinken','to drink','ich trinke, du trinkst, er trinkt, wir trinken','Ich trinke Wasser.','I drink water.'],
+ ['brauchen','to need','ich brauche, du brauchst, er braucht, wir brauchen','Ich brauche eine Tasche.','I need a bag.'],
+ ['suchen','to look for','ich suche, du suchst, er sucht, wir suchen','Ich suche den Schlüssel.','I am looking for the key.'],
+ ['lesen','to read','ich lese, du liest, er liest, wir lesen','Ich lese ein Buch.','I read a book.'],
+ ['lernen','to learn','ich lerne, du lernst, er lernt, wir lernen','Ich lerne Deutsch.','I learn German.']
+];
+
+function exChoice(prompt, options, answer, explanation, translation) { return {type:'choice', prompt, options, answer, explanation, translation}; }
+function exInput(prompt, answer, explanation, translation) { return {type:'input', prompt, answer, explanation, translation}; }
+function exBuild(prompt, words, answer, explanation, translation) { return {type:'build', prompt, words, answer, explanation, translation}; }
+function exFix(prompt, answer, explanation, translation) { return {type:'fix', prompt, answer, explanation, translation}; }
+
+const NAV = [
+  ['home','Home'], ['topics','Practice by Topic'], ['daily','Daily Workout'], ['cheats','Cheat Sheets'], ['vocab','Vocabulary'], ['mistakes','Mistake Review'], ['settings','Settings']
+];
+
+let state = JSON.parse(localStorage.getItem('a1GrammarGym') || '{}');
+state.topicScores = state.topicScores || {};
+state.mistakes = state.mistakes || [];
+state.completed = state.completed || 0;
+state.streak = state.streak || 0;
+let currentTopic = null;
+let currentExercises = [];
+let currentIndex = 0;
+let sessionCorrect = 0;
+let selectedAnswer = '';
+
+function save(){ localStorage.setItem('a1GrammarGym', JSON.stringify(state)); updateOverall(); }
+function norm(s){ return String(s).trim().replace(/\s+/g,' ').replace(/[.!?]$/,'').toLowerCase(); }
+function esc(s){ return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+function topicMastery(id){ return Math.round(state.topicScores[id] || 0); }
+function masteryLabel(v){ if(v >= 90) return 'Mastered'; if(v >= 75) return 'Almost Mastered'; if(v >= 45) return 'Practicing'; if(v > 0) return 'Learning'; return 'Not Started'; }
+function averageMastery(){ return Math.round(TOPICS.reduce((a,t)=>a+topicMastery(t.id),0) / TOPICS.length); }
+
+function init(){
+  document.getElementById('tabs').innerHTML = NAV.map(([id,label]) => `<button class="tab ${id==='home'?'active':''}" onclick="showView('${id}')">${label}</button>`).join('');
+  renderHome(); renderTopics(); renderDaily(); renderCheats(); renderVocab(); renderMistakes(); renderSettings(); updateOverall();
+}
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const tab = [...document.querySelectorAll('.tab')].find(t=>t.textContent === NAV.find(n=>n[0]===id)?.[1]);
+  if(tab) tab.classList.add('active');
+  if(id==='home') renderHome(); if(id==='topics') renderTopics(); if(id==='mistakes') renderMistakes(); if(id==='daily') renderDaily();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function updateOverall(){
+  const avg = averageMastery();
+  document.getElementById('overallMastery').textContent = avg + '%';
+  document.getElementById('overallBar').style.width = avg + '%';
+}
+function renderHome(){
+  const weak = [...TOPICS].sort((a,b)=>topicMastery(a.id)-topicMastery(b.id))[0];
+  document.getElementById('home').innerHTML = `
+    <div class="grid cols-3">
+      <div class="stat-card"><p class="subtle">Practice sessions</p><div class="stat-num">${state.completed}</div></div>
+      <div class="stat-card"><p class="subtle">Mistakes saved</p><div class="stat-num">${state.mistakes.length}</div></div>
+      <div class="stat-card"><p class="subtle">Recommended topic</p><div class="stat-num" style="font-size:22px">${weak.title}</div></div>
+    </div>
+    <div class="panel">
+      <h2>Today’s plan</h2>
+      <p>Start with the weakest topic, then do the daily mixed workout. This trains grammar like a muscle: rule, drill, correction, repeat.</p>
+      <div class="card-actions">
+        <button onclick="openLesson('${weak.id}')">Review ${weak.title}</button>
+        <button class="secondary" onclick="startTopic('${weak.id}')">Start Topic Practice</button>
+        <button class="ghost" onclick="startDailyWorkout()">Start Daily Workout</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Core rules to remember</h2>
+      <div class="grid cols-3">
+        <div class="lesson-box"><strong>Verb position 2</strong><br>Heute trinke ich Kaffee.</div>
+        <div class="lesson-box"><strong>Masculine Akkusative</strong><br>der becomes den, ein becomes einen.</div>
+        <div class="lesson-box"><strong>Modal verbs</strong><br>Ich möchte Wasser trinken.</div>
+      </div>
+    </div>`;
+}
+function renderTopics(){
+  document.getElementById('topics').innerHTML = `
+    <div class="panel"><h2>Practice by Topic</h2><p>Choose one grammar topic. Review the cheat sheet, answer exercises, then retry until the topic reaches 90% mastery.</p></div>
+    <div class="grid cols-3">${TOPICS.map(t=>{
+      const m = topicMastery(t.id);
+      return `<div class="topic-card">
+        <span class="pill">${t.focus}</span><span class="pill">${t.level}</span>
+        <h3>${t.title}</h3><p>${t.short}</p>
+        <div class="progressbar"><div style="width:${m}%"></div></div>
+        <p class="subtle">${m}% · ${masteryLabel(m)} · ${t.exercises.length} exercises</p>
+        <div class="card-actions"><button onclick="openLesson('${t.id}')">Review Theory</button><button class="secondary" onclick="startTopic('${t.id}')">Start Practice</button></div>
+      </div>`}).join('')}</div>`;
+}
+function openLesson(id){
+  currentTopic = TOPICS.find(t=>t.id===id);
+  document.getElementById('lesson').innerHTML = `<div class="panel">${currentTopic.lesson}<div class="card-actions"><button onclick="startTopic('${id}')">Start ${currentTopic.title} Practice</button><button class="secondary" onclick="showView('topics')">Back to Topics</button></div></div>`;
+  showView('lesson');
+}
+function startTopic(id){
+  currentTopic = TOPICS.find(t=>t.id===id);
+  currentExercises = shuffle([...currentTopic.exercises]);
+  currentIndex = 0; sessionCorrect = 0; selectedAnswer = '';
+  renderExercise(); showView('practice');
+}
+function startDailyWorkout(){
+  currentTopic = {id:'daily', title:'Daily Mixed Grammar Workout', focus:'Mixed'};
+  currentExercises = shuffle(TOPICS.flatMap(t => t.exercises.map(e => ({...e, topicId:t.id, topicTitle:t.title})))).slice(0,20);
+  currentIndex = 0; sessionCorrect = 0; selectedAnswer = '';
+  renderExercise(); showView('practice');
+}
+function renderExercise(){
+  const e = currentExercises[currentIndex];
+  if(!e){ finishSession(); return; }
+  let answerArea = '';
+  selectedAnswer = '';
+  if(e.type === 'choice') answerArea = `<div class="options">${e.options.map(o=>`<button class="option" onclick="selectOption(this, '${esc(o)}')">${esc(o)}</button>`).join('')}</div>`;
+  if(e.type === 'input' || e.type === 'fix') answerArea = `<input type="text" id="answerInput" placeholder="Type your answer here" onkeydown="if(event.key==='Enter') checkAnswer()">`;
+  if(e.type === 'build') answerArea = `<p class="subtle">Words: ${e.words.map(w=>`<span class="pill">${esc(w)}</span>`).join('')}</p><input type="text" id="answerInput" placeholder="Write the full sentence" onkeydown="if(event.key==='Enter') checkAnswer()">`;
+  document.getElementById('practice').innerHTML = `
+    <div class="panel">
+      <p class="subtle">${currentTopic.title} · Question ${currentIndex+1} of ${currentExercises.length}</p>
+      <div class="progressbar"><div style="width:${((currentIndex)/currentExercises.length)*100}%"></div></div>
+    </div>
+    <div class="exercise-card flash">
+      <div class="question">${esc(e.prompt)}</div>
+      ${answerArea}
+      <div class="card-actions"><button onclick="checkAnswer()">Check Answer</button><button class="ghost" onclick="skipQuestion()">Skip</button></div>
+      <div id="feedback"></div>
+    </div>`;
+}
+function selectOption(btn, val){
+  selectedAnswer = val;
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+function checkAnswer(){
+  const e = currentExercises[currentIndex];
+  const input = document.getElementById('answerInput');
+  const userAns = e.type === 'choice' ? selectedAnswer : (input ? input.value : '');
+  if(!userAns.trim()){ alert('Please answer first.'); return; }
+  const correct = norm(userAns) === norm(e.answer);
+  if(correct) sessionCorrect++;
+  else state.mistakes.unshift({date:new Date().toLocaleString(), topic: e.topicTitle || currentTopic.title, prompt:e.prompt, your:userAns, answer:e.answer, explanation:e.explanation, translation:e.translation});
+  state.mistakes = state.mistakes.slice(0,200);
+  save();
+  document.getElementById('feedback').innerHTML = `<div class="feedback ${correct?'correct':'wrong'}">
+    <h3>${correct ? 'Correct' : 'Needs fixing'}</h3>
+    <p><strong>Your answer:</strong> ${esc(userAns)}</p>
+    <p><strong>Correct answer:</strong> ${esc(e.answer)}</p>
+    <p><strong>Rule:</strong> ${esc(e.explanation)}</p>
+    <p><strong>Translation:</strong> ${esc(e.translation)}</p>
+    <div class="card-actions"><button onclick="nextQuestion()">Next</button><button class="secondary" onclick="renderExercise()">Retry this question</button></div>
+  </div>`;
+}
+function skipQuestion(){ nextQuestion(); }
+function nextQuestion(){ currentIndex++; selectedAnswer=''; renderExercise(); }
+function finishSession(){
+  const score = Math.round((sessionCorrect/currentExercises.length)*100);
+  state.completed++;
+  if(currentTopic.id !== 'daily') state.topicScores[currentTopic.id] = Math.max(topicMastery(currentTopic.id), score);
+  else {
+    currentExercises.forEach(e=>{ if(e.topicId) state.topicScores[e.topicId] = Math.max(topicMastery(e.topicId), Math.min(100, topicMastery(e.topicId)+2)); });
+  }
+  save();
+  document.getElementById('practice').innerHTML = `<div class="panel"><h2>Session complete</h2><p>Your score is:</p><div class="big-score">${score}%</div><div class="progressbar"><div style="width:${score}%"></div></div><p>${score >= 90 ? 'Mastery level achieved. The grammar goblin has been defeated for this round.' : 'Good practice. Retry this topic until you reach 90%.'}</p><div class="card-actions"><button onclick="${currentTopic.id==='daily'?'startDailyWorkout()':`startTopic('${currentTopic.id}')`}">Retry</button><button class="secondary" onclick="showView('topics')">Choose Another Topic</button><button class="ghost" onclick="showView('mistakes')">Review Mistakes</button></div></div>`;
+  renderHome(); renderTopics(); renderMistakes();
+}
+function renderDaily(){
+  document.getElementById('daily').innerHTML = `<div class="panel"><h2>Daily Mixed Grammar Workout</h2><p>This mixes word order, cases, declension, articles, possessives, and question patterns. Use this after topic practice.</p><div class="card-actions"><button onclick="startDailyWorkout()">Start 20 Questions</button></div></div>
+  <div class="grid cols-3"><div class="lesson-box"><strong>5</strong><br>Word order style questions</div><div class="lesson-box"><strong>5</strong><br>Case and article questions</div><div class="lesson-box"><strong>5+</strong><br>Corrections and translations</div></div>`;
+}
+function renderCheats(){
+  document.getElementById('cheats').innerHTML = `<div class="panel"><h2>Grammar Cheat Sheets</h2><p>Quick review before practice.</p></div>${TOPICS.map(t=>`<div class="panel">${t.lesson}<button onclick="startTopic('${t.id}')">Practice this topic</button></div>`).join('')}`;
+}
+function renderVocab(){
+  document.getElementById('vocab').innerHTML = `<div class="panel"><h2>A1 Vocabulary Builder</h2><p>Common words used inside the grammar exercises.</p><table><tr><th>Word</th><th>Plural</th><th>Meaning</th><th>Example</th><th>Translation</th></tr>${VOCAB.map(v=>`<tr><td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td><td>${v[3]}</td><td>${v[4]}</td></tr>`).join('')}</table></div>
+  <div class="panel"><h2>Common A1 Verbs</h2><table><tr><th>Verb</th><th>Meaning</th><th>Conjugation</th><th>Example</th><th>Translation</th></tr>${VERBS.map(v=>`<tr><td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td><td>${v[3]}</td><td>${v[4]}</td></tr>`).join('')}</table></div>`;
+}
+function renderMistakes(){
+  if(!state.mistakes.length){ document.getElementById('mistakes').innerHTML = `<div class="panel"><h2>Mistake Review</h2><p>No mistakes saved yet. Suspiciously perfect. Go practice and let German humble us politely.</p></div>`; return; }
+  document.getElementById('mistakes').innerHTML = `<div class="panel"><h2>Mistake Review</h2><p>Review wrong answers and the rule behind each correction.</p><button class="bad" onclick="clearMistakes()">Clear Mistakes</button></div>` + state.mistakes.map(m=>`<div class="exercise-card"><span class="pill">${esc(m.topic)}</span><p class="subtle">${esc(m.date)}</p><h3>${esc(m.prompt)}</h3><p><strong>Your answer:</strong> ${esc(m.your)}</p><p><strong>Correct answer:</strong> ${esc(m.answer)}</p><p><strong>Rule:</strong> ${esc(m.explanation)}</p><p><strong>Translation:</strong> ${esc(m.translation)}</p></div>`).join('');
+}
+function clearMistakes(){ if(confirm('Clear all saved mistakes?')){ state.mistakes=[]; save(); renderMistakes(); }}
+function renderSettings(){
+  document.getElementById('settings').innerHTML = `<div class="panel"><h2>Settings</h2><p>Your progress is saved in this browser using localStorage.</p><div class="card-actions"><button class="bad" onclick="resetProgress()">Reset All Progress</button></div></div>`;
+}
+function resetProgress(){ if(confirm('Reset all mastery scores and mistakes?')){ state={topicScores:{},mistakes:[],completed:0,streak:0}; save(); init(); showView('home'); }}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+init();
+</script>
+</body>
+</html>

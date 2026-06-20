@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Goethe A1 German Noun Article Quiz</title>
+<style>
+:root{--bg:#f7f3ee;--card:#fffaf4;--ink:#261f1b;--muted:#6f625a;--accent:#8b5cf6;--good:#15803d;--bad:#b91c1c;--der:#dbeafe;--die:#fce7f3;--das:#dcfce7;--shadow:0 14px 35px rgba(38,31,27,.12)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f7f3ee 40%,#efe7dc 100%);color:var(--ink)}
+header{padding:26px 18px 10px;max-width:1180px;margin:auto}h1{margin:0;font-size:clamp(28px,4vw,48px);line-height:1.05}.sub{color:var(--muted);max-width:760px;font-size:16px;line-height:1.55}.wrap{max-width:1180px;margin:auto;padding:16px 18px 48px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(255,250,244,.92);border:1px solid rgba(38,31,27,.08);border-radius:24px;box-shadow:var(--shadow);padding:20px}.toprow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}.pill{border:1px solid rgba(38,31,27,.12);background:#fff;border-radius:999px;padding:8px 12px;color:var(--muted);font-size:13px}.score{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}.score div{background:#fff;border-radius:16px;padding:12px;text-align:center;border:1px solid rgba(38,31,27,.07)}.score b{display:block;font-size:24px}.score span{font-size:12px;color:var(--muted)}
+.question{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(180deg,#fff,#fff8ef);border:1px solid rgba(38,31,27,.08);border-radius:22px;padding:26px;margin:12px 0}.noun{font-size:clamp(42px,7vw,76px);font-weight:850;letter-spacing:-1px}.meaning{font-size:20px;color:var(--muted);margin-top:8px}.plural{font-size:14px;color:var(--muted);margin-top:8px}.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.btn{border:0;border-radius:18px;padding:18px 10px;font-size:22px;font-weight:800;cursor:pointer;transition:.16s transform,.16s filter;background:#fff;border:1px solid rgba(38,31,27,.1)}.btn:hover{transform:translateY(-2px);filter:brightness(.98)}.btn:disabled{opacity:.65;cursor:not-allowed;transform:none}.autoNext{font-size:13px;color:var(--muted);text-align:center;margin-top:-2px;margin-bottom:10px;min-height:18px}.btn.der{background:var(--der)}.btn.die{background:var(--die)}.btn.das{background:var(--das)}.btn.small{font-size:14px;padding:11px 12px;border-radius:14px}.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.controls button,.controls select,.controls input{border:1px solid rgba(38,31,27,.15);background:#fff;border-radius:14px;padding:11px 12px;font-size:14px}.feedback{font-size:18px;font-weight:800;min-height:34px;margin:12px 0 8px;text-align:center}.explain{display:none;background:#fff;border:1px solid rgba(38,31,27,.08);border-radius:18px;padding:14px 16px;margin:8px 0 12px;line-height:1.45;color:var(--ink)}.explain b{font-weight:850}.explain .rule{color:var(--muted);font-size:14px;margin-top:6px}.explain.show{display:block}.good{color:var(--good)}.bad{color:var(--bad)}.list{max-height:520px;overflow:auto;border-radius:18px;border:1px solid rgba(38,31,27,.08);background:#fff}.row{display:grid;grid-template-columns:70px 1fr 1fr;gap:8px;padding:10px 12px;border-bottom:1px solid rgba(38,31,27,.06);align-items:center}.tag{font-weight:850;border-radius:999px;padding:5px 8px;text-align:center}.tag.der{background:var(--der)}.tag.die{background:var(--die)}.tag.das{background:var(--das)}.tiny{font-size:12px;color:var(--muted)}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tab{cursor:pointer;border:1px solid rgba(38,31,27,.12);padding:9px 12px;border-radius:999px;background:#fff}.tab.active{background:#261f1b;color:#fff}.hidden{display:none}.cheat{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}@media(max-width:700px){.cheat,.buttons,.score{grid-template-columns:1fr}.row{grid-template-columns:55px 1fr}.row .eng{grid-column:2}}
+.cheat div{border-radius:18px;padding:14px;background:#fff;border:1px solid rgba(38,31,27,.08)}textarea{width:100%;min-height:120px;border-radius:16px;border:1px solid rgba(38,31,27,.16);padding:12px;font-family:ui-monospace,Consolas,monospace}.footer{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.45}
+</style>
+</head>
+<body>
+<header>
+<h1>Goethe A1 Noun Article Trainer</h1>
+<p class="sub">Practice the article first: <b>der</b>, <b>die</b>, or <b>das</b>. The app tracks mistakes, repeats weak words, and explains article clues after each answer.</p>
+</header>
+<div class="wrap">
+<div class="grid">
+<section class="card">
+<div class="toprow"><span class="pill" id="countPill"></span><span class="pill" id="modePill">Mode: all nouns</span></div>
+<div class="score"><div><b id="score">0</b><span>correct</span></div><div><b id="wrong">0</b><span>wrong</span></div><div><b id="streak">0</b><span>streak</span></div><div><b id="accuracy">0%</b><span>accuracy</span></div></div>
+<div class="question">
+<div class="tiny">Choose the correct article</div>
+<div class="noun" id="noun">Haus</div>
+<div class="meaning" id="meaning">house</div>
+<div class="plural" id="plural">Plural: die Häuser</div>
+</div>
+<div class="buttons"><button class="btn der" onclick="answer('der')">der</button><button class="btn die" onclick="answer('die')">die</button><button class="btn das" onclick="answer('das')">das</button></div>
+<div class="feedback" id="feedback"></div>
+<div class="explain" id="explainBox"></div>
+<div class="autoNext" id="autoNext"></div>
+<div class="controls">
+<select id="filter" onchange="setFilter()"><option value="all">All nouns</option><option value="der">Only der</option><option value="die">Only die</option><option value="das">Only das</option><option value="wrong">Mistakes only</option></select>
+<button onclick="nextQuestion()">Skip</button><button onclick="toggleMeaning()">Hide meaning</button><button onclick="resetStats()">Reset score</button><button onclick="shuffleNow()">Shuffle</button>
+</div>
+</section>
+<aside class="card">
+<div class="tabs"><button class="tab active" onclick="showTab('cheat',this)">Cheat sheet</button><button class="tab" onclick="showTab('words',this)">Word list</button><button class="tab" onclick="showTab('mistakes',this)">Mistakes</button><button class="tab" onclick="showTab('import',this)">Import</button></div>
+<div id="cheat">
+<h2>Article memory clues</h2>
+<div class="cheat"><div><b>der</b><p class="tiny">Often male people, days, months, seasons, many words ending in er, en, el.</p></div><div><b>die</b><p class="tiny">Often female people, words ending in ung, heit, keit, schaft, ion, ei, in.</p></div><div><b>das</b><p class="tiny">Often diminutives ending in chen or lein, many infinitive nouns, many words ending in ment or um.</p></div></div>
+<p class="tiny">These are clues, not laws. German articles like to act innocent then betray you, so memorize the full noun with article.</p>
+</div>
+<div id="words" class="hidden"><h2>Full practice list</h2><div class="list" id="wordList"></div></div>
+<div id="mistakes" class="hidden"><h2>Your mistake list</h2><div class="list" id="mistakeList"></div></div>
+<div id="import" class="hidden"><h2>Add or replace words</h2><p class="tiny">Format: article,noun,plural,English. Example: der,Hund,die Hunde,dog</p><textarea id="csvBox"></textarea><div class="controls"><button onclick="appendCsv()">Add words</button><button onclick="replaceCsv()">Replace list</button><button onclick="downloadCsv()">Download CSV</button></div></div>
+</aside>
+</div>
+<p class="footer">Built for A1 article memorization. Data is stored only in this browser using localStorage.</p>
+</div>
+<script>
+const defaultWords = `das,Apartment,die Apartments,apartment
+die,Tasche,die Taschen,bag
+der,Saft,die Säfte,juice
+die,Speisekarte,die Speisekarten,menu
+die,Sprache,die Sprachen,language
+die,Stadt,die Städte,city
+die,Frage,die Fragen,question
+die,Frau,die Frauen,woman
+das,Papier,die Papiere,paper
+die,Welt,die Welten,world
+der,Chef,die Chefs,boss
+der,Dank,,thanks
+das,Wetter,,weather
+die,Papiere,die Papiere,papers
+das,Wiederhören,,goodbye on phone
+der,Gruß,die Grüße,greeting
+die,Anzeige,die Anzeigen,advertisement
+der,Student,die Studenten,student
+die,Kreditkarte,die Kreditkarten,credit card
+die,Antwort,die Antworten,answer
+der,Hund,die Hunde,dog
+der,Anschluss,die Anschlüsse,connection
+das,Foto,die Fotos,photo
+das,Formular,die Formulare,form
+das,Café,die Cafés,café
+die,Hochzeit,die Hochzeiten,wedding
+der,Flughafen,die Flughäfen,airport
+die,Butter,,butter
+die,Blume,die Blumen,flower
+das,Doppelzimmer,die Doppelzimmer,double room
+der,Abflug,die Abflüge,departure
+das,Bett,die Betten,bed
+der,Blick,die Blicke,view
+der,Sohn,die Söhne,son
+die,Tomate,die Tomaten,tomato
+das,Dorf,die Dörfer,village
+das,Hotel,die Hotels,hotel
+der,Drucker,die Drucker,printer
+die,Durchsage,die Durchsagen,announcement
+der,Durst,,thirst
+die,Dusche,die Duschen,shower
+die,Ecke,die Ecken,corner
+die,Ehefrau,die Ehefrauen,wife
+der,Ehemann,die Ehemänner,husband
+die,CD,die CDs,CD
+der,Bruder,die Brüder,brother
+das,Gepäck,,luggage
+das,Ei,die Eier,egg
+der,Eingang,die Eingänge,entrance
+die,Einladung,die Einladungen,invitation
+der,Eintritt,die Eintritte,admission
+das,Einzelzimmer,die Einzelzimmer,single room
+die,Eltern,die Eltern,parents
+die,E-Mail,die E-Mails,email
+der,Empfänger,die Empfänger,recipient
+das,Ende,die Enden,end
+die,Stunde,die Stunden,hour
+die,Entschuldigung,die Entschuldigungen,apology
+das,Ergebnis,die Ergebnisse,result
+der,Erwachsene,die Erwachsenen,adult
+das,Essen,die Essen,food
+der,Fahrer,die Fahrer,driver
+die,Fahrkarte,die Fahrkarten,ticket
+das,Fahrrad,die Fahrräder,bicycle
+die,Familie,die Familien,family
+der,Familienname,die Familiennamen,last name
+der,Familienstand,die Familienstände,marital status
+die,Sonne,die Sonnen,sun
+der,Sport,die Sportarten,sport
+der,Bleistift,die Bleistifte,pencil
+das,Sofa,die Sofas,sofa
+das,Haar,die Haare,hair
+der,Appetit,,appetite
+das,Hähnchen,die Hähnchen,chicken
+die,Halle,die Hallen,hall
+die,Haltestelle,die Haltestellen,stop
+der,Vater,die Väter,father
+die,Mutter,die Mütter,mother
+die,Schwester,die Schwestern,sister
+das,Kind,die Kinder,child
+der,Freund,die Freunde,male friend
+die,Freundin,die Freundinnen,female friend
+das,Mädchen,die Mädchen,girl
+der,Junge,die Jungen,boy
+der,Mann,die Männer,man
+die,Leute,die Leute,people
+die,Geschwister,die Geschwister,siblings
+die,Großeltern,die Großeltern,grandparents
+der,Großvater,die Großväter,grandfather
+die,Großmutter,die Großmütter,grandmother
+der,Vorname,die Vornamen,first name
+die,Adresse,die Adressen,address
+die,Postleitzahl,die Postleitzahlen,postal code
+die,Heimat,die Heimaten,homeland
+der,Ausländer,die Ausländer,foreigner
+das,Land,die Länder,country
+der,Ort,die Orte,place
+die,Straße,die Straßen,street
+das,Haus,die Häuser,house
+die,Wohnung,die Wohnungen,apartment flat
+das,Zimmer,die Zimmer,room
+das,Wohnzimmer,die Wohnzimmer,living room
+das,Schlafzimmer,die Schlafzimmer,bedroom
+die,Küche,die Küchen,kitchen
+das,Bad,die Bäder,bathroom
+die,Toilette,die Toiletten,toilet
+die,Tür,die Türen,door
+das,Fenster,die Fenster,window
+die,Wand,die Wände,wall
+der,Tisch,die Tische,table
+der,Stuhl,die Stühle,chair
+der,Schrank,die Schränke,cupboard
+der,Kühlschrank,die Kühlschränke,fridge
+der,Herd,die Herde,stove
+die,Lampe,die Lampen,lamp
+das,Licht,die Lichter,light
+das,Bild,die Bilder,picture
+das,Buch,die Bücher,book
+das,Wort,die Wörter,word
+der,Satz,die Sätze,sentence
+der,Buchstabe,die Buchstaben,letter alphabet
+der,Text,die Texte,text
+die,Zeitung,die Zeitungen,newspaper
+die,Schule,die Schulen,school
+die,Hausaufgabe,die Hausaufgaben,homework
+die,Aufgabe,die Aufgaben,task
+die,Prüfung,die Prüfungen,exam
+der,Test,die Tests,test
+die,Lösung,die Lösungen,solution
+der,Beruf,die Berufe,profession
+der,Job,die Jobs,job
+die,Arbeit,die Arbeiten,work
+der,Arbeitsplatz,die Arbeitsplätze,workplace
+die,Firma,die Firmen,company
+der,Chef,die Chefs,boss
+die,Praxis,die Praxen,practice office
+der,Arzt,die Ärzte,doctor
+der,Doktor,die Doktoren,doctor
+die,Hilfe,die Hilfen,help
+die,Information,die Informationen,information
+die,Auskunft,die Auskünfte,information
+der,Plan,die Pläne,plan
+der,Preis,die Preise,price
+das,Geld,die Gelder,money
+die,Bank,die Banken,bank
+die,Rechnung,die Rechnungen,bill
+die,Unterschrift,die Unterschriften,signature
+der,Pass,die Pässe,passport
+das,Schild,die Schilder,sign
+die,Reparatur,die Reparaturen,repair
+der,Termin,die Termine,appointment
+die,Uhr,die Uhren,clock watch
+die,Zeit,die Zeiten,time
+der,Tag,die Tage,day
+die,Woche,die Wochen,week
+der,Monat,die Monate,month
+das,Jahr,die Jahre,year
+der,Morgen,die Morgen,morning
+der,Abend,die Abende,evening
+die,Nacht,die Nächte,night
+der,Geburtstag,die Geburtstage,birthday
+die,Geburt,die Geburten,birth
+das,Glück,,luck
+der,Hunger,,hunger
+der,Wind,die Winde,wind
+das,Meer,die Meere,sea
+das,Wasser,,water
+die,Milch,,milk
+der,Tee,die Tees,tea
+der,Kaffee,die Kaffees,coffee
+der,Wein,die Weine,wine
+das,Brot,die Brote,bread
+das,Brötchen,die Brötchen,bread roll
+die,Kartoffel,die Kartoffeln,potato
+die,Lebensmittel,die Lebensmittel,groceries
+das,Fleisch,,meat
+der,Schinken,die Schinken,ham
+das,Öl,die Öle,oil
+der,Bahnhof,die Bahnhöfe,train station
+der,Bahnsteig,die Bahnsteige,platform
+das,Gleis,die Gleise,track platform
+der,Zug,die Züge,train
+die,S-Bahn,die S-Bahnen,suburban train
+der,Bus,die Busse,bus
+das,Taxi,die Taxis,taxi
+der,Lkw,die Lkws,truck
+das,Auto,die Autos,car
+der,Ausgang,die Ausgänge,exit
+der,Flug,die Flüge,flight
+das,Flugzeug,die Flugzeuge,airplane
+der,Koffer,die Koffer,suitcase
+die,Reise,die Reisen,trip
+der,Urlaub,die Urlaube,vacation
+der,Ausflug,die Ausflüge,excursion
+der,Reiseführer,die Reiseführer,guidebook
+das,Reisebüro,die Reisebüros,travel agency
+die,Sehenswürdigkeit,die Sehenswürdigkeiten,sight
+die,Rezeption,die Rezeptionen,reception
+die,Halbpension,,half board
+das,Schwimmbad,die Schwimmbäder,swimming pool
+die,Disco,die Discos,disco
+das,Internet,,internet
+die,Kleidung,,clothes
+die,Jacke,die Jacken,jacket
+das,Bein,die Beine,leg
+der,Arm,die Arme,arm
+das,Auge,die Augen,eye
+der,Kopf,die Köpfe,head
+der,Mund,die Münder,mouth
+die,Hand,die Hände,hand
+der,Fuß,die Füße,foot
+der,Baum,die Bäume,tree`;
+let words = loadWords();
+let pool = [];
+let current = null;
+let answerLocked = false;
+let autoTimer = null;
+let stats = JSON.parse(localStorage.getItem('a1ArticleStats')||'{"right":0,"wrong":0,"streak":0,"mistakes":{}}');
+let hideMeaning=false;
+function parseCsv(txt){return txt.trim().split(/\n+/).map(l=>l.split(',')).filter(a=>a.length>=4).map(a=>({article:a[0].trim(), noun:a[1].trim(), plural:a[2].trim(), english:a.slice(3).join(',').trim()})).filter(x=>['der','die','das'].includes(x.article)&&x.noun)}
+function loadWords(){let saved=localStorage.getItem('a1ArticleWords');return saved?JSON.parse(saved):parseCsv(defaultWords)}
+function saveWords(){localStorage.setItem('a1ArticleWords',JSON.stringify(words))}
+function saveStats(){localStorage.setItem('a1ArticleStats',JSON.stringify(stats))}
+function shuffle(arr){for(let i=arr.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
+function articleHint(w){
+  let n=w.noun;
+  let lower=n.toLowerCase();
+  const exact={
+    'Apartment':'International word ending in ment is usually das.','Mädchen':'Words ending in chen are always das, even when the meaning is female.','Brötchen':'Words ending in chen are always das.','Hähnchen':'Words ending in chen are always das.','Essen':'Nominalized verb from essen, so it is das.','Schwimmbad':'Compound noun ending with Bad. Bad is das, so Schwimmbad is das.','Doppelzimmer':'Compound noun ending with Zimmer. Zimmer is das, so Doppelzimmer is das.','Einzelzimmer':'Compound noun ending with Zimmer. Zimmer is das, so Einzelzimmer is das.','Wohnzimmer':'Compound noun ending with Zimmer. Zimmer is das, so Wohnzimmer is das.','Schlafzimmer':'Compound noun ending with Zimmer. Zimmer is das, so Schlafzimmer is das.','Reisebüro':'Compound noun ending with Büro. Büro is das, so Reisebüro is das.','Flugzeug':'Compound noun ending with Zeug. Zeug is das, so Flugzeug is das.','Fahrrad':'Compound noun ending with Rad. Rad is das, so Fahrrad is das.','Geburtstag':'Compound noun ending with Tag. Tag is der, so Geburtstag is der.','Familienname':'Compound noun ending with Name. Name is der, so Familienname is der.','Familienstand':'Compound noun ending with Stand. Stand is der, so Familienstand is der.','Arbeitsplatz':'Compound noun ending with Platz. Platz is der, so Arbeitsplatz is der.','Bahnhof':'Compound noun ending with Hof. Hof is der, so Bahnhof is der.','Bahnsteig':'Compound noun ending with Steig. Steig is der, so Bahnsteig is der.','Kühlschrank':'Compound noun ending with Schrank. Schrank is der, so Kühlschrank is der.','Ausgang':'Words ending in gang are usually der.','Eingang':'Words ending in gang are usually der.','Anschluss':'Words ending in uss are often der.','Abflug':'Words ending in flug are der.','Ausflug':'Words ending in flug are der.','Student':'Male person or role, so it is der.','Chef':'Male person or role, so it is der.','Fahrer':'Male person or role and many er endings are der.','Empfänger':'Male person or role and many er endings are der.','Ausländer':'Male person or role and many er endings are der.','Erwachsene':'Masculine form for adult person in this list, so der.','Vater':'Male family member, so der.','Bruder':'Male family member, so der.','Sohn':'Male family member, so der.','Großvater':'Male family member, so der.','Ehemann':'Male family member, so der.','Mann':'Male person, so der.','Junge':'Male child, so der.','Arzt':'Male person or role, so der.','Doktor':'Male person or role, so der.','Freund':'Male person, so der.','Frau':'Female person, so die.','Freundin':'Female person and words ending in in for female roles are die.','Schwester':'Female family member, so die.','Mutter':'Female family member, so die.','Großmutter':'Female family member, so die.','Ehefrau':'Female family member, so die.','Eltern':'Plural noun. Plural article is always die.','Leute':'Plural noun. Plural article is always die.','Geschwister':'Plural noun in this list. Plural article is always die.','Großeltern':'Plural noun. Plural article is always die.','Lebensmittel':'Usually used as plural groceries here, so die Lebensmittel.','Papiere':'Plural noun. Plural article is always die.','Kleidung':'Words ending in ung are always die.','Einladung':'Words ending in ung are always die.','Entschuldigung':'Words ending in ung are always die.','Lösung':'Words ending in ung are always die.','Prüfung':'Words ending in ung are always die.','Rechnung':'Words ending in ung are always die.','Durchsage':'Words ending in e are often die.','Anzeige':'Words ending in e are often die.','Sprache':'Words ending in e are often die.','Frage':'Words ending in e are often die.','Tasche':'Words ending in e are often die.','Blume':'Words ending in e are often die.','Ecke':'Words ending in e are often die.','Stunde':'Words ending in e are often die.','Schule':'Words ending in e are often die.','Küche':'Words ending in e are often die.','Straße':'Words ending in e are often die.','Lampe':'Words ending in e are often die.','Reise':'Words ending in e are often die.','Woche':'Words ending in e are often die.','Sonne':'Words ending in e are often die.','Tomate':'Words ending in e are often die.','Kartoffel':'Many el endings vary, but Kartoffel is a common A1 noun you should memorize as die.','Butter':'Butter is one of the food nouns best memorized with article: die Butter.','Milch':'Milch is best memorized as die Milch.','Zeitung':'Words ending in ung are always die.','Information':'Words ending in ion are usually die.','Rezeption':'Words ending in ion are usually die.','Reparatur':'Words ending in ur are often die.','Sehenswürdigkeit':'Words ending in keit are always die.','Hochzeit':'Words ending in zeit are usually die.','Heimat':'Words ending in heit are usually die, but Heimat is a memorized die word.','Geburt':'Words ending in t can vary, so memorize: die Geburt.','Arbeit':'Common abstract noun ending in eit, so die Arbeit.','Haltestelle':'Compound noun ending with Stelle. Stelle is die, so Haltestelle is die.','Postleitzahl':'Compound noun ending with Zahl. Zahl is die, so Postleitzahl is die.','Kreditkarte':'Compound noun ending with Karte. Karte is die, so Kreditkarte is die.','Speisekarte':'Compound noun ending with Karte. Karte is die, so Speisekarte is die.','Fahrkarte':'Compound noun ending with Karte. Karte is die, so Fahrkarte is die.','Hausaufgabe':'Compound noun ending with Aufgabe. Aufgabe is die, so Hausaufgabe is die.','S Bahn':'Compound noun ending with Bahn. Bahn is die, so S Bahn is die.','S-Bahn':'Compound noun ending with Bahn. Bahn is die, so S Bahn is die.'
+  };
+  if(exact[n]) return exact[n];
+  if(lower.endsWith('ung')) return 'Words ending in ung are almost always die.';
+  if(lower.endsWith('heit')||lower.endsWith('keit')) return 'Words ending in heit or keit are always die.';
+  if(lower.endsWith('schaft')) return 'Words ending in schaft are usually die.';
+  if(lower.endsWith('ion')) return 'Words ending in ion are usually die.';
+  if(lower.endsWith('ei')) return 'Words ending in ei are usually die.';
+  if(lower.endsWith('in') && w.article==='die') return 'Female person or role ending in in, so it is die.';
+  if(lower.endsWith('chen')||lower.endsWith('lein')) return 'Diminutive endings chen and lein are always das.';
+  if(lower.endsWith('ment')) return 'Words ending in ment are often das.';
+  if(lower.endsWith('um')) return 'Words ending in um are often das.';
+  if(lower.endsWith('er') && w.article==='der') return 'Many everyday nouns ending in er are der, especially male roles and agent nouns.';
+  if(lower.endsWith('en') && w.article==='der') return 'Many nouns ending in en can be der, but this one is best memorized with its article.';
+  if(lower.endsWith('e') && w.article==='die') return 'Many A1 nouns ending in e are die.';
+  if(['der'].includes(w.article) && ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag','Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'].includes(n)) return 'Days and months are always der.';
+  return 'No strong beginner pattern here. Memorize it as one chunk: '+w.article+' '+w.noun+'.';
+}
+function explainArticle(w){let hint=articleHint(w);let plural=w.plural?'<br><span class="rule">Plural: '+w.plural+'. Remember: plural article is always die.</span>':'';return '<b>'+w.article+' '+w.noun+'</b> means “'+w.english+'”.<div class="rule">Why: '+hint+'</div>'+plural+'<div class="rule">Tip: always learn nouns together with the article, like one word: <b>'+w.article+' '+w.noun+'</b>.</div>'}
+
+function buildPool(){let f=document.getElementById('filter')?.value||'all';if(f==='wrong'){let keys=Object.keys(stats.mistakes||{});pool=words.filter(w=>keys.includes(w.article+' '+w.noun))}else if(f==='all'){pool=[...words]}else{pool=words.filter(w=>w.article===f)}if(pool.length===0)pool=[...words];shuffle(pool);document.getElementById('modePill').textContent='Mode: '+f;}
+function nextQuestion(){if(autoTimer){clearTimeout(autoTimer);autoTimer=null}answerLocked=false;document.querySelectorAll('.buttons .btn').forEach(b=>b.disabled=false);document.getElementById('autoNext').textContent='';if(!pool.length)buildPool();current=pool.pop();document.getElementById('noun').textContent=current.noun;document.getElementById('meaning').textContent=hideMeaning?'Meaning hidden':current.english;document.getElementById('plural').textContent=current.plural?'Plural: '+current.plural:'Plural: no common plural';document.getElementById('feedback').textContent='';let ex=document.getElementById('explainBox');ex.className='explain';ex.innerHTML='';updateUi()}
+function answer(a){if(!current||answerLocked)return;answerLocked=true;document.querySelectorAll('.buttons .btn').forEach(b=>b.disabled=true);let fb=document.getElementById('feedback');let ex=document.getElementById('explainBox');let key=current.article+' '+current.noun;if(a===current.article){stats.right++;stats.streak++;fb.className='feedback good';fb.textContent='Correct: '+current.article+' '+current.noun;if(stats.mistakes[key]){stats.mistakes[key]--;if(stats.mistakes[key]<=0)delete stats.mistakes[key]}}else{stats.wrong++;stats.streak=0;stats.mistakes[key]=(stats.mistakes[key]||0)+1;fb.className='feedback bad';fb.textContent='Nope. It is '+current.article+' '+current.noun+'.'}ex.className='explain show';ex.innerHTML=explainArticle(current);saveStats();renderMistakes();updateUi();let n=4;let status=document.getElementById('autoNext');status.textContent='Next word in '+n+' seconds...';let countdown=setInterval(()=>{n--;if(n>0){status.textContent='Next word in '+n+' seconds...'}else{clearInterval(countdown)}},1000);autoTimer=setTimeout(()=>{clearInterval(countdown);nextQuestion()},4000)}
+function updateUi(){let total=stats.right+stats.wrong;document.getElementById('score').textContent=stats.right;document.getElementById('wrong').textContent=stats.wrong;document.getElementById('streak').textContent=stats.streak;document.getElementById('accuracy').textContent=total?Math.round(stats.right/total*100)+'%':'0%';document.getElementById('countPill').textContent=words.length+' nouns loaded'}
+function setFilter(){buildPool();nextQuestion()}
+function toggleMeaning(){hideMeaning=!hideMeaning;document.getElementById('meaning').textContent=hideMeaning?'Meaning hidden':current.english}
+function resetStats(){stats={right:0,wrong:0,streak:0,mistakes:{}};saveStats();renderMistakes();updateUi();nextQuestion()}
+function shuffleNow(){buildPool();nextQuestion()}
+function showTab(id,el){['cheat','words','mistakes','import'].forEach(x=>document.getElementById(x).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active')}
+function renderWords(){document.getElementById('wordList').innerHTML=words.map(w=>`<div class="row"><span class="tag ${w.article}">${w.article}</span><b>${w.noun}</b><span class="eng">${w.english}<br><span class="tiny">${w.plural||'no common plural'}</span></span></div>`).join('')}
+function renderMistakes(){let keys=Object.entries(stats.mistakes||{}).sort((a,b)=>b[1]-a[1]);document.getElementById('mistakeList').innerHTML=keys.length?keys.map(([k,v])=>{let [art,...n]=k.split(' ');let noun=n.join(' ');let w=words.find(x=>x.article===art&&x.noun===noun)||{};return `<div class="row"><span class="tag ${art}">${art}</span><b>${noun}</b><span class="eng">${w.english||''}<br><span class="tiny">missed ${v} time${v>1?'s':''}</span></span></div>`}).join(''):'<p style="padding:14px">No mistakes yet. Suspiciously perfect.</p>'}
+function appendCsv(){let add=parseCsv(document.getElementById('csvBox').value);words=words.concat(add);saveWords();renderWords();buildPool();nextQuestion()}
+function replaceCsv(){let repl=parseCsv(document.getElementById('csvBox').value);if(repl.length){words=repl;saveWords();renderWords();buildPool();nextQuestion()}}
+function downloadCsv(){let csv=words.map(w=>[w.article,w.noun,w.plural,w.english].join(',')).join('\n');let blob=new Blob([csv],{type:'text/csv'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='goethe-a1-nouns-articles.csv';a.click()}
+renderWords();renderMistakes();buildPool();nextQuestion();
+</script>
+</body>
+</html>

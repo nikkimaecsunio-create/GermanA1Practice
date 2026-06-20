@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>German A1 — Complete Goethe Cheat Sheet</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+:root{--ink:#1a1a2e;--ink2:#4a4a6a;--ink3:#8a8aaa;--bg:#f5f5fa;--white:#fff;--bd:#e0e0ef;--bd2:#c5c5df;--masc:#1a6fc4;--masc-bg:#e6f1fb;--masc-bd:#aaccf0;--fem:#b5346a;--fem-bg:#fce8f2;--fem-bd:#eeaad0;--neut:#1a8a5e;--neut-bg:#e3f7ee;--neut-bd:#a0dfc0;--verb:#7c4dca;--verb-bg:#f0eaff;--verb-bd:#ccb8f5;--warn-bg:#fff8e5;--warn-bd:#f0cc78;--warn-tx:#7a5000;--tip-bg:#e8f4ff;--tip-bd:#88ccf5;--tip-tx:#1a5080;--p1:#d85a30;--p1bg:#fdf0eb;--p1bd:#f0c0a8;--p4:#1a8a5e;--p4bg:#e3f7ee;--p4bd:#a0dfc0;--nav-w:224px;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;font-size:14px;background:var(--bg);color:var(--ink);line-height:1.65}
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--nav-w);flex-shrink:0;background:var(--white);border-right:1px solid var(--bd);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.content{flex:1;min-width:0}
+.sb-logo{padding:1.2rem 1rem 1rem;border-bottom:1px solid var(--bd)}
+.sb-logo h1{font-size:13.5px;font-weight:700;color:var(--ink);line-height:1.35}
+.sb-logo p{font-size:11px;color:var(--ink3);margin-top:3px}
+.sb-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:var(--verb-bg);color:var(--verb);border:1px solid var(--verb-bd);margin-top:6px}
+.sb-nav{padding:.5rem 0;flex:1}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);padding:.55rem 1rem .3rem}
+.sb-link{display:flex;align-items:center;gap:8px;padding:.48rem 1rem;font-size:12.5px;font-weight:500;color:var(--ink2);cursor:pointer;border-left:2.5px solid transparent;transition:all .15s;user-select:none}
+.sb-link:hover{background:var(--bg);color:var(--ink)}
+.sb-link.active{background:var(--verb-bg);color:var(--verb);border-left-color:var(--verb);font-weight:600}
+.sb-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+.sb-footer{padding:.75rem 1rem;border-top:1px solid var(--bd);font-size:10.5px;color:var(--ink3)}
+.page-header{background:var(--white);border-bottom:1px solid var(--bd);padding:1.35rem 2rem 1.1rem;position:sticky;top:0;z-index:50}
+.ph-top{display:flex;align-items:center;gap:12px}
+.ph-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ph-title h2{font-size:17px;font-weight:700;color:var(--ink)}
+.ph-title p{font-size:12px;color:var(--ink3);margin-top:1px}
+.ph-badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-left:auto;flex-shrink:0}
+.page-body{padding:1.6rem 2rem 3rem;max-width:860px}
+.card{background:var(--white);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.85rem}
+.card-title{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:.7rem}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.85rem;margin-bottom:.85rem}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.85rem}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.65rem}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);text-align:left;padding:5px 8px 6px;border-bottom:1px solid var(--bd)}
+td{padding:6.5px 8px;border-bottom:1px solid var(--bd);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.de{font-weight:500;color:var(--ink)} .en{color:var(--ink3);font-size:12px}
+.m{color:var(--masc);font-weight:700} .f{color:var(--fem);font-weight:700}
+.n{color:var(--neut);font-weight:700} .v{color:var(--verb);font-weight:700}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px}
+.pm{background:var(--masc-bg);color:var(--masc);border:1px solid var(--masc-bd)}
+.pf{background:var(--fem-bg);color:var(--fem);border:1px solid var(--fem-bd)}
+.pn{background:var(--neut-bg);color:var(--neut);border:1px solid var(--neut-bd)}
+.pv{background:var(--verb-bg);color:var(--verb);border:1px solid var(--verb-bd)}
+.pp1{background:var(--p1bg);color:var(--p1);border:1px solid var(--p1bd)}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.85rem}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);border-radius:7px;padding:.55rem .85rem;font-size:12.5px;color:var(--warn-tx);margin-top:.6rem}
+.tip{background:var(--tip-bg);border:1px solid var(--tip-bd);border-radius:7px;padding:.55rem .85rem;font-size:12.5px;color:var(--tip-tx);margin-top:.6rem}
+.conj-wrap{display:grid;grid-template-columns:1fr 1fr;gap:3px 20px}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.crow:last-child{border-bottom:none}
+.cpron{color:var(--ink3);font-size:12px} .cform{font-weight:600;color:var(--verb)}
+.legend-bar{display:flex;flex-wrap:wrap;gap:8px;padding:.6rem .9rem;background:var(--white);border:1px solid var(--bd);border-radius:8px;margin-bottom:.85rem;align-items:center}
+.legend-bar>span{font-size:11.5px;color:var(--ink3)}
+.li{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500}
+.dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.wo-rule{background:var(--white);border:1px solid var(--bd);border-radius:10px;padding:1rem 1.2rem;margin-bottom:.85rem}
+.wo-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:.65rem}
+.wo-sub{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--ink3);margin:.6rem 0 .4rem}
+.prow{display:flex;align-items:stretch;gap:4px;margin-bottom:.45rem;flex-wrap:wrap}
+.pbox{flex:1;min-width:65px;border-radius:7px;padding:.48rem .65rem}
+.pl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;opacity:.7}
+.pw{font-weight:700;font-size:13px} .ph{font-size:10px;opacity:.65;margin-top:1px}
+.arr{display:flex;align-items:center;color:var(--ink3);font-size:12px;padding:0 1px;flex-shrink:0}
+.p1b{background:var(--p1bg);color:var(--p1);border:1px solid var(--p1bd)}
+.p2b{background:var(--verb-bg);color:var(--verb);border:1px solid var(--verb-bd)}
+.p3b{background:var(--masc-bg);color:var(--masc);border:1px solid var(--masc-bd)}
+.p4b{background:var(--p4bg);color:var(--p4);border:1px solid var(--p4bd)}
+.ex-en{font-size:12px;color:var(--ink3);margin-bottom:.55rem;padding-left:2px}
+.modal-frame{background:var(--white);border:1.5px solid var(--verb-bd);border-radius:10px;padding:1.1rem 1.2rem;margin-bottom:.85rem}
+.atl{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:20px;margin-right:4px;margin-bottom:.4rem}
+.atl-w{background:var(--verb-bg);color:var(--verb);border:1px solid var(--verb-bd)}
+.atl-m{background:var(--neut-bg);color:var(--neut);border:1px solid var(--neut-bd)}
+.atl-s{background:var(--p1bg);color:var(--p1);border:1px solid var(--p1bd)}
+.ew{color:var(--verb);font-weight:700} .em{color:var(--neut);font-weight:700} .es{color:var(--p1);font-weight:700}
+.neg-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:.65rem}
+.neg-card{background:var(--bg);border-radius:8px;padding:.8rem .95rem}
+.neg-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);margin-bottom:.5rem}
+.exl{font-size:13px;padding:4.5px 0;border-bottom:1px solid var(--bd)}
+.exl:last-child{border-bottom:none}
+.ok{color:var(--neut)} .bad{color:#c0392b;text-decoration:line-through}
+.teka-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.65rem;margin:.65rem 0}
+.teka-card{border-radius:8px;padding:.7rem .9rem}
+.teka-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.25rem}
+.teka-q{font-size:11px;opacity:.75;margin-bottom:.3rem}
+.teka-ex{font-size:12px;font-weight:500}
+.wf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:.65rem}
+.wf-card{border:1px solid var(--bd);border-radius:8px;overflow:hidden;background:var(--white)}
+.wf-top{padding:.65rem .9rem;border-bottom:1px solid var(--bd)}
+.wf-word{font-size:22px;font-weight:700;color:var(--ink)}
+.wf-eng{font-size:12px;color:var(--ink3);margin-top:1px}
+.wf-body{padding:.65rem .9rem}
+.wf-ex{font-size:13px;color:var(--ink);font-weight:500;margin-bottom:3px}
+.wf-en{font-size:11.5px;color:var(--ink3);margin-bottom:.35rem}
+.wf-use{font-size:11.5px;color:var(--tip-tx);font-style:italic;margin-top:.3rem}
+.prep-block{background:var(--white);border:1px solid var(--bd);border-radius:10px;margin-bottom:.85rem;overflow:hidden}
+.prep-hd{padding:.75rem 1.2rem;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.prep-bd{padding:1rem 1.2rem}
+.case-card{border:1px solid var(--bd);border-radius:10px;overflow:hidden;margin-bottom:.85rem}
+.case-hd{padding:.75rem 1.2rem;border-bottom:1px solid var(--bd)}
+.case-name{font-size:14px;font-weight:700}
+.case-q{font-size:12px;color:var(--ink2);margin-top:2px}
+.case-bd{padding:.9rem 1.2rem;background:var(--white)}
+code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:var(--bg);padding:1px 5px;border-radius:4px;color:var(--verb);border:1px solid var(--bd)}
+.page{display:none} .page.active{display:block}
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--white);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:18px;line-height:1}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99}
+@media(max-width:720px){.sidebar{position:fixed;left:-100%;top:0;z-index:100;transition:left .25s;height:100vh}.sidebar.open{left:0}.overlay.open{display:block}.hamburger{display:flex}.page-body{padding:1rem 1rem 3rem}.page-header{padding:1rem 1rem 1rem;padding-left:3.5rem}.neg-grid,.conj-wrap{grid-template-columns:1fr}.g2,.wf-grid{grid-template-columns:1fr}}
+@media print{.sidebar,.hamburger,.overlay{display:none!important}.page{display:block!important}.page-header{position:static}}
+</style>
+</head>
+<body>
+<button class="hamburger" onclick="toggleMenu()" aria-label="Menu">&#9776;</button>
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo"><h1>German A1<br>Goethe Cheat Sheet</h1><p>Complete grammar reference</p><div class="sb-badge">Goethe A1</div></div>
+  <nav class="sb-nav">
+    <div class="sb-section">Grammar</div>
+    <div class="sb-link active" onclick="show('articles')"><span class="sb-icon">&#128240;</span>Articles</div>
+    <div class="sb-link" onclick="show('pronouns')"><span class="sb-icon">&#128100;</span>Pronouns</div>
+    <div class="sb-link" onclick="show('cases')"><span class="sb-icon">&#128279;</span>Cases</div>
+    <div class="sb-link" onclick="show('verbs')"><span class="sb-icon">&#9889;</span>Verbs</div>
+    <div class="sb-link" onclick="show('modals')"><span class="sb-icon">&#127919;</span>Modal verbs</div>
+    <div class="sb-link" onclick="show('wordorder')"><span class="sb-icon">&#128208;</span>Word order</div>
+    <div class="sb-link" onclick="show('wfragen')"><span class="sb-icon">&#10067;</span>W-Fragen</div>
+    <div class="sb-link" onclick="show('adjectives')"><span class="sb-icon">&#127912;</span>Adjectives</div>
+    <div class="sb-link" onclick="show('prepositions')"><span class="sb-icon">&#128205;</span>Prepositions</div>
+    <div class="sb-link" onclick="show('negation')"><span class="sb-icon">&#128683;</span>Negation</div>
+    <div class="sb-section">Vocabulary</div>
+    <div class="sb-link" onclick="show('phrases')"><span class="sb-icon">&#128172;</span>Key phrases</div>
+  </nav>
+  <div class="sb-footer">Viel Erfolg bei der Prufung! &#127808;</div>
+</aside>
+<main class="content">
+
+<!-- ARTICLES -->
+<div class="page active" id="p-articles">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#e6f1fb">&#128240;</div><div class="ph-title"><h2>Articles</h2><p>der / die / das &mdash; how to know which to use</p></div><span class="ph-badge pv">Goethe A1</span></div></div>
+<div class="page-body">
+
+<!-- STEP 1: GENDER -->
+<div class="card" style="border-left:4px solid var(--verb);margin-bottom:1rem">
+<div style="font-size:13px;font-weight:700;color:var(--verb);margin-bottom:.5rem">&#128161; Start here: every German noun has a gender</div>
+<div style="font-size:13px;color:var(--ink2);line-height:1.8">Every noun is masculine, feminine, or neuter. The article tells you which. You <strong>cannot guess</strong> the gender &mdash; you learn it with the word. Always learn: <strong>der Kaffee</strong>, not just Kaffee.</div>
+</div>
+
+<!-- GENDER COLOUR BLOCK -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:.85rem">
+<div style="background:var(--masc-bg);border:1.5px solid var(--masc-bd);border-radius:10px;padding:1rem 1.1rem">
+  <div style="font-size:22px;font-weight:800;color:var(--masc);margin-bottom:.3rem">der</div>
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--masc);margin-bottom:.6rem">Masculine</div>
+  <div class="en" style="font-size:12px;line-height:1.9">der Mann (man)<br>der Bus (bus)<br>der Kaffee (coffee)<br>der Bahnhof (station)<br>der Lehrer (teacher)</div>
+</div>
+<div style="background:var(--fem-bg);border:1.5px solid var(--fem-bd);border-radius:10px;padding:1rem 1.1rem">
+  <div style="font-size:22px;font-weight:800;color:var(--fem);margin-bottom:.3rem">die</div>
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--fem);margin-bottom:.6rem">Feminine</div>
+  <div class="en" style="font-size:12px;line-height:1.9">die Frau (woman)<br>die Schule (school)<br>die Wohnung (flat)<br>die Zeit (time)<br>die Lehrerin (teacher f.)</div>
+</div>
+<div style="background:var(--neut-bg);border:1.5px solid var(--neut-bd);border-radius:10px;padding:1rem 1.1rem">
+  <div style="font-size:22px;font-weight:800;color:var(--neut);margin-bottom:.3rem">das</div>
+  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--neut);margin-bottom:.6rem">Neuter</div>
+  <div class="en" style="font-size:12px;line-height:1.9">das Kind (child)<br>das Buch (book)<br>das Auto (car)<br>das Restaurant<br>das Mädchen (girl)</div>
+</div>
+</div>
+
+<!-- GENDER CLUES -->
+<div class="card">
+<div class="card-title">Gender clues &mdash; endings that tell you the gender</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+<div>
+<div style="font-size:11px;font-weight:700;color:var(--masc);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Usually der (masc.)</div>
+<table><tr><td class="de" style="color:var(--masc)">-er</td><td class="en">der Lehrer, der Computer</td></tr><tr><td class="de" style="color:var(--masc)">-ig</td><td class="en">der Honig, der König</td></tr><tr><td class="de" style="color:var(--masc)">days/months/seasons</td><td class="en">der Montag, der Mai</td></tr><tr><td class="de" style="color:var(--masc)">male people</td><td class="en">der Vater, der Bruder</td></tr></table>
+</div>
+<div>
+<div style="font-size:11px;font-weight:700;color:var(--fem);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Usually die (fem.)</div>
+<table><tr><td class="de" style="color:var(--fem)">-ung</td><td class="en">die Wohnung, die Zeitung</td></tr><tr><td class="de" style="color:var(--fem)">-heit / -keit</td><td class="en">die Freiheit, die Möglichkeit</td></tr><tr><td class="de" style="color:var(--fem)">-tion</td><td class="en">die Station, die Information</td></tr><tr><td class="de" style="color:var(--fem)">-in (female)</td><td class="en">die Lehrerin, die Ärztin</td></tr><tr><td class="de" style="color:var(--fem)">-e (many)</td><td class="en">die Schule, die Blume</td></tr></table>
+</div>
+<div>
+<div style="font-size:11px;font-weight:700;color:var(--neut);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Usually das (neut.)</div>
+<table><tr><td class="de" style="color:var(--neut)">-chen / -lein</td><td class="en">das Mädchen, das Büchlein</td></tr><tr><td class="de" style="color:var(--neut)">-um</td><td class="en">das Museum, das Datum</td></tr><tr><td class="de" style="color:var(--neut)">verb as noun</td><td class="en">das Essen, das Lernen</td></tr><tr><td class="de" style="color:var(--neut)">languages</td><td class="en">das Deutsch, das Englisch</td></tr></table>
+</div>
+</div>
+</div>
+
+<!-- THE ARTICLE TABLES -->
+<div style="font-size:14px;font-weight:700;color:var(--ink);margin:1.1rem 0 .6rem">The article tables &mdash; definite ("the") and indefinite ("a")</div>
+<div class="warn" style="margin-bottom:.85rem">&#128161; <strong>Only 3 things change articles:</strong> the case (subject / direct object / indirect object), the gender, and whether you use "the" or "a". Once you know the gender, just find the right box.</div>
+
+<div class="g2">
+<div class="card">
+<div class="card-title">Definite article &mdash; "the" (der / die / das)</div>
+<table>
+<tr><th></th><th class="m">Masculine<br><span style="font-weight:400;font-size:10px">der Mann</span></th><th class="f">Feminine<br><span style="font-weight:400;font-size:10px">die Frau</span></th><th class="n">Neuter<br><span style="font-weight:400;font-size:10px">das Kind</span></th><th>Plural<br><span style="font-weight:400;font-size:10px">die Kinder</span></th></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--masc)">Nominative<br><span style="font-weight:400;color:var(--ink3)">subject</span></td><td class="de m" style="font-size:16px">der</td><td class="de f" style="font-size:16px">die</td><td class="de n" style="font-size:16px">das</td><td class="de" style="font-size:16px">die</td></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--p1)">Accusative<br><span style="font-weight:400;color:var(--ink3)">direct obj.</span></td><td class="de" style="font-size:16px;color:var(--p1);font-weight:800">den &#9733;</td><td class="de f" style="font-size:16px">die</td><td class="de n" style="font-size:16px">das</td><td class="de" style="font-size:16px">die</td></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--neut)">Dative<br><span style="font-weight:400;color:var(--ink3)">indirect obj.</span></td><td class="de m" style="font-size:16px">dem</td><td class="de f" style="font-size:16px">der</td><td class="de n" style="font-size:16px">dem</td><td class="de" style="font-size:16px">den</td></tr>
+</table>
+<div class="warn">&#9733; Only ONE change: masculine accusative <strong>der &rarr; den</strong></div>
+</div>
+<div class="card">
+<div class="card-title">Indefinite article &mdash; "a / an" (ein / eine)</div>
+<table>
+<tr><th></th><th class="m">Masculine</th><th class="f">Feminine</th><th class="n">Neuter</th></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--masc)">Nominative<br><span style="font-weight:400;color:var(--ink3)">subject</span></td><td class="de m" style="font-size:16px">ein</td><td class="de f" style="font-size:16px">eine</td><td class="de n" style="font-size:16px">ein</td></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--p1)">Accusative<br><span style="font-weight:400;color:var(--ink3)">direct obj.</span></td><td class="de" style="font-size:16px;color:var(--p1);font-weight:800">einen &#9733;</td><td class="de f" style="font-size:16px">eine</td><td class="de n" style="font-size:16px">ein</td></tr>
+<tr><td style="font-size:12px;font-weight:600;color:var(--neut)">Dative<br><span style="font-weight:400;color:var(--ink3)">indirect obj.</span></td><td class="de m" style="font-size:16px">einem</td><td class="de f" style="font-size:16px">einer</td><td class="de n" style="font-size:16px">einem</td></tr>
+</table>
+<div class="warn">&#9733; Only ONE change: masculine accusative <strong>ein &rarr; einen</strong></div>
+<div class="tip">Plural has no indefinite article: <em>Ich habe Bücher.</em></div>
+</div>
+</div>
+
+<!-- REAL SENTENCES SHOWING ARTICLES -->
+<div class="card">
+<div class="card-title">See the articles in action &mdash; real sentences</div>
+<table>
+<tr><th>Sentence</th><th>Translation</th><th>Why that article?</th></tr>
+<tr><td class="de"><span class="m">Der Mann</span> kauft <span class="m" style="color:var(--p1)">den Kaffee</span>.</td><td class="en">The man buys the coffee.</td><td class="en">der = nom. subject &middot; den = acc. object (masc.)</td></tr>
+<tr><td class="de"><span class="f">Die Frau</span> liest <span class="f">die Zeitung</span>.</td><td class="en">The woman reads the newspaper.</td><td class="en">die = nom. subject &middot; die = acc. object (fem. stays die)</td></tr>
+<tr><td class="de"><span class="n">Das Kind</span> hat <span class="n">das Buch</span>.</td><td class="en">The child has the book.</td><td class="en">das = nom. subject &middot; das = acc. object (neut. stays das)</td></tr>
+<tr><td class="de">Ich fahre mit <span class="m">dem Bus</span>.</td><td class="en">I travel by bus.</td><td class="en">mit = dative prep. &rarr; der Bus becomes dem Bus</td></tr>
+<tr><td class="de">Er gibt <span class="n">dem Kind</span> <span class="n">das Buch</span>.</td><td class="en">He gives the child the book.</td><td class="en">dem = dative (receiver) &middot; das = accusative (thing given)</td></tr>
+</table>
+</div>
+
+</div></div>
+
+<!-- PRONOUNS -->
+<div class="page" id="p-pronouns">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#fce8f2">&#128100;</div><div class="ph-title"><h2>Pronouns</h2><p>Personal &middot; possessive</p></div><span class="ph-badge pf">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="g2">
+<div class="card"><div class="card-title">Subject (nominative)</div><table><tr><td class="de">ich</td><td class="en">I</td></tr><tr><td class="de">du</td><td class="en">you (informal sg.)</td></tr><tr><td class="de">er / sie / es</td><td class="en">he / she / it</td></tr><tr><td class="de">wir</td><td class="en">we</td></tr><tr><td class="de">ihr</td><td class="en">you all (informal pl.)</td></tr><tr><td class="de">sie</td><td class="en">they</td></tr><tr><td class="de v">Sie</td><td class="en">you (formal &mdash; capital S always)</td></tr></table><div class="tip">Use <strong>Sie</strong> with strangers, officials, in shops. Use <strong>du</strong> with friends, family, classmates.</div></div>
+<div class="card"><div class="card-title">Object (accusative)</div><table><tr><td class="de">mich</td><td class="en">me</td></tr><tr><td class="de">dich</td><td class="en">you</td></tr><tr><td class="de">ihn / sie / es</td><td class="en">him / her / it</td></tr><tr><td class="de">uns</td><td class="en">us</td></tr><tr><td class="de">euch</td><td class="en">you all</td></tr><tr><td class="de">sie</td><td class="en">them</td></tr><tr><td class="de v">Sie</td><td class="en">you (formal)</td></tr></table></div>
+</div>
+<div class="card"><div class="card-title">Possessive pronouns &mdash; nominative &amp; accusative</div><table><tr><th></th><th class="m">Masc. nom.</th><th class="f">Fem. nom.</th><th class="n">Neut. nom.</th><th>Plural</th><th class="m">Masc. acc.</th></tr><tr><td class="en">my</td><td class="m">mein</td><td class="f">meine</td><td class="n">mein</td><td class="de">meine</td><td class="m">meinen</td></tr><tr><td class="en">your (du)</td><td class="m">dein</td><td class="f">deine</td><td class="n">dein</td><td class="de">deine</td><td class="m">deinen</td></tr><tr><td class="en">his/its</td><td class="m">sein</td><td class="f">seine</td><td class="n">sein</td><td class="de">seine</td><td class="m">seinen</td></tr><tr><td class="en">her</td><td class="m">ihr</td><td class="f">ihre</td><td class="n">ihr</td><td class="de">ihre</td><td class="m">ihren</td></tr><tr><td class="en">our</td><td class="m">unser</td><td class="f">unsere</td><td class="n">unser</td><td class="de">unsere</td><td class="m">unseren</td></tr><tr><td class="en">your (formal)</td><td class="m">Ihr</td><td class="f">Ihre</td><td class="n">Ihr</td><td class="de">Ihre</td><td class="m">Ihren</td></tr></table><div class="tip">In accusative: only masculine changes &rarr; mein<strong>en</strong>, dein<strong>en</strong>, sein<strong>en</strong>. Feminine &amp; neuter stay the same as nominative.</div></div>
+</div></div>
+
+<!-- CASES -->
+<div class="page" id="p-cases">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#e3f7ee">&#128279;</div><div class="ph-title"><h2>German cases</h2><p>Nominativ &middot; Akkusativ &middot; Dativ &mdash; explained simply</p></div><span class="ph-badge pn">Goethe A1</span></div></div>
+<div class="page-body">
+
+<!-- BIG IDEA -->
+<div class="card" style="border-left:4px solid var(--verb);margin-bottom:1rem">
+<div style="font-size:13px;font-weight:700;color:var(--verb);margin-bottom:.5rem">&#128161; The big idea: cases tell you what a noun is DOING in the sentence</div>
+<div style="font-size:13px;color:var(--ink2);line-height:2">
+&#9312; Is it the <strong>subject</strong> (doing the action)? &rarr; <span class="m">Nominative</span><br>
+&#9313; Is it the <strong>direct object</strong> (receiving the action)? &rarr; <span style="color:var(--p1);font-weight:700">Accusative</span><br>
+&#9314; Is it the <strong>indirect object or after a dative preposition</strong>? &rarr; <span class="n">Dative</span>
+</div>
+</div>
+
+<!-- NOMINATIVE -->
+<div class="case-card">
+<div class="case-hd" style="background:var(--masc-bg);border-color:var(--masc-bd)">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;border-radius:50%;background:var(--masc);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">1</div>
+<div>
+<div class="case-name m">Nominativ &mdash; the subject</div>
+<div class="case-q">Ask: Wer macht etwas? / Was macht etwas? &mdash; WHO or WHAT does the action?</div>
+</div>
+</div>
+</div>
+<div class="case-bd">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;align-items:start;margin-bottom:.85rem;font-size:13px">
+<div style="font-weight:700;color:var(--masc);padding-top:1px">Articles:</div>
+<div><span class="pill pm" style="margin-right:4px">der</span><span class="pill pf" style="margin-right:4px">die</span><span class="pill pn" style="margin-right:4px">das</span><span class="pill pm">die (plural)</span></div>
+<div style="font-weight:700;color:var(--masc);padding-top:1px">Used for:</div>
+<div class="en">The person or thing performing the verb. After <strong>sein/werden/bleiben</strong>, both sides of the sentence are nominative.</div>
+</div>
+<table>
+<tr><th>Sentence</th><th>Translation</th><th>Subject (nom.)</th></tr>
+<tr><td class="de"><span class="m">Der Mann</span> schläft.</td><td class="en">The man is sleeping.</td><td class="m">der Mann</td></tr>
+<tr><td class="de"><span class="f">Die Frau</span> arbeitet.</td><td class="en">The woman works.</td><td class="f">die Frau</td></tr>
+<tr><td class="de"><span class="n">Das Kind</span> spielt.</td><td class="en">The child plays.</td><td class="n">das Kind</td></tr>
+<tr><td class="de">Er ist <span class="m">ein Arzt</span>.</td><td class="en">He is a doctor.</td><td class="en">ein Arzt = nom. (after sein)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- ACCUSATIVE -->
+<div class="case-card">
+<div class="case-hd" style="background:var(--p1bg);border-color:var(--p1bd)">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;border-radius:50%;background:var(--p1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">2</div>
+<div>
+<div class="case-name" style="color:var(--p1)">Akkusativ &mdash; the direct object</div>
+<div class="case-q">Ask: Wen oder was sehe / kaufe / habe ich? &mdash; WHO or WHAT does the verb act on?</div>
+</div>
+</div>
+</div>
+<div class="case-bd">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;align-items:start;margin-bottom:.85rem;font-size:13px">
+<div style="font-weight:700;color:var(--p1);padding-top:1px">Articles:</div>
+<div><span class="pill pp1" style="margin-right:4px">den &#9733;</span><span class="pill pf" style="margin-right:4px">die</span><span class="pill pn" style="margin-right:4px">das</span><span class="pill pm">die (plural)</span> &nbsp;<span class="pill pp1">einen &#9733;</span><span class="pill pf" style="margin-left:4px">eine</span><span class="pill pn" style="margin-left:4px">ein</span></div>
+<div style="font-weight:700;color:var(--p1);padding-top:1px">Key verbs:</div>
+<div class="en"><strong>haben, kaufen, brauchen, sehen, essen, trinken, nehmen, finden, lesen, mögen, kennen, lieben, nehmen</strong></div>
+</div>
+<div class="warn" style="margin-bottom:.65rem">&#9733; <strong>The BIG rule:</strong> Only <strong>masculine</strong> changes in accusative: <span class="m">der &rarr;</span> <span style="color:var(--p1);font-weight:700">den</span> &nbsp;&nbsp; <span class="m">ein &rarr;</span> <span style="color:var(--p1);font-weight:700">einen</span>. Feminine, neuter, and plural stay identical to nominative.</div>
+<table>
+<tr><th>Sentence</th><th>Translation</th><th>What changed?</th></tr>
+<tr><td class="de">Ich kaufe <span style="color:var(--p1);font-weight:700">den</span> Kaffee.</td><td class="en">I buy the coffee.</td><td class="en" style="color:var(--p1)">der &rarr; den (masc. changes!) &#10003;</td></tr>
+<tr><td class="de">Er sieht <span class="f">die</span> Frau.</td><td class="en">He sees the woman.</td><td class="en">die stays die (fem. no change)</td></tr>
+<tr><td class="de">Wir kaufen <span class="n">das</span> Buch.</td><td class="en">We buy the book.</td><td class="en">das stays das (neut. no change)</td></tr>
+<tr><td class="de">Ich habe <span style="color:var(--p1);font-weight:700">einen</span> Hund.</td><td class="en">I have a dog.</td><td class="en" style="color:var(--p1)">ein &rarr; einen (masc. changes!) &#10003;</td></tr>
+<tr><td class="de">Sie trinkt <span class="f">eine</span> Tasse Kaffee.</td><td class="en">She drinks a cup of coffee.</td><td class="en">eine stays eine (fem. no change)</td></tr>
+</table>
+</div>
+</div>
+
+<!-- DATIVE -->
+<div class="case-card">
+<div class="case-hd" style="background:var(--neut-bg);border-color:var(--neut-bd)">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;border-radius:50%;background:var(--neut);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0">3</div>
+<div>
+<div class="case-name n">Dativ &mdash; the indirect object &amp; preposition case</div>
+<div class="case-q">Ask: Wem? &mdash; To WHOM or FOR WHOM? Also used after specific prepositions.</div>
+</div>
+</div>
+</div>
+<div class="case-bd">
+<div style="display:grid;grid-template-columns:auto 1fr;gap:.5rem 1rem;align-items:start;margin-bottom:.85rem;font-size:13px">
+<div style="font-weight:700;color:var(--neut);padding-top:1px">Articles:</div>
+<div><span class="pill pn" style="margin-right:4px">dem (m)</span><span class="pill pf" style="margin-right:4px">der (f)</span><span class="pill pn" style="margin-right:4px">dem (n)</span><span class="pill" style="background:var(--bg);border:1px solid var(--bd);color:var(--ink2)">den (pl.)</span></div>
+<div style="font-weight:700;color:var(--neut);padding-top:1px">Dative preps:</div>
+<div class="en"><strong>mit, zu, von, bei, nach, aus, seit</strong> &mdash; these always trigger dative</div>
+</div>
+<table>
+<tr><th>Sentence</th><th>Translation</th><th>Why dative?</th></tr>
+<tr><td class="de">Ich fahre mit <span class="n">dem Bus</span>.</td><td class="en">I travel by bus.</td><td class="en">mit &rarr; always dative</td></tr>
+<tr><td class="de">Ich gehe zu <span class="f">der Ärztin</span>. (zur)</td><td class="en">I go to the doctor.</td><td class="en">zu &rarr; always dative</td></tr>
+<tr><td class="de">Er kommt aus <span class="n">dem Haus</span>.</td><td class="en">He comes out of the house.</td><td class="en">aus &rarr; always dative</td></tr>
+<tr><td class="de">Ich gebe <span class="n">dem Kind</span> ein Buch.</td><td class="en">I give the child a book.</td><td class="en">indirect object (receiver)</td></tr>
+<tr><td class="de">Sie wohnt bei <span class="m">einem Freund</span>.</td><td class="en">She lives with a friend.</td><td class="en">bei &rarr; always dative</td></tr>
+</table>
+<div class="tip">Contractions you NEED to know: zu + dem = <strong>zum</strong> &middot; zu + der = <strong>zur</strong> &middot; von + dem = <strong>vom</strong> &middot; bei + dem = <strong>beim</strong> &middot; in + dem = <strong>im</strong> &middot; an + dem = <strong>am</strong></div>
+</div>
+</div>
+
+<!-- MASTER COMPARISON TABLE -->
+<div class="card">
+<div class="card-title">Master table &mdash; all articles across all cases</div>
+<table>
+<tr><th>Case / Role</th><th class="m">Masculine (der)</th><th class="f">Feminine (die)</th><th class="n">Neuter (das)</th><th>Plural (die)</th></tr>
+<tr>
+<td style="font-weight:700;font-size:12px;color:var(--masc)">Nominative<br><span style="font-weight:400;color:var(--ink3)">subject</span></td>
+<td><span class="m" style="font-size:15px">der</span> <span class="en">/</span> <span class="m" style="font-size:15px">ein</span></td>
+<td><span class="f" style="font-size:15px">die</span> <span class="en">/</span> <span class="f" style="font-size:15px">eine</span></td>
+<td><span class="n" style="font-size:15px">das</span> <span class="en">/</span> <span class="n" style="font-size:15px">ein</span></td>
+<td class="de" style="font-size:15px">die / &mdash;</td>
+</tr>
+<tr>
+<td style="font-weight:700;font-size:12px;color:var(--p1)">Accusative<br><span style="font-weight:400;color:var(--ink3)">direct object</span></td>
+<td><span style="color:var(--p1);font-size:15px;font-weight:800">den</span> <span class="en">/</span> <span style="color:var(--p1);font-size:15px;font-weight:800">einen</span></td>
+<td><span class="f" style="font-size:15px">die</span> <span class="en">/</span> <span class="f" style="font-size:15px">eine</span></td>
+<td><span class="n" style="font-size:15px">das</span> <span class="en">/</span> <span class="n" style="font-size:15px">ein</span></td>
+<td class="de" style="font-size:15px">die / &mdash;</td>
+</tr>
+<tr>
+<td style="font-weight:700;font-size:12px;color:var(--neut)">Dative<br><span style="font-weight:400;color:var(--ink3)">indirect obj. / preps</span></td>
+<td><span class="m" style="font-size:15px">dem</span> <span class="en">/</span> <span class="m" style="font-size:15px">einem</span></td>
+<td><span class="f" style="font-size:15px">der</span> <span class="en">/</span> <span class="f" style="font-size:15px">einer</span></td>
+<td><span class="n" style="font-size:15px">dem</span> <span class="en">/</span> <span class="n" style="font-size:15px">einem</span></td>
+<td class="de" style="font-size:15px">den / &mdash;</td>
+</tr>
+</table>
+<div class="tip" style="margin-top:.7rem">&#128073; <strong>The only accusative change: masculine.</strong> Everything else in nominative and accusative is identical. Dative is a different set but only appears after specific prepositions and indirect objects at A1.</div>
+</div>
+
+<!-- CHEAT FLOWCHART -->
+<div class="card" style="background:var(--verb-bg);border-color:var(--verb-bd)">
+<div class="card-title" style="color:var(--verb)">&#129664; 3-question cheat &mdash; which case do I use?</div>
+<div style="font-size:13px;color:var(--ink2);line-height:2.2">
+<strong>Q1:</strong> Is there a dative preposition (mit / zu / von / bei / nach / aus / seit)? &rarr; <span class="n">Dative</span> &#10003;<br>
+<strong>Q2:</strong> Is the noun the SUBJECT (doing the action)? &rarr; <span class="m">Nominative</span> &#10003;<br>
+<strong>Q3:</strong> Is the noun the OBJECT (thing being acted on / bought / seen / had)? &rarr; <span style="color:var(--p1);font-weight:700">Accusative</span> &#10003;
+</div>
+<div class="warn" style="margin-top:.5rem">For accusative: only masculine article changes (der &rarr; den, ein &rarr; einen). Check the gender, then change it if masculine.</div>
+</div>
+
+</div></div>
+
+<!-- VERBS -->
+<div class="page" id="p-verbs">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#f0eaff">&#9889;</div><div class="ph-title"><h2>Verbs</h2><p>Regular &middot; irregular &middot; separable &middot; conjugation tables</p></div><span class="ph-badge pv">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="card"><div class="card-title">Regular verb endings &mdash; stem + ending</div><p style="font-size:12px;color:var(--ink3);margin-bottom:.65rem">Stem = infinitive minus <code>-en</code>. Example: wohnen &rarr; stem <code>wohn-</code></p><table><tr><th>Pronoun</th><th>Ending</th><th>wohnen</th><th>machen</th><th>spielen</th><th>lernen</th><th>kaufen</th></tr><tr><td class="de">ich</td><td class="v">-e</td><td class="de">wohne</td><td class="de">mache</td><td class="de">spiele</td><td class="de">lerne</td><td class="de">kaufe</td></tr><tr><td class="de">du</td><td class="v">-st</td><td class="de">wohnst</td><td class="de">machst</td><td class="de">spielst</td><td class="de">lernst</td><td class="de">kaufst</td></tr><tr><td class="de">er/sie/es</td><td class="v">-t</td><td class="de">wohnt</td><td class="de">macht</td><td class="de">spielt</td><td class="de">lernt</td><td class="de">kauft</td></tr><tr><td class="de">wir</td><td class="v">-en</td><td class="de">wohnen</td><td class="de">machen</td><td class="de">spielen</td><td class="de">lernen</td><td class="de">kaufen</td></tr><tr><td class="de">ihr</td><td class="v">-t</td><td class="de">wohnt</td><td class="de">macht</td><td class="de">spielt</td><td class="de">lernt</td><td class="de">kauft</td></tr><tr><td class="de">sie / Sie</td><td class="v">-en</td><td class="de">wohnen</td><td class="de">machen</td><td class="de">spielen</td><td class="de">lernen</td><td class="de">kaufen</td></tr></table><div class="tip">Pattern: <strong>-e &middot; -st &middot; -t &middot; -en &middot; -t &middot; -en</strong></div></div>
+<div class="g2">
+<div class="card"><div class="card-title">sein &mdash; to be (irregular)</div><div class="conj-wrap"><div><div class="crow"><span class="cpron">ich</span><span class="cform">bin</span></div><div class="crow"><span class="cpron">du</span><span class="cform">bist</span></div><div class="crow"><span class="cpron">er/sie/es</span><span class="cform">ist</span></div></div><div><div class="crow"><span class="cpron">wir</span><span class="cform">sind</span></div><div class="crow"><span class="cpron">ihr</span><span class="cform">seid</span></div><div class="crow"><span class="cpron">sie/Sie</span><span class="cform">sind</span></div></div></div></div>
+<div class="card"><div class="card-title">haben &mdash; to have (irregular)</div><div class="conj-wrap"><div><div class="crow"><span class="cpron">ich</span><span class="cform">habe</span></div><div class="crow"><span class="cpron">du</span><span class="cform">hast</span></div><div class="crow"><span class="cpron">er/sie/es</span><span class="cform">hat</span></div></div><div><div class="crow"><span class="cpron">wir</span><span class="cform">haben</span></div><div class="crow"><span class="cpron">ihr</span><span class="cform">habt</span></div><div class="crow"><span class="cpron">sie/Sie</span><span class="cform">haben</span></div></div></div></div>
+</div>
+<div class="card"><div class="card-title">Key irregular verbs with stem changes (A1)</div><table><tr><th>Infinitive</th><th>Meaning</th><th>du</th><th>er/sie/es</th><th>wir/sie/Sie</th></tr><tr><td class="de">fahren</td><td class="en">to drive/travel</td><td class="de">fahr<strong>st</strong></td><td class="v">f&auml;hrt</td><td class="de">fahren</td></tr><tr><td class="de">lesen</td><td class="en">to read</td><td class="de">lie<strong>st</strong></td><td class="v">liest</td><td class="de">lesen</td></tr><tr><td class="de">sprechen</td><td class="en">to speak</td><td class="de">spr<strong>i</strong>chst</td><td class="v">spricht</td><td class="de">sprechen</td></tr><tr><td class="de">essen</td><td class="en">to eat</td><td class="de"><strong>i</strong>sst</td><td class="v">isst</td><td class="de">essen</td></tr><tr><td class="de">nehmen</td><td class="en">to take</td><td class="de">n<strong>imm</strong>st</td><td class="v">nimmt</td><td class="de">nehmen</td></tr><tr><td class="de">schlafen</td><td class="en">to sleep</td><td class="de">schl&auml;<strong>fst</strong></td><td class="v">schl&auml;ft</td><td class="de">schlafen</td></tr><tr><td class="de">sehen</td><td class="en">to see</td><td class="de">s<strong>ie</strong>hst</td><td class="v">sieht</td><td class="de">sehen</td></tr><tr><td class="de">geben</td><td class="en">to give</td><td class="de">g<strong>i</strong>bst</td><td class="v">gibt</td><td class="de">geben</td></tr></table><div class="tip">Stem changes only occur in <strong>du</strong> and <strong>er/sie/es</strong>. All other forms are regular.</div></div>
+<div class="card"><div class="card-title">Separable verbs &mdash; prefix goes to the END</div><table><tr><th>Infinitive</th><th>Meaning</th><th>Example sentence</th></tr><tr><td class="de">an<strong>rufen</strong></td><td class="en">to call</td><td class="de">Ich rufe dich morgen <strong style="color:var(--p4)">an</strong>.</td></tr><tr><td class="de">ein<strong>kaufen</strong></td><td class="en">to shop</td><td class="de">Wir kaufen heute <strong style="color:var(--p4)">ein</strong>.</td></tr><tr><td class="de">auf<strong>stehen</strong></td><td class="en">to get up</td><td class="de">Er steht um 7 Uhr <strong style="color:var(--p4)">auf</strong>.</td></tr><tr><td class="de">mit<strong>kommen</strong></td><td class="en">to come along</td><td class="de">Kommst du <strong style="color:var(--p4)">mit</strong>?</td></tr><tr><td class="de">fern<strong>sehen</strong></td><td class="en">to watch TV</td><td class="de">Sie sieht abends <strong style="color:var(--p4)">fern</strong>.</td></tr><tr><td class="de">ab<strong>fahren</strong></td><td class="en">to depart</td><td class="de">Der Zug fahrt um 8 Uhr <strong style="color:var(--p4)">ab</strong>.</td></tr><tr><td class="de">an<strong>fangen</strong></td><td class="en">to begin</td><td class="de">Der Kurs fangt um 9 Uhr <strong style="color:var(--p4)">an</strong>.</td></tr><tr><td class="de">zu<strong>machen</strong></td><td class="en">to close</td><td class="de">Ich mache die Tur <strong style="color:var(--p4)">zu</strong>.</td></tr></table><div class="warn">In yes/no questions the prefix still goes to the end: Rufst du mich <strong>an</strong>?</div></div>
+</div></div>
+
+<!-- MODAL VERBS -->
+<div class="page" id="p-modals">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#f0eaff">&#127919;</div><div class="ph-title"><h2>Modal verbs</h2><p>Structure changes &mdash; main verb goes to the END</p></div><span class="ph-badge pv">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="modal-frame">
+<div style="font-size:13px;font-weight:700;margin-bottom:.75rem">How modal verb sentence structure works</div>
+<div class="prow">
+<div class="pbox p1b"><div class="pl">Position 1</div><div class="pw">Subject</div><div class="ph">noun or pronoun</div></div>
+<div class="arr">&rarr;</div>
+<div class="pbox p2b"><div class="pl">Position 2 &mdash; MODAL</div><div class="pw">Modal verb</div><div class="ph">conjugated here</div></div>
+<div class="arr">&rarr;</div>
+<div class="pbox p3b"><div class="pl">Middle</div><div class="pw">time &middot; objects &middot; etc.</div><div class="ph">everything else</div></div>
+<div class="arr">&rarr;</div>
+<div class="pbox p4b"><div class="pl">END &mdash; INFINITIVE!</div><div class="pw">Main verb</div><div class="ph">unconjugated, always last</div></div>
+</div>
+<div class="tip" style="margin-top:.5rem">The <strong>modal verb conjugates</strong> in position 2. The <strong>main verb goes to the very end</strong> as an infinitive. Compare: <em>Ich trinke Kaffee</em> (normal) vs <em>Ich mochte Kaffee <strong>trinken</strong>.</em> (modal)</div>
+</div>
+<div class="card"><div class="card-title">All 6 modal verb conjugations (Goethe A1)</div><table><tr><th>Infinitive</th><th>Meaning</th><th>ich</th><th>du</th><th>er/sie/es</th><th>wir/sie/Sie</th><th>ihr</th></tr><tr><td class="de">konnen</td><td class="en">can / be able to</td><td class="v">kann</td><td class="de">kannst</td><td class="v">kann</td><td class="de">konnen</td><td class="de">konnt</td></tr><tr><td class="de">mussen</td><td class="en">must / have to</td><td class="v">muss</td><td class="de">musst</td><td class="v">muss</td><td class="de">mussen</td><td class="de">musst</td></tr><tr><td class="de">wollen</td><td class="en">to want to</td><td class="v">will</td><td class="de">willst</td><td class="v">will</td><td class="de">wollen</td><td class="de">wollt</td></tr><tr><td class="de">mochten</td><td class="en">would like to</td><td class="v">mochte</td><td class="de">mochtest</td><td class="v">mochte</td><td class="de">mochten</td><td class="de">mochtet</td></tr><tr><td class="de">durfen</td><td class="en">may / allowed to</td><td class="v">darf</td><td class="de">darfst</td><td class="v">darf</td><td class="de">durfen</td><td class="de">durft</td></tr><tr><td class="de">sollen</td><td class="en">should / supposed to</td><td class="v">soll</td><td class="de">sollst</td><td class="v">soll</td><td class="de">sollen</td><td class="de">sollt</td></tr></table><div class="tip">Note: ich and er/sie/es are always the same for modals. No -t ending on er/sie/es unlike regular verbs.</div></div>
+<div class="card"><div class="card-title">Modal verb sentence examples &mdash; main verb always last</div><table><tr><th>Sentence</th><th>Translation</th><th>Structure note</th></tr><tr><td class="de">Ich <span class="v">mochte</span> einen Kaffee <span class="n">trinken</span>.</td><td class="en">I would like to drink a coffee.</td><td class="en">mochte pos.2 &middot; trinken end</td></tr><tr><td class="de">Du <span class="v">kannst</span> gut <span class="n">schwimmen</span>.</td><td class="en">You can swim well.</td><td class="en">kannst pos.2 &middot; schwimmen end</td></tr><tr><td class="de">Wir <span class="v">mussen</span> jetzt <span class="n">gehen</span>.</td><td class="en">We must go now.</td><td class="en">mussen pos.2 &middot; gehen end</td></tr><tr><td class="de">Er <span class="v">will</span> Arzt <span class="n">werden</span>.</td><td class="en">He wants to become a doctor.</td><td class="en">will pos.2 &middot; werden end</td></tr><tr><td class="de">Hier <span class="v">darf</span> man nicht <span class="n">rauchen</span>.</td><td class="en">One may not smoke here.</td><td class="en">Inversion: hier first &rarr; darf pos.2</td></tr><tr><td class="de"><span class="v">Kannst</span> du mir <span class="n">helfen</span>?</td><td class="en">Can you help me?</td><td class="en">Yes/no question: modal verb first</td></tr><tr><td class="de">Ihr <span class="v">sollt</span> leise <span class="n">sein</span>.</td><td class="en">You (all) should be quiet.</td><td class="en">sollen = supposed to</td></tr><tr><td class="de">Darf ich hier <span class="n">sitzen</span>?</td><td class="en">May I sit here?</td><td class="en">Permission question</td></tr><tr><td class="de">Ich <span class="v">muss</span> morgen fruh <span class="n">aufstehen</span>.</td><td class="en">I must get up early tomorrow.</td><td class="en">Modal + separable: whole infinitive at end</td></tr><tr><td class="de"><span class="v">Kannst</span> du mich <span class="n">anrufen</span>?</td><td class="en">Can you call me?</td><td class="en">Modal + separable in question</td></tr></table><div class="warn"><strong>wollen &ne; will in English.</strong> &ldquo;ich will&rdquo; = I want to (NOT I will). For future tense: use present + time word. Ich komme morgen = I will come tomorrow.</div></div>
+<div class="card" style="background:var(--verb-bg);border-color:var(--verb-bd)"><div class="card-title" style="color:var(--verb)">mochten vs. mogen &mdash; important distinction</div><table><tr><th>Form</th><th>Meaning</th><th>Example</th></tr><tr><td class="de v">mochten</td><td class="en">would like to (polite request)</td><td class="de">Ich mochte einen Tee. (I would like a tea.)</td></tr><tr><td class="de v">mogen</td><td class="en">to like (something/someone)</td><td class="de">Ich mag Kaffee. (I like coffee.)</td></tr></table><div class="tip">At A1 level: use <strong>mochten</strong> for ordering/requesting things. Use <strong>mogen</strong> (ich mag, du magst, er mag) to express liking things.</div></div>
+</div></div>
+
+<!-- WORD ORDER -->
+<div class="page" id="p-wordorder">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#e6f1fb">&#128208;</div><div class="ph-title"><h2>Word order</h2><p>V2 rule &middot; inversion &middot; TE-KA-MO-LO &middot; questions &middot; separable verbs</p></div><span class="ph-badge pm">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="legend-bar"><span>Position colours:</span><div class="li"><div class="dot" style="background:var(--p1)"></div>Pos. 1 &mdash; opener</div><div class="li"><div class="dot" style="background:var(--verb)"></div>Pos. 2 &mdash; conjugated verb (always!)</div><div class="li"><div class="dot" style="background:var(--masc)"></div>Middle &mdash; time / manner / place / objects</div><div class="li"><div class="dot" style="background:var(--p4)"></div>End &mdash; infinitive or prefix</div></div>
+<div class="wo-rule"><div class="wo-title">Rule 1 &mdash; Verb always in position 2 (V2 rule)</div>
+<div class="wo-sub">Normal order &mdash; subject first</div>
+<div class="prow"><div class="pbox p1b"><div class="pl">Pos. 1</div><div class="pw">Ich</div><div class="ph">subject</div></div><div class="arr">&rarr;</div><div class="pbox p2b"><div class="pl">Pos. 2 &mdash; verb</div><div class="pw">lerne</div><div class="ph">conjugated</div></div><div class="arr">&rarr;</div><div class="pbox p3b"><div class="pl">Rest</div><div class="pw">jeden Tag Deutsch.</div></div></div>
+<div class="ex-en">I learn German every day.</div>
+<div class="wo-sub">Inverted order &mdash; time or place first, subject moves after verb</div>
+<div class="prow"><div class="pbox p1b"><div class="pl">Pos. 1</div><div class="pw">Jeden Tag</div><div class="ph">time</div></div><div class="arr">&rarr;</div><div class="pbox p2b"><div class="pl">Pos. 2 &mdash; verb</div><div class="pw">lerne</div></div><div class="arr">&rarr;</div><div class="pbox p3b"><div class="pl">Rest</div><div class="pw">ich Deutsch.</div><div class="ph">subject jumps here</div></div></div>
+<div class="ex-en">Every day I learn German. (subject and verb swap after inversion!)</div>
+<div class="tip">Whatever comes first, the <strong>verb is always in position 2</strong>. When something other than the subject starts the sentence, subject and verb swap &mdash; this is called <strong>Inversion (Satzklammer)</strong>.</div></div>
+<div class="wo-rule"><div class="wo-title">Rule 2 &mdash; Middle of sentence: Time &rarr; Manner &rarr; Place <span style="font-size:11px;font-weight:400;color:var(--ink3)">(TE-KA-MO-LO)</span></div>
+<div class="teka-grid">
+<div class="teka-card" style="background:var(--p1bg);border:1px solid var(--p1bd)"><div class="teka-lbl" style="color:var(--p1)">Te &mdash; Time (wann?)</div><div class="teka-q">when? how often?</div><div class="teka-ex" style="color:var(--p1)">heute &middot; morgen &middot; um 8 Uhr &middot; jeden Tag &middot; oft</div></div>
+<div class="teka-card" style="background:var(--warn-bg);border:1px solid var(--warn-bd)"><div class="teka-lbl" style="color:var(--warn-tx)">Ka &mdash; Cause (warum?)</div><div class="teka-q">why? for what reason?</div><div class="teka-ex" style="color:var(--warn-tx)">wegen des Wetters &middot; deshalb &middot; darum</div></div>
+<div class="teka-card" style="background:var(--verb-bg);border:1px solid var(--verb-bd)"><div class="teka-lbl" style="color:var(--verb)">Mo &mdash; Manner (wie?)</div><div class="teka-q">how? by what means?</div><div class="teka-ex" style="color:var(--verb)">mit dem Bus &middot; zu Fu&szlig; &middot; gern &middot; schnell &middot; allein</div></div>
+<div class="teka-card" style="background:var(--masc-bg);border:1px solid var(--masc-bd)"><div class="teka-lbl" style="color:var(--masc)">Lo &mdash; Place (wo?)</div><div class="teka-q">where? where to?</div><div class="teka-ex" style="color:var(--masc)">in Berlin &middot; nach Hause &middot; hier &middot; zur Schule</div></div>
+</div>
+<div class="card" style="margin-top:.5rem"><table><tr><th>&#10003; Correct (Time before Place)</th><th>&#10007; Wrong</th></tr><tr><td class="ok de">Ich fahre <span style="color:var(--p1)">morgen</span> <span style="color:var(--verb)">mit dem Bus</span> <span style="color:var(--masc)">nach Berlin</span>.</td><td class="bad">Ich fahre nach Berlin morgen mit dem Bus.</td></tr></table></div></div>
+<div class="wo-rule"><div class="wo-title">Rule 3 &mdash; Questions</div>
+<div class="wo-sub">Yes/No questions &mdash; verb comes FIRST</div>
+<div class="prow"><div class="pbox p2b"><div class="pl">Pos. 1 &mdash; VERB!</div><div class="pw">Sprichst</div></div><div class="arr">&rarr;</div><div class="pbox p1b"><div class="pl">Subject</div><div class="pw">du</div></div><div class="arr">&rarr;</div><div class="pbox p3b"><div class="pl">Rest</div><div class="pw">Deutsch?</div></div></div>
+<div class="ex-en">Do you speak German?</div>
+<div class="wo-sub">W-questions &mdash; W-word + verb + subject</div>
+<div class="prow"><div class="pbox p1b"><div class="pl">Pos. 1</div><div class="pw">Wo</div><div class="ph">W-word</div></div><div class="arr">&rarr;</div><div class="pbox p2b"><div class="pl">Pos. 2 &mdash; verb</div><div class="pw">wohnst</div></div><div class="arr">&rarr;</div><div class="pbox p3b"><div class="pl">Rest</div><div class="pw">du?</div></div></div>
+<div class="ex-en">Where do you live?</div></div>
+<div class="wo-rule"><div class="wo-title">Summary &mdash; all A1 sentence types</div><table><tr><th>Type</th><th>Pos. 1</th><th>Pos. 2 (verb)</th><th>Middle</th><th>End</th></tr><tr><td class="en">Statement (normal)</td><td style="color:var(--p1);font-weight:600">Subject</td><td style="color:var(--verb);font-weight:600">Verb</td><td style="color:var(--masc);font-weight:600">time &middot; object</td><td class="en">&mdash;</td></tr><tr><td class="en">Statement (inverted)</td><td style="color:var(--p1);font-weight:600">Time / place</td><td style="color:var(--verb);font-weight:600">Verb</td><td style="color:var(--masc);font-weight:600">Subject + object</td><td class="en">&mdash;</td></tr><tr><td class="en">Yes/no question</td><td style="color:var(--verb);font-weight:600">Verb</td><td style="color:var(--p1);font-weight:600">Subject</td><td style="color:var(--masc);font-weight:600">rest</td><td class="en">&mdash;</td></tr><tr><td class="en">W-question</td><td style="color:var(--p1);font-weight:600">W-word</td><td style="color:var(--verb);font-weight:600">Verb</td><td style="color:var(--masc);font-weight:600">Subject + rest</td><td class="en">&mdash;</td></tr><tr><td class="en">Modal verb</td><td style="color:var(--p1);font-weight:600">Subject</td><td style="color:var(--verb);font-weight:600">Modal verb</td><td style="color:var(--masc);font-weight:600">time &middot; object</td><td style="color:var(--p4);font-weight:600">Infinitive</td></tr><tr><td class="en">Separable verb</td><td style="color:var(--p1);font-weight:600">Subject</td><td style="color:var(--verb);font-weight:600">Verb stem</td><td style="color:var(--masc);font-weight:600">time &middot; object</td><td style="color:var(--p4);font-weight:600">Prefix</td></tr><tr><td class="en">Modal + separable</td><td style="color:var(--p1);font-weight:600">Subject</td><td style="color:var(--verb);font-weight:600">Modal verb</td><td style="color:var(--masc);font-weight:600">time &middot; object</td><td style="color:var(--p4);font-weight:600">Full infinitive</td></tr></table><div class="tip">Modal + separable: Ich <span style="color:var(--verb);font-weight:700">muss</span> morgen fruh <span style="color:var(--p4);font-weight:700">aufstehen</span>. &mdash; the separable verb stays as one unit at the end.</div></div>
+</div></div>
+
+<!-- W-FRAGEN -->
+<div class="page" id="p-wfragen">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#fff8e5">&#10067;</div><div class="ph-title"><h2>W-Fragen (question words)</h2><p>Complete reference &mdash; all A1 question words with usage &amp; examples</p></div><span class="ph-badge pp1">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="card" style="margin-bottom:1.1rem"><div class="card-title">Structure rule for all W-questions</div><div class="prow" style="margin-bottom:.5rem"><div class="pbox p1b"><div class="pl">Pos. 1</div><div class="pw">W-word</div></div><div class="arr">&rarr;</div><div class="pbox p2b"><div class="pl">Pos. 2</div><div class="pw">Verb (conjugated)</div></div><div class="arr">&rarr;</div><div class="pbox p3b"><div class="pl">Rest</div><div class="pw">Subject + rest of sentence</div></div></div><div class="tip">The W-word always comes first. The conjugated verb is always in position 2. The subject comes right after the verb.</div></div>
+<div class="wf-grid">
+<div class="wf-card"><div class="wf-top" style="background:var(--masc-bg)"><div class="wf-word m">wann</div><div class="wf-eng">when</div></div><div class="wf-body"><div class="wf-ex">Wann fangt der Kurs an?</div><div class="wf-en">When does the course begin?</div><div class="wf-ex">Wann kommst du?</div><div class="wf-en">When are you coming?</div><div class="wf-use">Used for time: days, times, dates</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--neut-bg)"><div class="wf-word n">wo</div><div class="wf-eng">where (location)</div></div><div class="wf-body"><div class="wf-ex">Wo ist der Bahnhof?</div><div class="wf-en">Where is the train station?</div><div class="wf-ex">Wo wohnst du?</div><div class="wf-en">Where do you live?</div><div class="wf-use">Used for location (static: where is/are)</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--p1bg)"><div class="wf-word" style="color:var(--p1)">wohin</div><div class="wf-eng">where to (destination)</div></div><div class="wf-body"><div class="wf-ex">Wohin fahrst du?</div><div class="wf-en">Where are you going (to)?</div><div class="wf-ex">Wohin gehst du?</div><div class="wf-en">Where are you walking to?</div><div class="wf-use">Used for movement toward a destination</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--warn-bg)"><div class="wf-word" style="color:var(--warn-tx)">woher</div><div class="wf-eng">where from (origin)</div></div><div class="wf-body"><div class="wf-ex">Woher kommen Sie?</div><div class="wf-en">Where do you come from?</div><div class="wf-ex">Woher weisst du das?</div><div class="wf-en">Where do you know that from?</div><div class="wf-use">Used for origin or source</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--verb-bg)"><div class="wf-word v">was</div><div class="wf-eng">what</div></div><div class="wf-body"><div class="wf-ex">Was machst du?</div><div class="wf-en">What are you doing?</div><div class="wf-ex">Was bedeutet das?</div><div class="wf-en">What does that mean?</div><div class="wf-use">Used for things, actions, meanings</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--fem-bg)"><div class="wf-word f">wer</div><div class="wf-eng">who (nominative)</div></div><div class="wf-body"><div class="wf-ex">Wer ist das?</div><div class="wf-en">Who is that?</div><div class="wf-ex">Wer kommt heute?</div><div class="wf-en">Who is coming today?</div><div class="wf-use">Used for people &mdash; subject of the sentence</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--masc-bg)"><div class="wf-word m">wie</div><div class="wf-eng">how / what (name/quality)</div></div><div class="wf-body"><div class="wf-ex">Wie hei&szlig;en Sie?</div><div class="wf-en">What is your name?</div><div class="wf-ex">Wie geht es Ihnen?</div><div class="wf-en">How are you?</div><div class="wf-ex">Wie spat ist es?</div><div class="wf-en">What time is it?</div><div class="wf-use">Used for manner, name, description, time</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--neut-bg)"><div class="wf-word n">wie viel</div><div class="wf-eng">how much (uncountable)</div></div><div class="wf-body"><div class="wf-ex">Wie viel kostet das?</div><div class="wf-en">How much does that cost?</div><div class="wf-ex">Wie viel Uhr ist es?</div><div class="wf-en">What time is it?</div><div class="wf-use">Used with uncountable nouns or amounts</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--p1bg)"><div class="wf-word" style="color:var(--p1)">wie viele</div><div class="wf-eng">how many (countable)</div></div><div class="wf-body"><div class="wf-ex">Wie viele Kinder haben Sie?</div><div class="wf-en">How many children do you have?</div><div class="wf-ex">Wie viele Tage hat eine Woche?</div><div class="wf-en">How many days are in a week?</div><div class="wf-use">Used with countable plural nouns</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--warn-bg)"><div class="wf-word" style="color:var(--warn-tx)">warum</div><div class="wf-eng">why</div></div><div class="wf-body"><div class="wf-ex">Warum lernst du Deutsch?</div><div class="wf-en">Why are you learning German?</div><div class="wf-ex">Warum bist du mude?</div><div class="wf-en">Why are you tired?</div><div class="wf-use">Used for reasons and explanations</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--verb-bg)"><div class="wf-word v">welch-</div><div class="wf-eng">which (takes gender ending)</div></div><div class="wf-body"><div class="wf-ex">Welcher Bus fahrt zum Bahnhof?</div><div class="wf-en">Which bus goes to the station?</div><div class="wf-ex">Welche Farbe magst du?</div><div class="wf-en">Which colour do you like?</div><div class="wf-use">welcher (m) &middot; welche (f) &middot; welches (n)</div></div></div>
+<div class="wf-card"><div class="wf-top" style="background:var(--fem-bg)"><div class="wf-word f">wessen</div><div class="wf-eng">whose (genitive)</div></div><div class="wf-body"><div class="wf-ex">Wessen Tasche ist das?</div><div class="wf-en">Whose bag is that?</div><div class="wf-use">Rare at A1 &mdash; good to recognise</div></div></div>
+</div>
+<div class="card" style="margin-top:.5rem"><div class="card-title">Quick reference table</div><table><tr><th>W-word</th><th>Meaning</th><th>Asking about</th><th>Example</th></tr><tr><td class="de m">wann</td><td class="en">when</td><td class="en">time</td><td class="de">Wann fangt die Schule an?</td></tr><tr><td class="de n">wo</td><td class="en">where (location)</td><td class="en">place (static)</td><td class="de">Wo ist die Toilette?</td></tr><tr><td class="de" style="color:var(--p1)">wohin</td><td class="en">where to</td><td class="en">destination</td><td class="de">Wohin geht ihr?</td></tr><tr><td class="de" style="color:var(--warn-tx)">woher</td><td class="en">where from</td><td class="en">origin</td><td class="de">Woher kommen Sie?</td></tr><tr><td class="de v">was</td><td class="en">what</td><td class="en">things / actions</td><td class="de">Was isst du gern?</td></tr><tr><td class="de f">wer</td><td class="en">who</td><td class="en">people (subject)</td><td class="de">Wer ist dein Lehrer?</td></tr><tr><td class="de m">wie</td><td class="en">how / what name</td><td class="en">manner / quality</td><td class="de">Wie hei&szlig;t du?</td></tr><tr><td class="de n">wie viel</td><td class="en">how much</td><td class="en">amount / price</td><td class="de">Wie viel kostet das Ticket?</td></tr><tr><td class="de" style="color:var(--p1)">wie viele</td><td class="en">how many</td><td class="en">count</td><td class="de">Wie viele Geschwister hast du?</td></tr><tr><td class="de" style="color:var(--warn-tx)">warum</td><td class="en">why</td><td class="en">reason</td><td class="de">Warum kommst du nicht?</td></tr><tr><td class="de v">welch-</td><td class="en">which</td><td class="en">selection / choice</td><td class="de">Welchen Kurs nimmst du?</td></tr></table></div>
+</div></div>
+
+<!-- ADJECTIVES -->
+<div class="page" id="p-adjectives">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#fce8f2">&#127912;</div><div class="ph-title"><h2>Adjectives &amp; declension</h2><p>Predicate &middot; attributive &middot; 3 types of endings</p></div><span class="ph-badge pf">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="g2">
+<div class="card"><div class="card-title">Predicate adjective &mdash; NO ending needed</div><p style="font-size:12.5px;color:var(--ink2);margin-bottom:.6rem">After <strong>sein, werden, bleiben</strong> &mdash; adjective does not change.</p><table><tr><td class="de">Das Wetter ist <span class="ok">schon</span>.</td><td class="en">The weather is nice.</td></tr><tr><td class="de">Die Frau ist <span class="ok">mude</span>.</td><td class="en">The woman is tired.</td></tr><tr><td class="de">Der Kaffee ist <span class="ok">hei&szlig;</span>.</td><td class="en">The coffee is hot.</td></tr><tr><td class="de">Er wird <span class="ok">krank</span>.</td><td class="en">He is getting sick.</td></tr></table><div class="tip">Easiest case &mdash; predicate adjectives after sein etc. never take endings!</div></div>
+<div class="card"><div class="card-title">Attributive adjective &mdash; ending required</div><p style="font-size:12.5px;color:var(--ink2);margin-bottom:.6rem">Before a noun &mdash; adjective MUST take an ending.</p><table><tr><td class="de">das <span class="ew">schone</span> Wetter</td><td class="en">the nice weather (weak)</td></tr><tr><td class="de">die <span class="ew">mude</span> Frau</td><td class="en">the tired woman (weak)</td></tr><tr><td class="de">ein <span class="em">hei&szlig;er</span> Kaffee</td><td class="en">a hot coffee (mixed)</td></tr><tr><td class="de">kein <span class="em">kaltes</span> Wasser</td><td class="en">no cold water (mixed)</td></tr><tr><td class="de"><span class="es">hei&szlig;er</span> Kaffee</td><td class="en">hot coffee (strong &mdash; no article)</td></tr></table><div class="warn">The ending depends on: which article &middot; gender &middot; case.</div></div>
+</div>
+<div class="card"><div class="card-title">The 3 declension types</div><div class="g3" style="margin:0"><div><span class="atl atl-w">Weak</span><div style="font-size:12.5px;color:var(--ink2);line-height:1.8;margin-top:.3rem">After <strong>definite articles</strong>: der/die/das/den/dem<br>&rarr; mostly <strong style="color:var(--verb)">-e</strong> and <strong style="color:var(--verb)">-en</strong><br>Article already shows gender &rarr; adjective just adds light ending</div></div><div><span class="atl atl-m">Mixed</span><div style="font-size:12.5px;color:var(--ink2);line-height:1.8;margin-top:.3rem">After <strong>indefinite / possessives</strong>: ein/eine/kein/mein<br>&rarr; mix of <strong style="color:var(--neut)">-e / -en</strong> and <strong style="color:var(--neut)">-er / -es</strong><br>Where ein gives no gender &rarr; adj must signal it</div></div><div><span class="atl atl-s">Strong</span><div style="font-size:12.5px;color:var(--ink2);line-height:1.8;margin-top:.3rem">After <strong>no article</strong> (bare noun):<br>&rarr; adjective carries full gender signal<br><strong style="color:var(--p1)">-er / -e / -es / -en / -em</strong></div></div></div></div>
+<div class="card"><div class="card-title"><span class="atl atl-w" style="margin-right:4px">Weak</span> After der / die / das &mdash; definite articles</div><table><tr><th>Case</th><th class="m">Masculine</th><th class="f">Feminine</th><th class="n">Neuter</th><th>Plural</th></tr><tr><td class="en">Nominative</td><td class="de">der alt<span class="ew">e</span> Mann</td><td class="de">die alt<span class="ew">e</span> Frau</td><td class="de">das alt<span class="ew">e</span> Kind</td><td class="de">die alt<span class="ew">en</span> Leute</td></tr><tr><td class="en">Accusative</td><td class="de">den alt<span class="ew">en</span> Mann</td><td class="de">die alt<span class="ew">e</span> Frau</td><td class="de">das alt<span class="ew">e</span> Kind</td><td class="de">die alt<span class="ew">en</span> Leute</td></tr><tr><td class="en">Dative</td><td class="de">dem alt<span class="ew">en</span> Mann</td><td class="de">der alt<span class="ew">en</span> Frau</td><td class="de">dem alt<span class="ew">en</span> Kind</td><td class="de">den alt<span class="ew">en</span> Leuten</td></tr></table><div class="tip">After definite articles: <strong>-e</strong> for nom. all &amp; acc. f/n, <strong>-en</strong> everywhere else.</div></div>
+<div class="card"><div class="card-title"><span class="atl atl-m" style="margin-right:4px">Mixed</span> After ein / eine / kein / mein &mdash; indefinite &amp; possessive</div><table><tr><th>Case</th><th class="m">Masculine</th><th class="f">Feminine</th><th class="n">Neuter</th><th>Plural (kein-)</th></tr><tr><td class="en">Nominative</td><td class="de">ein alt<span class="em">er</span> Mann</td><td class="de">eine alt<span class="em">e</span> Frau</td><td class="de">ein alt<span class="em">es</span> Kind</td><td class="de">keine alt<span class="em">en</span> Leute</td></tr><tr><td class="en">Accusative</td><td class="de">einen alt<span class="em">en</span> Mann</td><td class="de">eine alt<span class="em">e</span> Frau</td><td class="de">ein alt<span class="em">es</span> Kind</td><td class="de">keine alt<span class="em">en</span> Leute</td></tr><tr><td class="en">Dative</td><td class="de">einem alt<span class="em">en</span> Mann</td><td class="de">einer alt<span class="em">en</span> Frau</td><td class="de">einem alt<span class="em">en</span> Kind</td><td class="de">keinen alt<span class="em">en</span> Leuten</td></tr></table><div class="tip">Where <em>ein</em> gives no gender info (m nom, n nom/acc), the adjective must signal it: <strong>-er</strong> (m), <strong>-es</strong> (n). Elsewhere: -e or -en.</div></div>
+<div class="card"><div class="card-title"><span class="atl atl-s" style="margin-right:4px">Strong</span> No article &mdash; adjective carries the full gender signal</div><table><tr><th>Case</th><th class="m">Masculine</th><th class="f">Feminine</th><th class="n">Neuter</th><th>Plural</th></tr><tr><td class="en">Nominative</td><td class="de">alt<span class="es">er</span> Kaffee</td><td class="de">kalt<span class="es">e</span> Milch</td><td class="de">frisch<span class="es">es</span> Brot</td><td class="de">jung<span class="es">e</span> Leute</td></tr><tr><td class="en">Accusative</td><td class="de">alt<span class="es">en</span> Kaffee</td><td class="de">kalt<span class="es">e</span> Milch</td><td class="de">frisch<span class="es">es</span> Brot</td><td class="de">jung<span class="es">e</span> Leute</td></tr><tr><td class="en">Dative</td><td class="de">alt<span class="es">em</span> Kaffee</td><td class="de">kalt<span class="es">er</span> Milch</td><td class="de">frisch<span class="es">em</span> Brot</td><td class="de">jung<span class="es">en</span> Leuten</td></tr></table><div class="tip">Mirrors the definite article endings. Common with food/drink without articles: hei&szlig;er Kaffee, kalte Milch, frisches Brot.</div></div>
+<div class="card" style="background:var(--verb-bg);border-color:var(--verb-bd)"><div class="card-title" style="color:var(--verb)">4-step trick &mdash; pick the right ending</div><div style="font-size:13px;color:var(--ink2);line-height:2.1"><strong>Step 1:</strong> Is there a definite article (der/die/das)? &rarr; <span class="atl atl-w">Weak endings</span><br><strong>Step 2:</strong> Is there an indefinite/possessive article (ein/kein/mein)?  &rarr; <span class="atl atl-m">Mixed endings</span><br><strong>Step 3:</strong> No article at all? &rarr; <span class="atl atl-s">Strong endings</span><br><strong>Step 4:</strong> Look at gender + case in the table above and add the ending.</div><div class="tip">Most tested at A1: accusative with ein/kein. Master: einen netten Mann &middot; eine schone Stadt &middot; ein kleines Kind.</div></div>
+<div class="card"><div class="card-title">Common A1 adjectives to know</div><div class="g3" style="gap:.3rem"><div class="en" style="font-size:12.5px;line-height:2">gro&szlig; / klein &mdash; big / small<br>alt / jung &mdash; old / young<br>gut / schlecht &mdash; good / bad<br>schon / hasslich &mdash; beautiful / ugly<br>neu / alt &mdash; new / old<br>teuer / billig &mdash; expensive / cheap</div><div class="en" style="font-size:12.5px;line-height:2">kalt / warm / hei&szlig; &mdash; cold / warm / hot<br>langsam / schnell &mdash; slow / fast<br>laut / leise &mdash; loud / quiet<br>lang / kurz &mdash; long / short<br>schwer / leicht &mdash; heavy / easy<br>mude / krank &mdash; tired / sick</div><div class="en" style="font-size:12.5px;line-height:2">interessant / langweilig<br>freundlich &mdash; friendly<br>nett &mdash; nice / kind<br>lustig &mdash; funny<br>lecker &mdash; delicious<br>richtig / falsch &mdash; right / wrong</div></div></div>
+</div></div>
+
+<!-- PREPOSITIONS -->
+<div class="page" id="p-prepositions">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#e3f7ee">&#128205;</div><div class="ph-title"><h2>Prepositions</h2><p>Accusative &middot; dative &middot; two-way &middot; time expressions</p></div><span class="ph-badge pn">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="prep-block"><div class="prep-hd" style="background:var(--p1bg)"><span class="pill pp1">Accusative prepositions</span><span style="font-size:12.5px;color:var(--ink2);margin-left:4px">always take accusative case</span></div><div class="prep-bd"><table><tr><th>Preposition</th><th>Meaning</th><th>Example</th><th>Translation</th></tr><tr><td class="de" style="color:var(--p1);font-weight:700">durch</td><td class="en">through</td><td class="de">Ich gehe durch den Park.</td><td class="en">I walk through the park.</td></tr><tr><td class="de" style="color:var(--p1);font-weight:700">fur</td><td class="en">for</td><td class="de">Das Geschenk ist fur dich.</td><td class="en">The gift is for you.</td></tr><tr><td class="de" style="color:var(--p1);font-weight:700">gegen</td><td class="en">against / around (time)</td><td class="de">Ich komme gegen 8 Uhr.</td><td class="en">I'll come around 8 o'clock.</td></tr><tr><td class="de" style="color:var(--p1);font-weight:700">ohne</td><td class="en">without</td><td class="de">Kaffee ohne Milch, bitte.</td><td class="en">Coffee without milk, please.</td></tr><tr><td class="de" style="color:var(--p1);font-weight:700">um</td><td class="en">around / at (time)</td><td class="de">Ich komme um 3 Uhr.</td><td class="en">I'm coming at 3 o'clock.</td></tr></table><div class="tip">Memory trick: <strong>durch, fur, gegen, ohne, um</strong> &mdash; these 5 always take accusative.</div></div></div>
+<div class="prep-block"><div class="prep-hd" style="background:var(--neut-bg)"><span class="pill pn">Dative prepositions</span><span style="font-size:12.5px;color:var(--ink2);margin-left:4px">always take dative case</span></div><div class="prep-bd"><table><tr><th>Preposition</th><th>Meaning</th><th>Example</th><th>Translation</th></tr><tr><td class="de n">mit</td><td class="en">with / by (transport)</td><td class="de">Ich fahre mit dem Bus.</td><td class="en">I travel by bus.</td></tr><tr><td class="de n">zu</td><td class="en">to (people/places)</td><td class="de">Ich gehe zu dem Arzt. (zum)</td><td class="en">I'm going to the doctor.</td></tr><tr><td class="de n">von</td><td class="en">from / of / by</td><td class="de">Das ist ein Buch von Goethe.</td><td class="en">That is a book by Goethe.</td></tr><tr><td class="de n">bei</td><td class="en">at / with / near</td><td class="de">Ich wohne bei meiner Mutter.</td><td class="en">I live with my mother.</td></tr><tr><td class="de n">nach</td><td class="en">after / to (cities/countries)</td><td class="de">Ich fahre nach Berlin.</td><td class="en">I'm travelling to Berlin.</td></tr><tr><td class="de n">aus</td><td class="en">from / out of</td><td class="de">Ich komme aus Deutschland.</td><td class="en">I come from Germany.</td></tr><tr><td class="de n">seit</td><td class="en">since / for (duration)</td><td class="de">Ich lerne seit 3 Monaten Deutsch.</td><td class="en">I've been learning German for 3 months.</td></tr><tr><td class="de n">gegenuber</td><td class="en">opposite / across from</td><td class="de">Das Hotel ist gegenuber dem Bahnhof.</td><td class="en">The hotel is opposite the station.</td></tr></table><div class="tip">Memory trick: <strong>mit, zu, von, bei, nach, aus, seit, gegenuber</strong> &mdash; always dative. Contractions: zu + dem = <strong>zum</strong>, zu + der = <strong>zur</strong>, von + dem = <strong>vom</strong>, bei + dem = <strong>beim</strong></div></div></div>
+<div class="prep-block"><div class="prep-hd" style="background:var(--verb-bg)"><span class="pill pv">Two-way prepositions</span><span style="font-size:12.5px;color:var(--ink2);margin-left:4px">accusative (movement) OR dative (location)</span></div><div class="prep-bd"><div class="g2" style="margin-bottom:.75rem"><div><div style="font-size:12px;font-weight:700;color:var(--p1);margin-bottom:.4rem">Accusative &mdash; movement (wohin?)</div><div class="en" style="font-size:12.5px;line-height:1.8">Ich gehe <strong>in die</strong> Kuche. (I go into the kitchen.)<br>Er legt das Buch <strong>auf den</strong> Tisch. (He puts the book onto the table.)<br>&rarr; Action = movement toward a place</div></div><div><div style="font-size:12px;font-weight:700;color:var(--neut);margin-bottom:.4rem">Dative &mdash; location (wo?)</div><div class="en" style="font-size:12.5px;line-height:1.8">Ich bin <strong>in der</strong> Kuche. (I am in the kitchen.)<br>Das Buch liegt <strong>auf dem</strong> Tisch. (The book is on the table.)<br>&rarr; State = staying in a place</div></div></div>
+<table><tr><th>Preposition</th><th>Meaning</th><th>Acc. example (wohin?)</th><th>Dat. example (wo?)</th></tr><tr><td class="de v">in</td><td class="en">in / into</td><td class="de">Ich gehe <strong>in den</strong> Supermarkt.</td><td class="de">Ich bin <strong>im</strong> Supermarkt.</td></tr><tr><td class="de v">an</td><td class="en">at / on (vertical)</td><td class="de">Er hangt das Bild <strong>an die</strong> Wand.</td><td class="de">Das Bild hangt <strong>an der</strong> Wand.</td></tr><tr><td class="de v">auf</td><td class="en">on (horizontal)</td><td class="de">Ich lege das Buch <strong>auf den</strong> Tisch.</td><td class="de">Das Buch liegt <strong>auf dem</strong> Tisch.</td></tr><tr><td class="de v">unter</td><td class="en">under</td><td class="de">Er stellt den Stuhl <strong>unter den</strong> Tisch.</td><td class="de">Der Stuhl steht <strong>unter dem</strong> Tisch.</td></tr><tr><td class="de v">uber</td><td class="en">over / above</td><td class="de">Er hangt die Lampe <strong>uber den</strong> Tisch.</td><td class="de">Die Lampe hangt <strong>uber dem</strong> Tisch.</td></tr><tr><td class="de v">vor</td><td class="en">in front of / before</td><td class="de">Ich stelle mich <strong>vor die</strong> Tur.</td><td class="de">Ich stehe <strong>vor der</strong> Tur.</td></tr><tr><td class="de v">hinter</td><td class="en">behind</td><td class="de">Er geht <strong>hinter das</strong> Haus.</td><td class="de">Er steht <strong>hinter dem</strong> Haus.</td></tr><tr><td class="de v">neben</td><td class="en">next to</td><td class="de">Stell den Stuhl <strong>neben den</strong> Tisch.</td><td class="de">Der Stuhl steht <strong>neben dem</strong> Tisch.</td></tr><tr><td class="de v">zwischen</td><td class="en">between</td><td class="de">Leg es <strong>zwischen den</strong> Stuhl und Tisch.</td><td class="de">Es liegt <strong>zwischen dem</strong> Stuhl und Tisch.</td></tr></table>
+<div class="warn">Key contractions: in + dem = <strong>im</strong> &middot; in + das = <strong>ins</strong> &middot; an + dem = <strong>am</strong> &middot; an + das = <strong>ans</strong></div></div></div>
+<div class="prep-block"><div class="prep-hd" style="background:var(--warn-bg)"><span class="pill" style="background:var(--warn-bg);color:var(--warn-tx);border:1px solid var(--warn-bd)">Time prepositions</span><span style="font-size:12.5px;color:var(--ink2);margin-left:4px">when to use um / am / im / in</span></div><div class="prep-bd"><table><tr><th>Preposition</th><th>Used with</th><th>Example</th><th>Translation</th></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">um</td><td class="en">clock times</td><td class="de">um 8 Uhr &middot; um Mitternacht</td><td class="en">at 8 o'clock &middot; at midnight</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">am</td><td class="en">days of week &amp; parts of day</td><td class="de">am Montag &middot; am Morgen &middot; am Wochenende</td><td class="en">on Monday &middot; in the morning &middot; at the weekend</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">im</td><td class="en">months &amp; seasons</td><td class="de">im Januar &middot; im Sommer &middot; im Fruhling</td><td class="en">in January &middot; in summer &middot; in spring</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">in</td><td class="en">duration from now</td><td class="de">in einer Stunde &middot; in zwei Wochen</td><td class="en">in an hour &middot; in two weeks</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">seit</td><td class="en">ongoing duration (started in past)</td><td class="de">seit drei Jahren &middot; seit Montag</td><td class="en">for three years &middot; since Monday</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">vor</td><td class="en">ago / before</td><td class="de">vor einer Stunde &middot; vor dem Essen</td><td class="en">an hour ago &middot; before the meal</td></tr><tr><td class="de" style="color:var(--warn-tx);font-weight:700">nach</td><td class="en">after</td><td class="de">nach dem Unterricht &middot; nach Hause</td><td class="en">after class &middot; (going) home</td></tr></table></div></div>
+</div></div>
+
+<!-- NEGATION -->
+<div class="page" id="p-negation">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#fcebeb">&#128683;</div><div class="ph-title"><h2>Negation</h2><p>nicht vs. kein &mdash; when to use each</p></div><span class="ph-badge" style="background:#fcebeb;color:#a32d2d;border:1px solid #f09595">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="card">
+<div class="neg-grid">
+<div class="neg-card"><div class="neg-title">nicht &mdash; negates verbs, adjectives, adverbs</div><div class="exl"><span class="ok de">Ich schlafe nicht.</span> <span class="en">I don't sleep.</span></div><div class="exl"><span class="ok de">Das ist nicht gut.</span> <span class="en">That's not good.</span></div><div class="exl"><span class="ok de">Er kommt nicht.</span> <span class="en">He's not coming.</span></div><div class="exl"><span class="bad">Ich nicht schlafe.</span> <span class="en">(wrong!)</span></div></div>
+<div class="neg-card"><div class="neg-title">kein &mdash; negates nouns (replaces ein/eine)</div><div class="exl"><span class="ok de">Ich habe kein Auto.</span> <span class="en">No car. (neut.)</span></div><div class="exl"><span class="ok de">Ich habe keine Zeit.</span> <span class="en">No time. (fem.)</span></div><div class="exl"><span class="ok de">Er hat keinen Hund.</span> <span class="en">No dog. (masc. acc.)</span></div><div class="exl"><span class="ok de">Wir haben keine Kinder.</span> <span class="en">No children. (pl.)</span></div></div>
+</div>
+<div class="tip"><strong>kein</strong> endings match <strong>ein</strong>: kein (m/n nom.) &middot; keine (f/pl.) &middot; keinen (m acc.) &middot; keinem (m/n dat.) &middot; keiner (f dat.)</div>
+</div>
+<div class="card"><div class="card-title">Placement of nicht in a sentence</div><table><tr><th>Negating what?</th><th>Rule</th><th>Example</th></tr><tr><td class="en">Whole sentence / verb</td><td class="en">at the end (before prefix)</td><td class="de">Er kommt <strong style="color:#c0392b">nicht</strong>.</td></tr><tr><td class="en">Adjective or adverb</td><td class="en">directly before it</td><td class="de">Das ist <strong style="color:#c0392b">nicht</strong> gut.</td></tr><tr><td class="en">Separable verb</td><td class="en">before the prefix at end</td><td class="de">Er ruft <strong style="color:#c0392b">nicht</strong> an.</td></tr><tr><td class="en">Modal verb</td><td class="en">before the infinitive</td><td class="de">Ich kann <strong style="color:#c0392b">nicht</strong> kommen.</td></tr><tr><td class="en">Specific element only</td><td class="en">directly before that element</td><td class="de">Ich arbeite <strong style="color:#c0392b">nicht</strong> heute, sondern morgen.</td></tr></table></div>
+<div class="card"><div class="card-title">Quick rule &mdash; nicht or kein?</div><table><tr><th>Situation</th><th>Use</th><th>Example</th></tr><tr><td class="en">Negating a verb, adjective, adverb</td><td class="de n">nicht</td><td class="de">Das stimmt <strong>nicht</strong>.</td></tr><tr><td class="en">Negating a noun that had ein/eine</td><td class="de n">kein/keine</td><td class="de">Ich habe <strong>keine</strong> Zeit.</td></tr><tr><td class="en">Negating a noun with definite article</td><td class="de n">nicht</td><td class="de">Ich kaufe das Buch <strong>nicht</strong>.</td></tr><tr><td class="en">Negating a noun with no article</td><td class="de n">kein/keine</td><td class="de">Ich trinke <strong>keinen</strong> Kaffee.</td></tr></table></div>
+</div></div>
+
+<!-- KEY PHRASES -->
+<div class="page" id="p-phrases">
+<div class="page-header"><div class="ph-top"><div class="ph-icon" style="background:#e6f1fb">&#128172;</div><div class="ph-title"><h2>Key phrases</h2><p>Goethe A1 Sprechen &amp; Schreiben essentials</p></div><span class="ph-badge pm">Goethe A1</span></div></div>
+<div class="page-body">
+<div class="g2">
+<div class="card"><div class="card-title">Greetings &amp; farewells</div><table><tr><td class="de">Guten Morgen</td><td class="en">Good morning (until ~noon)</td></tr><tr><td class="de">Guten Tag</td><td class="en">Hello / Good day</td></tr><tr><td class="de">Guten Abend</td><td class="en">Good evening</td></tr><tr><td class="de">Hallo / Hi</td><td class="en">Hello (informal)</td></tr><tr><td class="de">Auf Wiedersehen</td><td class="en">Goodbye (formal)</td></tr><tr><td class="de">Tschuss / Tschau</td><td class="en">Bye (informal)</td></tr><tr><td class="de">Gute Nacht</td><td class="en">Good night</td></tr><tr><td class="de">Bis bald / Bis morgen</td><td class="en">See you soon / tomorrow</td></tr><tr><td class="de">Auf Wiederhoren</td><td class="en">Goodbye (on phone)</td></tr></table></div>
+<div class="card"><div class="card-title">Introducing yourself</div><table><tr><td class="de">Ich hei&szlig;e &hellip;</td><td class="en">My name is &hellip;</td></tr><tr><td class="de">Ich bin &hellip;</td><td class="en">I am &hellip;</td></tr><tr><td class="de">Ich komme aus &hellip;</td><td class="en">I come from &hellip;</td></tr><tr><td class="de">Ich wohne in &hellip;</td><td class="en">I live in &hellip;</td></tr><tr><td class="de">Ich bin &hellip; Jahre alt.</td><td class="en">I am &hellip; years old.</td></tr><tr><td class="de">Ich spreche &hellip;</td><td class="en">I speak &hellip;</td></tr><tr><td class="de">Ich bin von Beruf &hellip;</td><td class="en">I work as a &hellip;</td></tr><tr><td class="de">Freut mich!</td><td class="en">Nice to meet you!</td></tr></table></div>
+<div class="card"><div class="card-title">Survival phrases</div><table><tr><td class="de">Entschuldigung!</td><td class="en">Excuse me / Sorry</td></tr><tr><td class="de">Wie bitte?</td><td class="en">Pardon? / Come again?</td></tr><tr><td class="de">Ich verstehe nicht.</td><td class="en">I don't understand.</td></tr><tr><td class="de">Bitte sprechen Sie langsamer.</td><td class="en">Please speak more slowly.</td></tr><tr><td class="de">Konnen Sie das wiederholen?</td><td class="en">Can you repeat that?</td></tr><tr><td class="de">Was bedeutet &hellip;?</td><td class="en">What does &hellip; mean?</td></tr><tr><td class="de">Wo ist &hellip;?</td><td class="en">Where is &hellip;?</td></tr><tr><td class="de">Wie viel kostet das?</td><td class="en">How much does this cost?</td></tr><tr><td class="de">Ich mochte &hellip; bitte.</td><td class="en">I would like &hellip; please.</td></tr></table></div>
+<div class="card"><div class="card-title">Polite expressions</div><table><tr><td class="de">Bitte.</td><td class="en">Please / You're welcome</td></tr><tr><td class="de">Danke schon.</td><td class="en">Thank you very much.</td></tr><tr><td class="de">Bitte schon.</td><td class="en">You're welcome.</td></tr><tr><td class="de">Ja, gerne!</td><td class="en">Yes, with pleasure!</td></tr><tr><td class="de">Kein Problem.</td><td class="en">No problem.</td></tr><tr><td class="de">Es tut mir leid.</td><td class="en">I'm sorry.</td></tr><tr><td class="de">Wie geht es Ihnen?</td><td class="en">How are you? (formal)</td></tr><tr><td class="de">Wie geht's?</td><td class="en">How are you? (informal)</td></tr></table></div>
+</div>
+</div></div>
+
+</main>
+</div>
+<script>
+var pages=['articles','pronouns','cases','verbs','modals','wordorder','wfragen','adjectives','prepositions','negation','phrases'];
+function show(id){
+  pages.forEach(function(p){
+    var el=document.getElementById('p-'+p);
+    var ln=document.querySelector('.sb-link[onclick="show(\''+p+'\')"]');
+    if(el){el.classList.toggle('active',p===id);}
+    if(ln){ln.classList.toggle('active',p===id);}
+  });
+  document.querySelector('.content').scrollTo({top:0,behavior:'smooth'});
+  closeMenu();
+}
+function toggleMenu(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeMenu(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+</script>
+</body>
+</html>
