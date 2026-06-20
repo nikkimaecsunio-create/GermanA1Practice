@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1000 German Phrases — A1 Level</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap');
+:root {
+  --bg:#080810;--surface:#0f0f1a;--card:#151525;--border:#1e1e32;
+  --gold:#f5c842;--gold2:#fad96e;--green:#3dd68c;--blue:#5ab4ff;
+  --red:#ff5f5f;--purple:#b06aff;--text:#e8e8f0;--muted:#5a5a7a;--dim:#2a2a45;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:48px 20px 32px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(245,200,66,0.08),transparent);pointer-events:none}
+.hero-flag{font-size:56px;margin-bottom:16px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(28px,6vw,48px);font-weight:900;color:var(--gold);line-height:1.15;margin-bottom:10px}
+.hero h1 em{font-style:italic;color:var(--gold2)}
+.hero p{color:var(--muted);font-size:15px;max-width:480px;margin:0 auto;line-height:1.6}
+.hero-stats{display:flex;justify-content:center;gap:32px;margin-top:24px}
+.hero-stat{text-align:center}
+.hero-stat-num{font-size:28px;font-weight:900;color:var(--gold)}
+.hero-stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+/* ── CONTROLS ── */
+.controls{position:sticky;top:0;z-index:100;background:rgba(8,8,16,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.search-wrap{flex:1;min-width:180px;position:relative}
+.search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px 10px 38px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color 0.2s}
+.search-wrap input:focus{border-color:var(--gold)}
+.search-wrap::before{content:'🔍';position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
+.search-wrap input::placeholder{color:var(--muted)}
+.btn-ctrl{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.2s}
+.btn-ctrl:hover,.btn-ctrl.active{background:rgba(245,200,66,0.1);border-color:var(--gold);color:var(--gold)}
+.count-badge{background:var(--dim);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.count-badge span{color:var(--gold)}
+
+/* ── FILTER TABS ── */
+.filter-wrap{padding:12px 16px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--surface)}
+.filter-wrap::-webkit-scrollbar{display:none}
+.ftab{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all 0.2s;flex-shrink:0}
+.ftab.active{background:rgba(245,200,66,0.12);border-color:var(--gold);color:var(--gold)}
+
+/* ── CATEGORY SECTION ── */
+.cat-section{margin:0 16px 32px}
+.cat-header{display:flex;align-items:center;gap:12px;padding:20px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px;position:sticky;top:58px;background:var(--bg);z-index:10}
+.cat-icon{font-size:24px}
+.cat-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--text)}
+.cat-count{margin-left:auto;background:var(--dim);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--muted)}
+
+/* ── PHRASE GRID ── */
+.phrase-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:640px){.phrase-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:960px){.phrase-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* ── PHRASE CARD ── */
+.phrase-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.phrase-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.2s;border-radius:14px}
+.phrase-card:hover::before,.phrase-card:active::before{opacity:1}
+.phrase-card:hover{transform:translateY(-1px);border-color:var(--dim)}
+.phrase-card:active{transform:scale(0.98)}
+.phrase-num{font-size:10px;font-weight:700;color:var(--muted);font-family:'Courier New',monospace;min-width:34px;padding-top:2px}
+.phrase-body{flex:1;min-width:0}
+.phrase-de{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.4}
+.phrase-en{font-size:12px;color:var(--muted);line-height:1.4}
+.phrase-card.playing .phrase-de{color:var(--gold)}
+.phrase-card.playing{border-color:rgba(245,200,66,0.3);background:rgba(245,200,66,0.04)}
+.sound-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--dim);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:all 0.2s;cursor:pointer}
+.phrase-card:hover .sound-btn,.phrase-card.playing .sound-btn{background:rgba(245,200,66,0.15);border-color:rgba(245,200,66,0.4)}
+.phrase-card.fav .phrase-num{color:var(--gold)}
+
+/* ── FAV BTN ── */
+.fav-btn{position:absolute;top:8px;right:8px;font-size:13px;opacity:0;transition:opacity 0.2s;cursor:pointer;background:none;border:none;padding:2px}
+.phrase-card:hover .fav-btn{opacity:1}
+.phrase-card.fav .fav-btn{opacity:1;color:var(--gold)}
+
+/* ── PROGRESS BAR ── */
+.progress-bar{height:2px;background:var(--dim);position:fixed;top:0;left:0;right:0;z-index:200}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));width:0%;transition:width 0.3s}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card);border:1px solid var(--gold);color:var(--gold);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:700;z-index:999;white-space:nowrap;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* ── BOTTOM PAD ── */
+.bottom-pad{height:60px}
+
+/* ── NO RESULTS ── */
+.no-results{text-align:center;padding:60px 20px;color:var(--muted);font-size:15px}
+.no-results span{font-size:48px;display:block;margin-bottom:16px}
+
+/* ── SCROLL TOP ── */
+.scroll-top{position:fixed;bottom:24px;right:16px;width:42px;height:42px;border-radius:50%;background:var(--gold);border:none;color:var(--bg);font-size:20px;cursor:pointer;display:none;align-items:center;justify-content:center;font-weight:900;z-index:100;box-shadow:0 4px 16px rgba(245,200,66,0.3)}
+.scroll-top.visible{display:flex}
+
+/* ── QUIZ MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-width:540px;max-height:80vh;overflow-y:auto}
+.modal-handle{width:40px;height:4px;background:var(--dim);border-radius:2px;margin:0 auto 20px}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.quiz-de{font-size:22px;font-weight:800;color:var(--text);margin-bottom:20px;text-align:center;padding:20px;background:var(--card);border-radius:14px;border:1px solid var(--border)}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;cursor:pointer;transition:all 0.2s}
+.quiz-opt.correct{border-color:var(--green);background:rgba(61,214,140,0.08);color:var(--green)}
+.quiz-opt.wrong{border-color:var(--red);background:rgba(255,95,95,0.08);color:var(--red)}
+.quiz-score{display:flex;justify-content:space-between;margin-bottom:20px;font-size:13px}
+.quiz-score span{color:var(--muted)}
+.quiz-score b{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="hero">
+  <div class="hero-flag">🇩🇪</div>
+  <h1>1000 German Phrases<br><em>A1 Level Mastery</em></h1>
+  <p>Every essential phrase you need — tap any card to hear authentic German pronunciation</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num">1000</div><div class="hero-stat-label">Phrases</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="learnedCount">0</div><div class="hero-stat-label">Heard</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="favCount">0</div><div class="hero-stat-label">Saved ⭐</div></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap"><input type="search" id="searchBox" placeholder="Search phrases..." oninput="handleSearch()"></div>
+  <button class="btn-ctrl" id="btnFavs" onclick="toggleFavView()">⭐ Saved</button>
+  <button class="btn-ctrl" onclick="openQuiz()">🧠 Quiz</button>
+  <button class="btn-ctrl" onclick="shuffleAll()">🔀 Shuffle</button>
+  <div class="count-badge">Showing <span id="visibleCount">1000</span></div>
+</div>
+
+<div class="filter-wrap" id="filterTabs"></div>
+
+<div id="phraseContainer"></div>
+<div class="bottom-pad"></div>
+
+<button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<div class="toast" id="toast"></div>
+
+<!-- QUIZ MODAL -->
+<div class="modal-overlay" id="quizOverlay" onclick="closeQuiz(event)">
+  <div class="modal" id="quizBox">
+    <div class="modal-handle"></div>
+    <div class="modal-title">🧠 Quick Quiz</div>
+    <div class="modal-sub">What does this German phrase mean?</div>
+    <div class="quiz-score"><span>Score: <b id="qScore">0</b> / <b id="qTotal">0</b></span><span id="qStreak">Streak: <b>0</b> 🔥</span></div>
+    <div class="quiz-de" id="qPhrase">...</div>
+    <div class="quiz-opts" id="qOpts"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+//  1000 GERMAN A1 PHRASES
+// ═══════════════════════════════════════════════════════════
+const CATEGORIES = [
+{id:"greet",icon:"👋",title:"Greetings & Farewells",phrases:[
+["Hallo!","Hello!"],
+["Guten Morgen!","Good morning!"],
+["Guten Tag!","Good day!"],
+["Guten Abend!","Good evening!"],
+["Gute Nacht!","Good night!"],
+["Auf Wiedersehen!","Goodbye!"],
+["Tschüss!","Bye! (informal)"],
+["Bis bald!","See you soon!"],
+["Bis morgen!","See you tomorrow!"],
+["Bis später!","See you later!"],
+["Tschau!","Ciao! (informal)"],
+["Servus!","Hi / Bye (Austrian/Bavarian)"],
+["Moin!","Hi! (Northern German)"],
+["Willkommen!","Welcome!"],
+["Herzlich willkommen!","A warm welcome!"],
+["Schönen Tag noch!","Have a nice day!"],
+["Schönes Wochenende!","Have a nice weekend!"],
+["Schöne Feiertage!","Happy holidays!"],
+["Wie geht es Ihnen?","How are you? (formal)"],
+["Wie geht's?","How are you? (informal)"],
+["Wie geht es dir?","How are you? (informal)"],
+["Mir geht es gut, danke.","I'm fine, thank you."],
+["Danke, gut. Und Ihnen?","Fine, thank you. And you?"],
+["Es geht mir nicht so gut.","I'm not doing so well."],
+["Ich bin müde.","I am tired."],
+["Ich bin krank.","I am sick."],
+["Ich bin glücklich.","I am happy."],
+["Freut mich!","Nice to meet you!"],
+["Sehr erfreut.","Very pleased to meet you."],
+["Angenehm.","Pleased to meet you."],
+]},
+{id:"intro",icon:"🙋",title:"Introductions & Personal Info",phrases:[
+["Wie heißen Sie?","What is your name? (formal)"],
+["Wie heißt du?","What is your name? (informal)"],
+["Ich heiße Anna.","My name is Anna."],
+["Mein Name ist Thomas.","My name is Thomas."],
+["Ich bin Thomas.","I am Thomas."],
+["Woher kommen Sie?","Where are you from? (formal)"],
+["Woher kommst du?","Where are you from? (informal)"],
+["Ich komme aus Indien.","I come from India."],
+["Ich bin aus Deutschland.","I am from Germany."],
+["Wo wohnen Sie?","Where do you live? (formal)"],
+["Wo wohnst du?","Where do you live? (informal)"],
+["Ich wohne in Mumbai.","I live in Mumbai."],
+["Wie alt sind Sie?","How old are you? (formal)"],
+["Wie alt bist du?","How old are you? (informal)"],
+["Ich bin 25 Jahre alt.","I am 25 years old."],
+["Was sind Sie von Beruf?","What do you do for work? (formal)"],
+["Was machst du beruflich?","What do you do for work? (informal)"],
+["Ich bin Ingenieur.","I am an engineer."],
+["Ich bin Student.","I am a student."],
+["Ich bin Lehrerin.","I am a teacher. (female)"],
+["Ich arbeite bei einer Firma.","I work at a company."],
+["Ich spreche ein bisschen Deutsch.","I speak a little German."],
+["Ich lerne Deutsch.","I am learning German."],
+["Ich lerne seit drei Monaten Deutsch.","I have been learning German for three months."],
+["Sind Sie verheiratet?","Are you married? (formal)"],
+["Ich bin verheiratet.","I am married."],
+["Ich bin ledig.","I am single."],
+["Haben Sie Kinder?","Do you have children? (formal)"],
+["Ich habe zwei Kinder.","I have two children."],
+["Das ist meine Frau.","This is my wife."],
+["Das ist mein Mann.","This is my husband."],
+]},
+{id:"polite",icon:"🙏",title:"Politeness & Basic Expressions",phrases:[
+["Bitte.","Please. / You're welcome."],
+["Danke.","Thank you."],
+["Danke schön.","Thank you very much."],
+["Vielen Dank.","Many thanks."],
+["Herzlichen Dank.","Heartfelt thanks."],
+["Bitte sehr.","You're very welcome."],
+["Gern geschehen.","My pleasure."],
+["Nichts zu danken.","Don't mention it."],
+["Entschuldigung!","Excuse me! / Sorry!"],
+["Entschuldigen Sie bitte.","Please excuse me. (formal)"],
+["Es tut mir leid.","I am sorry."],
+["Das tut mir leid.","I'm sorry about that."],
+["Kein Problem.","No problem."],
+["Macht nichts.","Never mind. / It's nothing."],
+["Ja.","Yes."],
+["Nein.","No."],
+["Ja, bitte.","Yes, please."],
+["Nein, danke.","No, thank you."],
+["Natürlich.","Of course."],
+["Sicher.","Certainly."],
+["Genau.","Exactly."],
+["Stimmt.","That's right."],
+["Ich verstehe.","I understand."],
+["Ich verstehe nicht.","I don't understand."],
+["Können Sie das wiederholen?","Can you repeat that? (formal)"],
+["Bitte sprechen Sie langsamer.","Please speak more slowly. (formal)"],
+["Wie bitte?","Pardon? / Excuse me?"],
+["Was bedeutet das?","What does that mean?"],
+["Können Sie das buchstabieren?","Can you spell that?"],
+["Sprechen Sie Englisch?","Do you speak English?"],
+]},
+{id:"numbers",icon:"🔢",title:"Numbers & Counting",phrases:[
+["null","zero"],
+["eins","one"],
+["zwei","two"],
+["drei","three"],
+["vier","four"],
+["fünf","five"],
+["sechs","six"],
+["sieben","seven"],
+["acht","eight"],
+["neun","nine"],
+["zehn","ten"],
+["elf","eleven"],
+["zwölf","twelve"],
+["dreizehn","thirteen"],
+["vierzehn","fourteen"],
+["fünfzehn","fifteen"],
+["sechzehn","sixteen"],
+["siebzehn","seventeen"],
+["achtzehn","eighteen"],
+["neunzehn","nineteen"],
+["zwanzig","twenty"],
+["einundzwanzig","twenty-one"],
+["dreißig","thirty"],
+["vierzig","forty"],
+["fünfzig","fifty"],
+["sechzig","sixty"],
+["siebzig","seventy"],
+["achtzig","eighty"],
+["neunzig","ninety"],
+["hundert","one hundred"],
+["zweihundert","two hundred"],
+["tausend","one thousand"],
+["eine Million","one million"],
+["das erste","the first"],
+["das zweite","the second"],
+["das dritte","the third"],
+["Wie viel kostet das?","How much does that cost?"],
+["Wie viele?","How many?"],
+]},
+{id:"time",icon:"⏰",title:"Time & Dates",phrases:[
+["Wie spät ist es?","What time is it?"],
+["Es ist acht Uhr.","It is eight o'clock."],
+["Es ist halb neun.","It is half past eight."],
+["Es ist Viertel nach drei.","It is quarter past three."],
+["Es ist Viertel vor vier.","It is quarter to four."],
+["Es ist zwölf Uhr mittags.","It is twelve noon."],
+["Wann?","When?"],
+["Um wie viel Uhr?","At what time?"],
+["morgen früh","tomorrow morning"],
+["heute Abend","this evening"],
+["gestern","yesterday"],
+["morgen","tomorrow"],
+["übermorgen","the day after tomorrow"],
+["vorgestern","the day before yesterday"],
+["jetzt","now"],
+["gleich","in a moment"],
+["bald","soon"],
+["später","later"],
+["Montag","Monday"],
+["Dienstag","Tuesday"],
+["Mittwoch","Wednesday"],
+["Donnerstag","Thursday"],
+["Freitag","Friday"],
+["Samstag","Saturday"],
+["Sonntag","Sunday"],
+["das Wochenende","the weekend"],
+["Januar","January"],
+["Februar","February"],
+["März","March"],
+["April","April"],
+["Mai","May"],
+["Juni","June"],
+["Juli","July"],
+["August","August"],
+["September","September"],
+["Oktober","October"],
+["November","November"],
+["Dezember","December"],
+["Welches Datum ist heute?","What is today's date?"],
+["Heute ist der 5. März.","Today is the 5th of March."],
+["Welcher Tag ist heute?","What day is today?"],
+["Im Frühling","In spring"],
+["Im Sommer","In summer"],
+["Im Herbst","In autumn/fall"],
+["Im Winter","In winter"],
+]},
+{id:"family",icon:"👨‍👩‍👧",title:"Family & Relationships",phrases:[
+["die Familie","the family"],
+["der Vater","the father"],
+["die Mutter","the mother"],
+["die Eltern","the parents"],
+["der Sohn","the son"],
+["die Tochter","the daughter"],
+["die Kinder","the children"],
+["der Bruder","the brother"],
+["die Schwester","the sister"],
+["die Geschwister","the siblings"],
+["der Großvater / der Opa","the grandfather / grandpa"],
+["die Großmutter / die Oma","the grandmother / grandma"],
+["die Großeltern","the grandparents"],
+["der Onkel","the uncle"],
+["die Tante","the aunt"],
+["der Cousin","the male cousin"],
+["die Cousine","the female cousin"],
+["der Neffe","the nephew"],
+["die Nichte","the niece"],
+["der Mann","the husband / the man"],
+["die Frau","the wife / the woman"],
+["der Freund","the boyfriend / friend (male)"],
+["die Freundin","the girlfriend / friend (female)"],
+["der Kollege","the male colleague"],
+["die Kollegin","the female colleague"],
+["das Baby","the baby"],
+["das Kind","the child"],
+["Meine Familie ist groß.","My family is big."],
+["Wie viele Personen sind in Ihrer Familie?","How many people are in your family?"],
+["Ich habe einen Bruder und zwei Schwestern.","I have one brother and two sisters."],
+["Meine Mutter heißt Maria.","My mother's name is Maria."],
+]},
+{id:"home",icon:"🏠",title:"Home & Housing",phrases:[
+["das Haus","the house"],
+["die Wohnung","the apartment"],
+["das Zimmer","the room"],
+["die Küche","the kitchen"],
+["das Wohnzimmer","the living room"],
+["das Schlafzimmer","the bedroom"],
+["das Badezimmer","the bathroom"],
+["das Arbeitszimmer","the study / office room"],
+["der Keller","the basement"],
+["der Balkon","the balcony"],
+["der Garten","the garden"],
+["die Garage","the garage"],
+["die Treppe","the staircase"],
+["der Aufzug / der Fahrstuhl","the elevator"],
+["der Eingang","the entrance"],
+["der Tisch","the table"],
+["der Stuhl","the chair"],
+["das Sofa","the sofa"],
+["das Bett","the bed"],
+["der Schrank","the wardrobe"],
+["die Lampe","the lamp"],
+["das Fenster","the window"],
+["die Tür","the door"],
+["der Boden","the floor"],
+["die Wand","the wall"],
+["die Decke","the ceiling"],
+["der Kühlschrank","the refrigerator"],
+["der Herd","the stove"],
+["die Spülmaschine","the dishwasher"],
+["die Waschmaschine","the washing machine"],
+["Ich suche eine Wohnung.","I am looking for an apartment."],
+["Wie viele Zimmer hat die Wohnung?","How many rooms does the apartment have?"],
+["Die Wohnung hat 3 Zimmer.","The apartment has 3 rooms."],
+["Wie hoch ist die Miete?","How high is the rent?"],
+["Die Miete beträgt 800 Euro.","The rent is 800 euros."],
+["Ist die Wohnung möbliert?","Is the apartment furnished?"],
+["Wann kann ich einziehen?","When can I move in?"],
+["Darf ich ein Haustier halten?","Am I allowed to keep a pet?"],
+]},
+{id:"food",icon:"🍽️",title:"Food & Drink",phrases:[
+["das Essen","the food"],
+["das Frühstück","breakfast"],
+["das Mittagessen","lunch"],
+["das Abendessen","dinner"],
+["der Hunger","hunger"],
+["der Durst","thirst"],
+["Ich habe Hunger.","I am hungry."],
+["Ich habe Durst.","I am thirsty."],
+["das Brot","bread"],
+["die Butter","butter"],
+["der Käse","cheese"],
+["das Fleisch","meat"],
+["das Hühnchen","chicken"],
+["das Schweinefleisch","pork"],
+["das Rindfleisch","beef"],
+["der Fisch","fish"],
+["das Gemüse","vegetables"],
+["die Kartoffel","potato"],
+["die Tomate","tomato"],
+["die Karotte","carrot"],
+["der Salat","salad / lettuce"],
+["das Obst","fruit"],
+["der Apfel","apple"],
+["die Banane","banana"],
+["die Orange","orange"],
+["die Erdbeere","strawberry"],
+["die Traube","grape"],
+["der Reis","rice"],
+["die Nudeln","pasta / noodles"],
+["das Ei","egg"],
+["die Milch","milk"],
+["der Kaffee","coffee"],
+["der Tee","tea"],
+["das Wasser","water"],
+["der Saft","juice"],
+["das Bier","beer"],
+["der Wein","wine"],
+["die Limonade","lemonade / soda"],
+["lecker","delicious"],
+["nicht so gut","not so good"],
+["süß","sweet"],
+["salzig","salty"],
+["scharf","spicy"],
+["sauer","sour"],
+["bitter","bitter"],
+["vegetarisch","vegetarian"],
+["vegan","vegan"],
+["glutenfrei","gluten-free"],
+["die Allergie","allergy"],
+["Ich bin allergisch gegen Nüsse.","I am allergic to nuts."],
+["Ohne Fleisch, bitte.","Without meat, please."],
+["Guten Appetit!","Enjoy your meal!"],
+["Prost!","Cheers!"],
+["Es schmeckt sehr gut!","It tastes very good!"],
+]},
+{id:"cafe",icon:"☕",title:"At the Café & Restaurant",phrases:[
+["Einen Tisch für zwei Personen, bitte.","A table for two, please."],
+["Haben Sie einen Tisch frei?","Do you have a free table?"],
+["Ich habe einen Tisch reserviert.","I have reserved a table."],
+["Auf den Namen Schmidt.","Under the name Schmidt."],
+["Die Speisekarte, bitte.","The menu, please."],
+["Was empfehlen Sie?","What do you recommend?"],
+["Was ist das Tagesgericht?","What is the daily special?"],
+["Ich möchte bestellen.","I would like to order."],
+["Ich nehme das Schnitzel.","I'll have the schnitzel."],
+["Ich möchte einen Kaffee.","I would like a coffee."],
+["Ein Wasser, bitte.","A water, please."],
+["Noch einmal dasselbe, bitte.","The same again, please."],
+["Ist der Platz noch frei?","Is this seat taken?"],
+["Bitte!","Excuse me! (to get attention)"],
+["Zahlen, bitte!","The bill, please!"],
+["Die Rechnung, bitte.","The bill, please."],
+["Kann ich mit Karte zahlen?","Can I pay by card?"],
+["Getrennt oder zusammen?","Separately or together?"],
+["Zusammen, bitte.","Together, please."],
+["Getrennt, bitte.","Separately, please."],
+["Stimmt so.","Keep the change."],
+["Das ist nicht richtig.","That is not correct."],
+["Ich habe das nicht bestellt.","I did not order this."],
+["Ist das Trinkgeld inbegriffen?","Is the tip included?"],
+["Das war ausgezeichnet!","That was excellent!"],
+["Haben Sie einen Hochstuhl für Kinder?","Do you have a high chair for children?"],
+["Kann ich auch hier frühstücken?","Can I also have breakfast here?"],
+["Wann öffnet das Restaurant?","When does the restaurant open?"],
+["Wann schließt das Restaurant?","When does the restaurant close?"],
+["Haben Sie ein vegetarisches Gericht?","Do you have a vegetarian dish?"],
+]},
+{id:"shop",icon:"🛒",title:"Shopping",phrases:[
+["Wo ist der Supermarkt?","Where is the supermarket?"],
+["die Bäckerei","the bakery"],
+["die Metzgerei","the butcher's"],
+["die Apotheke","the pharmacy"],
+["die Drogerie","the drugstore"],
+["das Kaufhaus","the department store"],
+["der Markt","the market"],
+["der Buchladen","the bookstore"],
+["Haben Sie...?","Do you have...?"],
+["Ich suche...","I am looking for..."],
+["Kann ich Ihnen helfen?","Can I help you? (formal)"],
+["Ich schaue nur.","I'm just looking."],
+["Was kostet das?","How much does that cost?"],
+["Wie teuer ist das?","How expensive is that?"],
+["Das kostet fünf Euro.","That costs five euros."],
+["Das ist zu teuer.","That is too expensive."],
+["Haben Sie etwas Günstigeres?","Do you have something cheaper?"],
+["Gibt es einen Rabatt?","Is there a discount?"],
+["Ich nehme das.","I'll take that."],
+["Ich möchte das nicht.","I don't want that."],
+["Kann ich das umtauschen?","Can I exchange this?"],
+["Ich möchte das zurückgeben.","I would like to return this."],
+["Wo ist die Kasse?","Where is the cash register?"],
+["Kann ich mit Kreditkarte zahlen?","Can I pay with credit card?"],
+["Haben Sie eine Tüte?","Do you have a bag?"],
+["Welche Größe?","What size?"],
+["Größe M, bitte.","Size M, please."],
+["Darf ich das anprobieren?","May I try this on?"],
+["Wo ist die Umkleidekabine?","Where is the changing room?"],
+["Die Farbe gefällt mir.","I like the colour."],
+["Das passt mir nicht.","That doesn't fit me."],
+["Haben Sie das in Blau?","Do you have that in blue?"],
+["Wann haben Sie geöffnet?","When are you open?"],
+]},
+{id:"transport",icon:"🚆",title:"Transport & Getting Around",phrases:[
+["Wo ist der Bahnhof?","Where is the train station?"],
+["Wo ist der Busbahnhof?","Where is the bus station?"],
+["Wo ist der Flughafen?","Where is the airport?"],
+["Wo ist die U-Bahn-Station?","Where is the metro station?"],
+["Wie komme ich zum Stadtzentr?","How do I get to the city centre?"],
+["Wie komme ich zum Hotel?","How do I get to the hotel?"],
+["der Zug","the train"],
+["der Bus","the bus"],
+["die U-Bahn","the metro / subway"],
+["die Straßenbahn","the tram"],
+["das Taxi","the taxi"],
+["das Fahrrad","the bicycle"],
+["das Auto","the car"],
+["das Flugzeug","the airplane"],
+["das Schiff","the ship"],
+["Eine Fahrkarte nach Berlin, bitte.","One ticket to Berlin, please."],
+["Einfach oder hin und zurück?","One way or return?"],
+["Einfach, bitte.","One way, please."],
+["Hin und zurück, bitte.","Return, please."],
+["Wann fährt der nächste Zug?","When does the next train leave?"],
+["Wann kommt der Zug an?","When does the train arrive?"],
+["Auf welchem Gleis fährt der Zug?","Which platform does the train leave from?"],
+["Der Zug hat Verspätung.","The train is late."],
+["Der Zug fährt um 14:30 Uhr ab.","The train departs at 2:30 PM."],
+["Wo muss ich umsteigen?","Where do I have to change?"],
+["Ist dieser Platz frei?","Is this seat free?"],
+["Ich habe einen Fensterplatz reserviert.","I reserved a window seat."],
+["Wo kann ich ein Taxi rufen?","Where can I call a taxi?"],
+["Bitte fahren Sie zum Flughafen.","Please drive to the airport."],
+["Wie viel kostet die Fahrt?","How much does the ride cost?"],
+["Halten Sie hier bitte an.","Please stop here."],
+["Wo kann ich ein Auto mieten?","Where can I rent a car?"],
+["links","left"],
+["rechts","right"],
+["geradeaus","straight ahead"],
+["die Ampel","the traffic light"],
+["die Kreuzung","the intersection"],
+["die Straße","the street"],
+["der Platz","the square"],
+["die Brücke","the bridge"],
+]},
+{id:"directions",icon:"🗺️",title:"Directions & Navigation",phrases:[
+["Entschuldigung, wo ist...?","Excuse me, where is...?"],
+["Ich habe mich verirrt.","I got lost."],
+["Können Sie mir helfen?","Can you help me?"],
+["Können Sie das auf der Karte zeigen?","Can you show me on the map?"],
+["Wie weit ist es?","How far is it?"],
+["Es ist weit.","It is far."],
+["Es ist nah.","It is close / nearby."],
+["Es ist etwa 5 Minuten zu Fuß.","It is about 5 minutes on foot."],
+["Es ist etwa 10 Minuten mit dem Bus.","It is about 10 minutes by bus."],
+["Gehen Sie geradeaus.","Go straight ahead."],
+["Biegen Sie links ab.","Turn left."],
+["Biegen Sie rechts ab.","Turn right."],
+["Nehmen Sie die erste Straße links.","Take the first street on the left."],
+["Nehmen Sie die zweite Straße rechts.","Take the second street on the right."],
+["Gehen Sie an der Kirche vorbei.","Go past the church."],
+["Es ist gegenüber dem Bahnhof.","It is opposite the train station."],
+["Es ist neben dem Hotel.","It is next to the hotel."],
+["Es ist hinter dem Supermarkt.","It is behind the supermarket."],
+["Es ist vor dem Park.","It is in front of the park."],
+["Kann ich zu Fuß gehen?","Can I walk there?"],
+["Ich nehme die U-Bahn.","I'll take the metro."],
+]},
+{id:"health",icon:"🏥",title:"Health & Medical",phrases:[
+["Ich bin krank.","I am sick."],
+["Ich fühle mich nicht gut.","I don't feel well."],
+["Ich fühle mich schlecht.","I feel bad."],
+["Mir ist schwindelig.","I feel dizzy."],
+["Mir ist übel.","I feel nauseous."],
+["Ich habe Fieber.","I have a fever."],
+["Ich habe Kopfschmerzen.","I have a headache."],
+["Ich habe Bauchschmerzen.","I have stomach pain."],
+["Ich habe Rückenschmerzen.","I have back pain."],
+["Ich habe Halsschmerzen.","I have a sore throat."],
+["Ich habe Husten.","I have a cough."],
+["Ich habe Schnupfen.","I have a cold / runny nose."],
+["Ich habe mich erkältet.","I have caught a cold."],
+["Mein Bein tut weh.","My leg hurts."],
+["Mein Arm tut weh.","My arm hurts."],
+["Wo ist das nächste Krankenhaus?","Where is the nearest hospital?"],
+["Ich brauche einen Arzt.","I need a doctor."],
+["Ich brauche einen Zahnarzt.","I need a dentist."],
+["Rufen Sie bitte einen Krankenwagen!","Please call an ambulance!"],
+["Rufen Sie die Polizei!","Call the police!"],
+["Hilfe!","Help!"],
+["Ich bin verletzt.","I am injured."],
+["Ich habe eine Allergie.","I have an allergy."],
+["Ich nehme Medikamente.","I take medication."],
+["Haben Sie ein Schmerzmittel?","Do you have a painkiller?"],
+["Ich brauche ein Rezept.","I need a prescription."],
+["Wie oft soll ich die Tabletten nehmen?","How often should I take the tablets?"],
+["dreimal täglich","three times daily"],
+["vor dem Essen","before eating"],
+["nach dem Essen","after eating"],
+["der Kopf","the head"],
+["der Hals","the throat / neck"],
+["die Brust","the chest"],
+["der Bauch","the stomach / belly"],
+["der Rücken","the back"],
+["der Arm","the arm"],
+["die Hand","the hand"],
+["das Bein","the leg"],
+["der Fuß","the foot"],
+]},
+{id:"hotel",icon:"🏨",title:"Hotel & Accommodation",phrases:[
+["Ich habe ein Zimmer reserviert.","I have reserved a room."],
+["Haben Sie ein Zimmer frei?","Do you have a room available?"],
+["Ich möchte ein Einzelzimmer.","I would like a single room."],
+["Ich möchte ein Doppelzimmer.","I would like a double room."],
+["Für wie viele Nächte?","For how many nights?"],
+["Für zwei Nächte.","For two nights."],
+["Wie viel kostet das Zimmer pro Nacht?","How much does the room cost per night?"],
+["Ist das Frühstück inbegriffen?","Is breakfast included?"],
+["Wann ist Check-in?","When is check-in?"],
+["Wann ist Check-out?","When is check-out?"],
+["Kann ich früher einchecken?","Can I check in earlier?"],
+["Kann ich später auschecken?","Can I check out later?"],
+["Wo ist mein Zimmer?","Where is my room?"],
+["Wo ist der Aufzug?","Where is the elevator?"],
+["Können Sie mein Gepäck tragen?","Can you carry my luggage?"],
+["Ich habe meinen Schlüssel verloren.","I have lost my key."],
+["Das Zimmer ist nicht sauber.","The room is not clean."],
+["Die Klimaanlage funktioniert nicht.","The air conditioning does not work."],
+["Kann ich ein Handtuch bekommen?","Can I get a towel?"],
+["Wecken Sie mich bitte um 7 Uhr.","Please wake me at 7 o'clock."],
+["Gibt es WLAN?","Is there WiFi?"],
+["Was ist das WLAN-Passwort?","What is the WiFi password?"],
+["Kann ich hier parken?","Can I park here?"],
+["Ich möchte auschecken.","I would like to check out."],
+["Kann ich die Rechnung sehen?","Can I see the bill?"],
+]},
+{id:"school",icon:"📚",title:"School & Learning",phrases:[
+["die Schule","the school"],
+["die Universität","the university"],
+["der Lehrer / die Lehrerin","the teacher (male/female)"],
+["der Schüler / die Schülerin","the student (school)"],
+["der Student / die Studentin","the student (university)"],
+["das Buch","the book"],
+["das Heft","the notebook"],
+["der Stift","the pen"],
+["der Bleistift","the pencil"],
+["das Lineal","the ruler"],
+["die Tafel","the blackboard"],
+["die Hausaufgaben","the homework"],
+["die Prüfung","the exam"],
+["Ich habe eine Prüfung.","I have an exam."],
+["Ich lerne für die Prüfung.","I am studying for the exam."],
+["Ich habe bestanden!","I passed!"],
+["Ich habe nicht bestanden.","I did not pass."],
+["Wie lautet die Aufgabe?","What is the task?"],
+["Ich verstehe das nicht.","I don't understand this."],
+["Können Sie das erklären?","Can you explain that?"],
+["Wiederholen Sie bitte.","Please repeat."],
+["Darf ich auf die Toilette gehen?","May I go to the toilet?"],
+["Ich habe eine Frage.","I have a question."],
+["Können Sie mir helfen?","Can you help me?"],
+["das Deutsch","German (subject)"],
+["die Mathematik","mathematics"],
+["die Geschichte","history"],
+["die Musik","music"],
+["der Sport","sports / PE"],
+]},
+{id:"work",icon:"💼",title:"Work & Office",phrases:[
+["die Arbeit","the work"],
+["das Büro","the office"],
+["der Chef / die Chefin","the boss (male/female)"],
+["der Kollege / die Kollegin","the colleague (male/female)"],
+["die Besprechung","the meeting"],
+["das Projekt","the project"],
+["der Computer","the computer"],
+["der Drucker","the printer"],
+["die E-Mail","the email"],
+["der Termin","the appointment"],
+["Ich habe einen Termin.","I have an appointment."],
+["Wann beginnt die Besprechung?","When does the meeting start?"],
+["Können wir einen Termin vereinbaren?","Can we arrange an appointment?"],
+["Ich arbeite von neun bis fünf.","I work from nine to five."],
+["Ich arbeite im Homeoffice.","I work from home."],
+["Ich bin im Urlaub.","I am on vacation."],
+["Ich bin krank und kann nicht kommen.","I am sick and cannot come."],
+["Können Sie mir das schicken?","Can you send me that?"],
+["Bitte schicken Sie mir eine E-Mail.","Please send me an email."],
+["Wann ist die Deadline?","When is the deadline?"],
+["Ich bin fertig.","I am finished."],
+["Können wir das morgen besprechen?","Can we discuss that tomorrow?"],
+["das Gehalt","the salary"],
+["der Urlaub","the vacation"],
+["die Überstunden","overtime"],
+]},
+{id:"leisure",icon:"🎭",title:"Hobbies & Free Time",phrases:[
+["Was machst du in deiner Freizeit?","What do you do in your free time?"],
+["Ich lese gern.","I like to read."],
+["Ich höre gern Musik.","I like listening to music."],
+["Ich spiele Fußball.","I play football."],
+["Ich treibe Sport.","I do sport."],
+["Ich gehe ins Kino.","I go to the cinema."],
+["Ich gehe ins Theater.","I go to the theatre."],
+["Ich koche gern.","I like to cook."],
+["Ich reise gern.","I like to travel."],
+["Ich fotografiere gern.","I like to take photographs."],
+["Ich schwimme gern.","I like to swim."],
+["Ich wandere gern.","I like to hike."],
+["Ich male gern.","I like to paint."],
+["Ich tanze gern.","I like to dance."],
+["Ich spiele Gitarre.","I play guitar."],
+["Ich spiele Klavier.","I play piano."],
+["Ich sehe fern.","I watch television."],
+["Ich spiele Computerspiele.","I play computer games."],
+["das Konzert","the concert"],
+["die Ausstellung","the exhibition"],
+["das Museum","the museum"],
+["die Bibliothek","the library"],
+["der Park","the park"],
+["der Strand","the beach"],
+["der Wald","the forest"],
+["Ich mag...","I like..."],
+["Ich mag das nicht.","I don't like that."],
+["Das macht Spaß!","That is fun!"],
+["Das ist langweilig.","That is boring."],
+["Kommst du mit?","Are you coming along?"],
+["Gern!","With pleasure! / Sure!"],
+]},
+{id:"weather",icon:"🌤️",title:"Weather & Nature",phrases:[
+["Wie ist das Wetter heute?","What is the weather like today?"],
+["Es ist sonnig.","It is sunny."],
+["Es ist bewölkt.","It is cloudy."],
+["Es regnet.","It is raining."],
+["Es schneit.","It is snowing."],
+["Es ist windig.","It is windy."],
+["Es ist warm.","It is warm."],
+["Es ist kalt.","It is cold."],
+["Es ist heiß.","It is hot."],
+["Es ist kühl.","It is cool."],
+["Wie viel Grad hat es?","What is the temperature?"],
+["Es hat 25 Grad.","It is 25 degrees."],
+["Es hat minus 5 Grad.","It is minus 5 degrees."],
+["Ich brauche einen Regenschirm.","I need an umbrella."],
+["Nehmen Sie eine Jacke mit.","Take a jacket with you."],
+["das Gewitter","the thunderstorm"],
+["der Blitz","the lightning"],
+["der Donner","the thunder"],
+["der Nebel","the fog / mist"],
+["der Frost","the frost"],
+["der Schnee","the snow"],
+["der Regen","the rain"],
+["die Sonne","the sun"],
+["der Mond","the moon"],
+["der Stern","the star"],
+["der Berg","the mountain"],
+["der Fluss","the river"],
+["der See","the lake"],
+["das Meer","the sea / ocean"],
+["die Blume","the flower"],
+["der Baum","the tree"],
+]},
+{id:"colors",icon:"🎨",title:"Colors & Descriptions",phrases:[
+["rot","red"],
+["blau","blue"],
+["grün","green"],
+["gelb","yellow"],
+["orange","orange"],
+["lila / violett","purple / violet"],
+["rosa","pink"],
+["weiß","white"],
+["schwarz","black"],
+["grau","grey"],
+["braun","brown"],
+["beige","beige"],
+["dunkelblau","dark blue"],
+["hellblau","light blue"],
+["groß","big / large"],
+["klein","small / little"],
+["lang","long"],
+["kurz","short"],
+["breit","wide"],
+["schmal","narrow"],
+["dick","thick / fat"],
+["dünn","thin / slim"],
+["alt","old"],
+["neu","new"],
+["jung","young"],
+["schön","beautiful"],
+["hässlich","ugly"],
+["sauber","clean"],
+["schmutzig","dirty"],
+["teuer","expensive"],
+["günstig / billig","cheap / affordable"],
+["schnell","fast"],
+["langsam","slow"],
+["laut","loud"],
+["leise","quiet"],
+["schwer","heavy / difficult"],
+["leicht","light / easy"],
+["richtig","correct / right"],
+["falsch","wrong / incorrect"],
+["voll","full"],
+["leer","empty"],
+["warm","warm"],
+["kalt","cold"],
+]},
+{id:"emotions",icon:"😊",title:"Emotions & Feelings",phrases:[
+["Ich bin glücklich.","I am happy."],
+["Ich bin traurig.","I am sad."],
+["Ich bin müde.","I am tired."],
+["Ich bin aufgeregt.","I am excited."],
+["Ich bin nervös.","I am nervous."],
+["Ich bin wütend.","I am angry."],
+["Ich bin zufrieden.","I am satisfied."],
+["Ich bin überrascht.","I am surprised."],
+["Ich bin dankbar.","I am grateful."],
+["Ich bin verliebt.","I am in love."],
+["Ich habe Angst.","I am afraid."],
+["Ich habe Heimweh.","I am homesick."],
+["Mir ist langweilig.","I am bored."],
+["Das macht mich froh.","That makes me happy."],
+["Das macht mich traurig.","That makes me sad."],
+["Ich freue mich!","I'm looking forward to it!"],
+["Ich bin gespannt.","I am curious / excited."],
+["Ich lache.","I am laughing."],
+["Ich weine.","I am crying."],
+["Keine Sorge!","No worries!"],
+["Alles wird gut.","Everything will be fine."],
+["Ich liebe dich.","I love you."],
+["Ich mag dich.","I like you."],
+["Du bist nett.","You are nice."],
+["Du bist toll!","You are great!"],
+]},
+{id:"phone",icon:"📱",title:"Phone & Technology",phrases:[
+["Kann ich Ihr Telefon benutzen?","Can I use your phone?"],
+["Mein Handy hat keinen Akku.","My phone has no battery."],
+["Kann ich hier aufladen?","Can I charge here?"],
+["Wie ist Ihre Telefonnummer?","What is your phone number?"],
+["Meine Nummer ist...","My number is..."],
+["Ich rufe Sie zurück.","I'll call you back."],
+["Die Verbindung ist schlecht.","The connection is bad."],
+["Ich höre Sie nicht.","I can't hear you."],
+["Bitte schreiben Sie eine SMS.","Please send a text message."],
+["Haben Sie WhatsApp?","Do you have WhatsApp?"],
+["Gibt es hier WLAN?","Is there WiFi here?"],
+["Wie ist das Passwort?","What is the password?"],
+["Mein Computer ist kaputt.","My computer is broken."],
+["Können Sie mir helfen?","Can you help me?"],
+["Wo ist die nächste Ladestation?","Where is the nearest charging station?"],
+["Darf ich ein Foto machen?","May I take a photo?"],
+["Können Sie uns ein Foto machen?","Can you take a photo of us?"],
+["Schicken Sie mir das Foto.","Send me the photo."],
+]},
+{id:"post",icon:"📮",title:"Post Office & Bank",phrases:[
+["Wo ist die Post?","Where is the post office?"],
+["Wo ist die Bank?","Where is the bank?"],
+["Wo ist ein Geldautomat?","Where is an ATM?"],
+["Ich möchte Geld abheben.","I would like to withdraw money."],
+["Ich möchte Geld einzahlen.","I would like to deposit money."],
+["Ich möchte Geld überweisen.","I would like to transfer money."],
+["Wie ist der Wechselkurs?","What is the exchange rate?"],
+["Ich möchte Euro wechseln.","I would like to exchange euros."],
+["Einen Brief schicken.","To send a letter."],
+["Ein Paket schicken.","To send a package."],
+["Wie viel kostet eine Briefmarke?","How much does a stamp cost?"],
+["Wie lange dauert die Lieferung?","How long does delivery take?"],
+["Ich möchte das per Expresspost schicken.","I'd like to send this by express mail."],
+["Können Sie das einschreiben?","Can you send this registered?"],
+["Hier ist die Adresse.","Here is the address."],
+["Was ist Ihre Bankleitzahl?","What is your bank routing number?"],
+["Meine Karte wurde gesperrt.","My card has been blocked."],
+]},
+{id:"emergency",icon:"🚨",title:"Emergencies",phrases:[
+["Hilfe!","Help!"],
+["Feuer!","Fire!"],
+["Diebstahl!","Theft!"],
+["Ich wurde bestohlen.","I was robbed."],
+["Rufen Sie die Polizei!","Call the police!"],
+["Rufen Sie den Notruf!","Call the emergency services!"],
+["Rufen Sie einen Krankenwagen!","Call an ambulance!"],
+["Es gab einen Unfall.","There has been an accident."],
+["Jemand ist verletzt.","Someone is injured."],
+["Ich bin verletzt.","I am injured."],
+["Bitte kommen Sie schnell!","Please come quickly!"],
+["Wo ist das nächste Krankenhaus?","Where is the nearest hospital?"],
+["Ich habe meinen Pass verloren.","I have lost my passport."],
+["Ich habe meine Geldbörse verloren.","I have lost my wallet."],
+["Bitte helfen Sie mir!","Please help me!"],
+["Der Notruf in Deutschland ist 112.","The emergency number in Germany is 112."],
+["Die Polizei: 110","The police: 110"],
+["Ich brauche sofort Hilfe.","I need help immediately."],
+["Können Sie einen Dolmetscher rufen?","Can you call an interpreter?"],
+["Ich verstehe kein Deutsch.","I don't understand German."],
+]},
+{id:"travel",icon:"✈️",title:"Travel & Tourism",phrases:[
+["Ich bin Tourist.","I am a tourist."],
+["Ich bin auf Geschäftsreise.","I am on a business trip."],
+["Ich bin zum ersten Mal hier.","I am here for the first time."],
+["Wie lange bleiben Sie?","How long are you staying?"],
+["Ich bleibe eine Woche.","I am staying for one week."],
+["Was gibt es hier zu sehen?","What is there to see here?"],
+["Was empfehlen Sie?","What do you recommend?"],
+["Gibt es eine Stadtführung?","Is there a city tour?"],
+["Wann beginnt die Tour?","When does the tour begin?"],
+["Wie viel kostet der Eintritt?","How much is the entrance fee?"],
+["Gibt es eine Ermäßigung für Studenten?","Is there a student discount?"],
+["Wo kann ich einen Stadtplan bekommen?","Where can I get a city map?"],
+["Wo ist das Touristenbüro?","Where is the tourist office?"],
+["Darf ich fotografieren?","Am I allowed to take photographs?"],
+["Ist das weit von hier?","Is that far from here?"],
+["Ich möchte das Museum besuchen.","I would like to visit the museum."],
+["Wann schließt das Museum?","When does the museum close?"],
+["Haben Sie Audioguides?","Do you have audio guides?"],
+["Ist das eine historische Stätte?","Is this a historical site?"],
+["Das ist sehr schön hier.","It is very beautiful here."],
+]},
+{id:"clothes",icon:"👕",title:"Clothes & Appearance",phrases:[
+["das Hemd","the shirt"],
+["die Bluse","the blouse"],
+["die Hose","the trousers"],
+["der Rock","the skirt"],
+["das Kleid","the dress"],
+["der Anzug","the suit"],
+["die Jacke","the jacket"],
+["der Mantel","the coat"],
+["der Pullover","the pullover / sweater"],
+["die Jeans","the jeans"],
+["die Unterwäsche","the underwear"],
+["die Socken","the socks"],
+["die Schuhe","the shoes"],
+["die Stiefel","the boots"],
+["der Hut","the hat"],
+["die Mütze","the cap / beanie"],
+["der Schal","the scarf"],
+["die Handschuhe","the gloves"],
+["Ich trage Größe 38.","I wear size 38."],
+["Welche Schuhgröße tragen Sie?","What shoe size do you wear?"],
+["Das ist zu groß.","That is too big."],
+["Das ist zu klein.","That is too small."],
+["Das passt gut.","That fits well."],
+["Das steht Ihnen gut.","That suits you well."],
+["Darf ich das anprobieren?","May I try that on?"],
+]},
+{id:"body",icon:"🧍",title:"Body & Health Routines",phrases:[
+["der Kopf","the head"],
+["das Gesicht","the face"],
+["die Augen","the eyes"],
+["die Nase","the nose"],
+["der Mund","the mouth"],
+["die Zähne","the teeth"],
+["die Ohren","the ears"],
+["das Haar","the hair"],
+["der Hals","the neck / throat"],
+["die Schulter","the shoulder"],
+["der Arm","the arm"],
+["der Ellenbogen","the elbow"],
+["das Handgelenk","the wrist"],
+["die Hand","the hand"],
+["der Finger","the finger"],
+["die Brust","the chest"],
+["der Bauch","the stomach"],
+["der Rücken","the back"],
+["die Hüfte","the hip"],
+["das Bein","the leg"],
+["das Knie","the knee"],
+["der Fuß","the foot"],
+["der Zeh","the toe"],
+["Ich putze mir die Zähne.","I brush my teeth."],
+["Ich wasche meine Hände.","I wash my hands."],
+["Ich dusche jeden Morgen.","I shower every morning."],
+["Ich stehe um 7 Uhr auf.","I get up at 7 o'clock."],
+["Ich gehe um 23 Uhr schlafen.","I go to sleep at 11 PM."],
+]},
+{id:"grammar",icon:"📐",title:"Grammar & Language Tools",phrases:[
+["Ich bin...","I am..."],
+["Du bist...","You are... (informal)"],
+["Er / Sie / Es ist...","He / She / It is..."],
+["Wir sind...","We are..."],
+["Ich habe...","I have..."],
+["Ich möchte...","I would like..."],
+["Ich kann...","I can..."],
+["Ich muss...","I must..."],
+["Ich will...","I want to..."],
+["Ich soll...","I should..."],
+["Ich darf...","I am allowed to..."],
+["Ich werde...","I will..."],
+["Ich war...","I was..."],
+["Ich hatte...","I had..."],
+["Ich habe... gemacht.","I have done / made..."],
+["Ich bin... gegangen.","I have gone..."],
+["Weil...","Because..."],
+["Obwohl...","Although..."],
+["Wenn...","If / When..."],
+["Damit...","So that..."],
+["und","and"],
+["aber","but"],
+["oder","or"],
+["denn","because (main clause)"],
+["Wie viel...?","How much...?"],
+["Wie viele...?","How many...?"],
+["Wer...?","Who...?"],
+["Was...?","What...?"],
+["Wo...?","Where...?"],
+["Wann...?","When...?"],
+["Warum...?","Why...?"],
+["Wie...?","How...?"],
+["Woher...?","Where from...?"],
+["Wohin...?","Where to...?"],
+["der / die / das","the (m/f/n)"],
+["ein / eine / ein","a/an (m/f/n)"],
+["kein / keine","no / not a"],
+["mein / meine","my (m or n / f)"],
+["dein / deine","your (informal m-n / f)"],
+["sein / seine","his"],
+["ihr / ihre","her / their"],
+["unser / unsere","our"],
+]},
+{id:"dailylife",icon:"🌅",title:"Daily Life & Routines",phrases:[
+["Ich stehe früh auf.","I get up early."],
+["Ich frühstücke um acht Uhr.","I have breakfast at eight o'clock."],
+["Ich fahre mit dem Bus zur Arbeit.","I take the bus to work."],
+["Ich arbeite von 9 bis 18 Uhr.","I work from 9 to 6."],
+["Ich esse zu Mittag um 13 Uhr.","I have lunch at 1 PM."],
+["Ich gehe nach Hause um 18 Uhr.","I go home at 6 PM."],
+["Ich koche das Abendessen.","I cook dinner."],
+["Ich sehe abends fern.","I watch TV in the evening."],
+["Ich gehe früh schlafen.","I go to bed early."],
+["Ich mache Sport zweimal pro Woche.","I exercise twice a week."],
+["Ich kaufe am Samstag ein.","I shop on Saturdays."],
+["Ich putze die Wohnung am Sonntag.","I clean the apartment on Sundays."],
+["Ich lese jeden Abend.","I read every evening."],
+["Ich rufe meine Familie an.","I call my family."],
+["Ich schreibe E-Mails.","I write emails."],
+["Ich lerne täglich Deutsch.","I learn German daily."],
+["Ich mache eine Pause.","I take a break."],
+["Ich gehe spazieren.","I go for a walk."],
+["Ich treffe mich mit Freunden.","I meet up with friends."],
+["Ich gehe früh schlafen.","I go to bed early."],
+["Ich schlafe acht Stunden.","I sleep eight hours."],
+["Ich trinke morgens Kaffee.","I drink coffee in the morning."],
+["Ich höre Musik beim Kochen.","I listen to music while cooking."],
+["Ich mache Hausaufgaben.","I do homework."],
+["Ich gehe am Abend joggen.","I go jogging in the evening."],
+]},
+{id:"opinion",icon:"💬",title:"Opinions & Preferences",phrases:[
+["Ich finde das gut.","I think that is good."],
+["Ich finde das schlecht.","I think that is bad."],
+["Ich bin der Meinung, dass...","I am of the opinion that..."],
+["Meiner Meinung nach...","In my opinion..."],
+["Ich stimme zu.","I agree."],
+["Ich stimme nicht zu.","I disagree."],
+["Das stimmt.","That is right."],
+["Das stimmt nicht.","That is not right."],
+["Ich bin nicht sicher.","I am not sure."],
+["Vielleicht.","Maybe."],
+["Wahrscheinlich.","Probably."],
+["Ich glaube ja.","I think so."],
+["Ich glaube nicht.","I don't think so."],
+["Das gefällt mir.","I like that."],
+["Das gefällt mir nicht.","I don't like that."],
+["Ich bevorzuge...","I prefer..."],
+["Das ist wichtig.","That is important."],
+["Das ist unwichtig.","That is unimportant."],
+["Das ist interessant.","That is interesting."],
+["Das ist langweilig.","That is boring."],
+["Das ist toll!","That is great!"],
+["Das ist schrecklich!","That is terrible!"],
+["Das macht nichts.","That doesn't matter."],
+["Es kommt darauf an.","It depends."],
+["Ich bin dafür.","I am in favour of it."],
+["Ich bin dagegen.","I am against it."],
+]},
+{id:"social",icon:"🤝",title:"Social Situations",phrases:[
+["Darf ich mich vorstellen?","May I introduce myself?"],
+["Das ist mein Freund Klaus.","This is my friend Klaus."],
+["Schön, Sie kennenzulernen.","Nice to meet you."],
+["Wir kennen uns schon.","We already know each other."],
+["Lange nicht gesehen!","Long time no see!"],
+["Wie läuft es?","How is it going?"],
+["Alles in Ordnung?","Is everything okay?"],
+["Was machst du so?","What are you up to?"],
+["Möchten Sie etwas trinken?","Would you like something to drink?"],
+["Nehmen Sie Platz!","Please have a seat!"],
+["Fühlen Sie sich wie zu Hause!","Make yourself at home!"],
+["Ich muss jetzt gehen.","I have to go now."],
+["Es war schön, Sie zu treffen.","It was nice to meet you."],
+["Wir sehen uns bald.","We'll see each other soon."],
+["Machen Sie es gut!","Take care!"],
+["Viel Erfolg!","Good luck!"],
+["Herzlichen Glückwunsch!","Congratulations!"],
+["Alles Gute zum Geburtstag!","Happy birthday!"],
+["Frohe Weihnachten!","Merry Christmas!"],
+["Frohes neues Jahr!","Happy New Year!"],
+["Gute Besserung!","Get well soon!"],
+["Viel Spaß!","Have fun!"],
+["Danke für die Einladung.","Thank you for the invitation."],
+["Es hat mir sehr gut gefallen.","I enjoyed it very much."],
+["Das war wunderbar!","That was wonderful!"],
+]},
+{id:"food2",icon:"🥘",title:"Cooking & Recipes",phrases:[
+["Können Sie mir das Rezept geben?","Can you give me the recipe?"],
+["Wie macht man das?","How do you make that?"],
+["Ich koche gern.","I like to cook."],
+["Ich brauche...","I need..."],
+["Wie lange muss das kochen?","How long does it need to cook?"],
+["Das ist angebrannt.","That is burnt."],
+["Das ist noch roh.","That is still raw."],
+["Das ist zu salzig.","That is too salty."],
+["Das braucht mehr Salz.","That needs more salt."],
+["Können Sie das Rezept aufschreiben?","Can you write down the recipe?"],
+["ein Esslöffel","a tablespoon"],
+["ein Teelöffel","a teaspoon"],
+["eine Tasse","a cup"],
+["ein Kilo","a kilogram"],
+["ein halbes Kilo","half a kilogram"],
+["ein Glas","a glass"],
+["ein Liter","a litre"],
+["kochen","to boil / to cook"],
+["braten","to fry / to roast"],
+["backen","to bake"],
+["schneiden","to cut"],
+["mischen","to mix"],
+["rühren","to stir"],
+["das Öl","the oil"],
+["der Essig","the vinegar"],
+["der Zucker","the sugar"],
+["das Salz","the salt"],
+["der Pfeffer","the pepper"],
+["die Gewürze","the spices"],
+["die Kräuter","the herbs"],
+]},
+{id:"sport",icon:"⚽",title:"Sports & Fitness",phrases:[
+["Ich treibe gern Sport.","I like doing sport."],
+["Ich gehe ins Fitnessstudio.","I go to the gym."],
+["Ich laufe gern.","I like to run."],
+["Ich schwimme gern.","I like to swim."],
+["Ich spiele Fußball.","I play football."],
+["Ich spiele Tennis.","I play tennis."],
+["Ich spiele Basketball.","I play basketball."],
+["Ich fahre Fahrrad.","I cycle."],
+["Ich mache Yoga.","I do yoga."],
+["Wie oft trainierst du?","How often do you train?"],
+["Dreimal pro Woche.","Three times a week."],
+["Ich mache Sport, um fit zu bleiben.","I do sport to stay fit."],
+["Das Spiel beginnt um 15 Uhr.","The game starts at 3 PM."],
+["Welche Mannschaft gewann?","Which team won?"],
+["Wir haben gewonnen!","We won!"],
+["Wir haben verloren.","We lost."],
+["Das Ergebnis ist 2:1.","The result is 2:1."],
+["der Sportler / die Sportlerin","the athlete (m/f)"],
+["das Stadion","the stadium"],
+["die Mannschaft","the team"],
+["der Trainer / die Trainerin","the coach (m/f)"],
+]},
+{id:"culture",icon:"🎭",title:"Culture & Entertainment",phrases:[
+["Ich gehe ins Kino.","I am going to the cinema."],
+["Was läuft im Kino?","What is showing at the cinema?"],
+["Ich möchte zwei Karten kaufen.","I would like to buy two tickets."],
+["Wo sind die Plätze?","Where are the seats?"],
+["Der Film beginnt um 20 Uhr.","The film starts at 8 PM."],
+["Das Konzert war wunderbar.","The concert was wonderful."],
+["Ich höre gern klassische Musik.","I like listening to classical music."],
+["Ich lese gern Romane.","I like reading novels."],
+["Mein Lieblingsbuch ist...","My favourite book is..."],
+["Mein Lieblingsfilm ist...","My favourite film is..."],
+["Meine Lieblingsband ist...","My favourite band is..."],
+["Ich sehe gern Dokumentationen.","I like watching documentaries."],
+["Ich mag keine Horrorfilme.","I don't like horror films."],
+["Haben Sie noch Karten?","Do you still have tickets?"],
+["Das Theaterstück war beeindruckend.","The play was impressive."],
+["Das Museum öffnet um 10 Uhr.","The museum opens at 10 o'clock."],
+["Darf man hier fotografieren?","Is photographing allowed here?"],
+["Ich interessiere mich für Kunst.","I am interested in art."],
+["die Ausstellung","the exhibition"],
+["das Gemälde","the painting"],
+]},
+,
+{id:"extra",icon:"🗣️",title:"Extra Everyday Phrases",phrases:[
+["Das weiß ich nicht.","I don't know that."],
+["Ich bin einverstanden.","I agree. / I consent."],
+["Keine Ahnung!","No idea!"],
+["Das ist mir egal.","I don't mind. / I don't care."],
+["Moment mal!","Just a moment!"],
+["Warten Sie bitte.","Please wait."],
+["Ich komme gleich.","I'll be right there."],
+["Noch einmal, bitte.","Once more, please."],
+["Das ist alles.","That is all."],
+["So viel ich weiß...","As far as I know..."],
+["Es geht so.","So-so."],
+["Besser spät als nie.","Better late than never."],
+["Das klingt gut.","That sounds good."],
+["Auf jeden Fall!","Absolutely! / By all means!"],
+]},
+];
+
+// ─── BUILD PHRASE LIST ───────────────────────────────────────
+let allPhrases = [];
+let phraseNum = 1;
+CATEGORIES.forEach(cat => {
+  cat.phrases.forEach(p => {
+    allPhrases.push({ id: phraseNum, cat: cat.id, de: p[0], en: p[1] });
+    phraseNum++;
+  });
+});
+
+// ─── STATE ───────────────────────────────────────────────────
+let heard = new Set(JSON.parse(localStorage.getItem('de_heard')||'[]'));
+let favs  = new Set(JSON.parse(localStorage.getItem('de_favs') ||'[]'));
+let activeFilter = 'all';
+let showFavsOnly = false;
+let searchQ = '';
+let quizScore = 0, quizTotal = 0, quizStreak = 0;
+
+function saveHeard(){ localStorage.setItem('de_heard', JSON.stringify([...heard])); }
+function saveFavs(){ localStorage.setItem('de_favs', JSON.stringify([...favs])); }
+
+// ─── SPEECH ──────────────────────────────────────────────────
+function speak(text, btn) {
+  if (!window.speechSynthesis) { showToast('Speech not supported in this browser'); return; }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'de-DE'; utter.rate = 0.85; utter.pitch = 1;
+  speechSynthesis.cancel();
+  if (btn) { btn.textContent = '⏸'; setTimeout(() => btn.textContent = '🔊', 2000); }
+  speechSynthesis.speak(utter);
+}
+
+// ─── FILTER TABS ─────────────────────────────────────────────
+function buildFilterTabs() {
+  const wrap = document.getElementById('filterTabs');
+  let html = `<div class="ftab active" id="ftab-all" onclick="setFilter('all')">All (${allPhrases.length})</div>`;
+  CATEGORIES.forEach(cat => {
+    html += `<div class="ftab" id="ftab-${cat.id}" onclick="setFilter('${cat.id}')">${cat.icon} ${cat.title}</div>`;
+  });
+  wrap.innerHTML = html;
+}
+
+function setFilter(id) {
+  activeFilter = id;
+  showFavsOnly = false;
+  document.getElementById('btnFavs').classList.remove('active');
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+  document.getElementById('ftab-' + id)?.classList.add('active');
+  renderAll();
+}
+
+// ─── RENDER ──────────────────────────────────────────────────
+function getFiltered() {
+  return allPhrases.filter(p => {
+    if (showFavsOnly && !favs.has(p.id)) return false;
+    if (activeFilter !== 'all' && p.cat !== activeFilter) return false;
+    if (searchQ) {
+      const q = searchQ.toLowerCase();
+      return p.de.toLowerCase().includes(q) || p.en.toLowerCase().includes(q);
+    }
+    return true;
+  });
+}
+
+function renderAll() {
+  const filtered = getFiltered();
+  document.getElementById('visibleCount').textContent = filtered.length;
+  document.getElementById('learnedCount').textContent = heard.size;
+  document.getElementById('favCount').textContent = favs.size;
+  document.getElementById('progressFill').style.width = (heard.size / allPhrases.length * 100) + '%';
+
+  const container = document.getElementById('phraseContainer');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div class="no-results"><span>🔍</span>Keine Ergebnisse. Try a different search!</div>';
+    return;
+  }
+
+  // group by category
+  const byCat = {};
+  filtered.forEach(p => { if (!byCat[p.cat]) byCat[p.cat] = []; byCat[p.cat].push(p); });
+
+  let html = '';
+  CATEGORIES.forEach(cat => {
+    if (!byCat[cat.id]) return;
+    html += `<div class="cat-section" id="sec-${cat.id}">
+      <div class="cat-header">
+        <div class="cat-icon">${cat.icon}</div>
+        <div class="cat-title">${cat.title}</div>
+        <div class="cat-count">${byCat[cat.id].length}</div>
+      </div>
+      <div class="phrase-grid">`;
+    byCat[cat.id].forEach(p => {
+      const isHeard = heard.has(p.id);
+      const isFav  = favs.has(p.id);
+      html += `<div class="phrase-card${isFav?' fav':''}" id="pc-${p.id}" onclick="handleClick(${p.id},'${escQ(p.de)}')">
+        <div class="phrase-num">${String(p.id).padStart(4,'0')}</div>
+        <div class="phrase-body">
+          <div class="phrase-de">${p.de}</div>
+          <div class="phrase-en">${p.en}</div>
+        </div>
+        <div class="sound-btn" onclick="event.stopPropagation();handleSpeak(${p.id},'${escQ(p.de)}',this)">🔊</div>
+        <button class="fav-btn" onclick="event.stopPropagation();toggleFav(${p.id})" title="Save">${isFav?'⭐':'☆'}</button>
+      </div>`;
+    });
+    html += '</div></div>';
+  });
+  container.innerHTML = html;
+}
+
+function escQ(s){ return s.replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+function handleSpeak(id, text, btn){
+  heard.add(id); saveHeard(); saveHeard();
+  document.getElementById('pc-'+id)?.classList.add('playing');
+  setTimeout(()=>document.getElementById('pc-'+id)?.classList.remove('playing'),2200);
+  speak(text, btn);
+  document.getElementById('learnedCount').textContent = heard.size;
+  document.getElementById('progressFill').style.width = (heard.size / allPhrases.length * 100) + '%';
+}
+
+function handleClick(id, text){ handleSpeak(id, text, null); }
+
+function toggleFav(id){
+  if(favs.has(id)){ favs.delete(id); } else { favs.add(id); showToast('⭐ Saved!'); }
+  saveFavs();
+  document.getElementById('favCount').textContent = favs.size;
+  const card = document.getElementById('pc-'+id);
+  if(card){
+    card.classList.toggle('fav', favs.has(id));
+    card.querySelector('.fav-btn').textContent = favs.has(id) ? '⭐' : '☆';
+  }
+}
+
+function toggleFavView(){
+  showFavsOnly = !showFavsOnly;
+  document.getElementById('btnFavs').classList.toggle('active', showFavsOnly);
+  if(showFavsOnly){ activeFilter='all'; document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active')); document.getElementById('ftab-all')?.classList.add('active'); }
+  renderAll();
+}
+
+function handleSearch(){
+  searchQ = document.getElementById('searchBox').value.trim();
+  renderAll();
+}
+
+function shuffleAll(){
+  allPhrases = allPhrases.sort(()=>Math.random()-0.5);
+  showToast('🔀 Phrases shuffled!');
+  renderAll();
+}
+
+// ─── TOAST ───────────────────────────────────────────────────
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+// ─── QUIZ ────────────────────────────────────────────────────
+let quizCurrent = null;
+function openQuiz(){
+  document.getElementById('quizOverlay').classList.add('open');
+  nextQuiz();
+}
+function closeQuiz(e){ if(e.target===document.getElementById('quizOverlay')) document.getElementById('quizOverlay').classList.remove('open'); }
+
+function nextQuiz(){
+  const pool = allPhrases.filter(p=>p.de.length<40);
+  quizCurrent = pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('qPhrase').textContent = quizCurrent.de;
+  document.getElementById('qScore').textContent = quizScore;
+  document.getElementById('qTotal').textContent = quizTotal;
+  document.getElementById('qStreak').innerHTML = 'Streak: <b>'+quizStreak+'</b> 🔥';
+  // 4 options
+  const wrongs = pool.filter(p=>p.id!==quizCurrent.id).sort(()=>Math.random()-0.5).slice(0,3).map(p=>p.en);
+  const opts = [...wrongs, quizCurrent.en].sort(()=>Math.random()-0.5);
+  const optsEl = document.getElementById('qOpts');
+  optsEl.innerHTML = opts.map(o=>`<div class="quiz-opt" onclick="answerQuiz(this,'${escQ(o)}','${escQ(quizCurrent.en)}')">${o}</div>`).join('');
+  speak(quizCurrent.de);
+}
+
+function answerQuiz(el, selected, correct){
+  if(el.classList.contains('correct')||el.classList.contains('wrong')) return;
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o=>o.style.pointerEvents='none');
+  quizTotal++;
+  if(selected===correct){
+    el.classList.add('correct'); quizScore++; quizStreak++;
+    showToast('✅ Richtig! +1');
+  } else {
+    el.classList.add('wrong'); quizStreak=0;
+    opts.forEach(o=>{ if(o.textContent===correct) o.classList.add('correct'); });
+    showToast('❌ Falsch!');
+  }
+  document.getElementById('qScore').textContent = quizScore;
+  document.getElementById('qTotal').textContent = quizTotal;
+  document.getElementById('qStreak').innerHTML = 'Streak: <b>'+quizStreak+'</b> 🔥';
+  setTimeout(nextQuiz, 1800);
+}
+
+// ─── SCROLL ──────────────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('scrollTopBtn').classList.toggle('visible', window.scrollY>400);
+});
+
+// ─── INIT ────────────────────────────────────────────────────
+buildFilterTabs();
+renderAll();
+</script>
+</body>
+</html>
