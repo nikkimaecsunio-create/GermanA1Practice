@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A1 German Irregular Verbs · Trainer</title>
+<style>
+  :root{
+    --bg:#F6F0E7;
+    --bg-soft:#FBF7F1;
+    --card:#FFFFFF;
+    --ink:#3B362F;
+    --ink-soft:#8A7D6E;
+    --border:#E4D9C8;
+    --accent:#BD5B3D;
+    --accent-dark:#9C4A31;
+    --accent-soft:#F1DCD0;
+    --good:#5C7A52;
+    --good-soft:#E1EAD9;
+    --bad:#B0473C;
+    --bad-soft:#F4DCD7;
+    --radius:14px;
+    --radius-sm:10px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:60px;
+  }
+  h1,h2,h3{
+    font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+    font-weight:600;
+    margin:0 0 .4em 0;
+    color:var(--ink);
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 16px;}
+  header{
+    background:var(--bg-soft);
+    border-bottom:1px solid var(--border);
+    padding:22px 0 16px;
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  .eyebrow{
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  header h1{font-size:24px;margin-bottom:2px;}
+  header p.sub{margin:0 0 16px;color:var(--ink-soft);font-size:14px;}
+  nav#navButtons{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(118px,1fr));
+    gap:8px;
+  }
+  nav#navButtons button{
+    appearance:none;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--ink);
+    font-size:13.5px;
+    font-weight:600;
+    padding:12px 8px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    min-height:48px;
+    transition:background .15s,border-color .15s,color .15s,transform .1s;
+  }
+  nav#navButtons button:hover{border-color:var(--accent);}
+  nav#navButtons button:active{transform:scale(.97);}
+  nav#navButtons button.active{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  #statsBar{
+    max-width:760px;
+    margin:14px auto 0;
+    padding:0 16px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .stat-pill{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:999px;
+    padding:7px 14px;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    display:flex;
+    gap:6px;
+    align-items:center;
+  }
+  .stat-pill span.label{color:var(--ink-soft);font-weight:500;}
+  .reset-link{
+    margin-left:auto;
+    font-size:12.5px;
+    color:var(--ink-soft);
+    background:none;
+    border:none;
+    text-decoration:underline;
+    cursor:pointer;
+    padding:6px;
+  }
+  main{max-width:760px;margin:18px auto 0;padding:0 16px;}
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:24px;
+    margin-bottom:16px;
+  }
+  .tag{
+    display:inline-block;
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    background:var(--accent-soft);
+    padding:4px 10px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .prompt-word{
+    font-family:Georgia,serif;
+    font-size:32px;
+    font-weight:700;
+    color:var(--ink);
+    margin:4px 0 6px;
+  }
+  .prompt-sub{color:var(--ink-soft);font-size:14.5px;margin-bottom:18px;}
+  .meta-row{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-bottom:18px;
+    font-size:15px;
+  }
+  .meta-row .k{color:var(--ink-soft);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;}
+  .meta-row .v{font-weight:700;font-size:18px;}
+  .choices{display:flex;flex-direction:column;gap:10px;}
+  .choice-btn{
+    appearance:none;
+    text-align:left;
+    width:100%;
+    background:var(--bg-soft);
+    border:1.5px solid var(--border);
+    border-radius:var(--radius-sm);
+    padding:16px 18px;
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    cursor:pointer;
+    min-height:54px;
+    transition:background .15s,border-color .15s,transform .1s;
+  }
+  .choice-btn:hover:not(:disabled){border-color:var(--accent);}
+  .choice-btn:active:not(:disabled){transform:scale(.99);}
+  .choice-btn:disabled{cursor:default;}
+  .choice-btn.correct{background:var(--good-soft);border-color:var(--good);color:var(--good);}
+  .choice-btn.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad);}
+  .choice-btn.dim{opacity:.55;}
+  .type-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .type-row input[type=text]{
+    flex:1 1 220px;
+    font-size:17px;
+    padding:14px 16px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--bg-soft);
+    color:var(--ink);
+    min-height:54px;
+  }
+  .type-row input[type=text]:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .btn{
+    appearance:none;
+    border:none;
+    background:var(--accent);
+    color:#fff;
+    font-weight:700;
+    font-size:15.5px;
+    padding:14px 22px;
+    border-radius:var(--radius-sm);
+    cursor:pointer;
+    min-height:54px;
+    transition:background .15s,transform .1s;
+  }
+  .btn:hover{background:var(--accent-dark);}
+  .btn:active{transform:scale(.98);}
+  .btn.secondary{
+    background:var(--bg-soft);
+    color:var(--ink);
+    border:1.5px solid var(--border);
+  }
+  .btn.secondary:hover{border-color:var(--accent);background:var(--bg-soft);}
+  .feedback{
+    margin-top:18px;
+    border-radius:var(--radius-sm);
+    padding:16px 18px;
+    border:1.5px solid var(--border);
+    position:relative;
+    overflow:hidden;
+  }
+  .feedback.good{background:var(--good-soft);border-color:var(--good);}
+  .feedback.bad{background:var(--bad-soft);border-color:var(--bad);}
+  .feedback .verdict{
+    font-weight:800;
+    font-size:16px;
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .feedback.good .verdict{color:var(--good);}
+  .feedback.bad .verdict{color:var(--bad);}
+  .feedback .answer-line{font-size:15px;margin-bottom:6px;}
+  .feedback .explain{font-size:14px;color:var(--ink);opacity:.9;}
+  .feedback .example{font-size:13.5px;color:var(--ink-soft);margin-top:8px;font-style:italic;}
+  .next-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:14px;
+    gap:10px;
+  }
+  .next-row .timerbar-wrap{
+    flex:1;
+    height:5px;
+    background:var(--border);
+    border-radius:99px;
+    overflow:hidden;
+  }
+  .next-row .timerbar{
+    height:100%;
+    width:100%;
+    background:var(--accent);
+    border-radius:99px;
+  }
+  .next-row .timerbar.run{
+    transition:width 4s linear;
+    width:0%;
+  }
+  .next-btn{
+    flex:none;
+    background:none;
+    border:1.5px solid var(--border);
+    color:var(--ink);
+    font-weight:700;
+    font-size:13.5px;
+    padding:9px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .next-btn:hover{border-color:var(--accent);color:var(--accent-dark);}
+  .empty-state{text-align:center;padding:30px 10px;color:var(--ink-soft);}
+  .empty-state .big{font-size:38px;margin-bottom:8px;}
+  table.verbtable{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  table.verbtable th,table.verbtable td{
+    text-align:left;
+    padding:9px 10px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  table.verbtable th{
+    color:var(--ink-soft);
+    font-size:11.5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    font-weight:700;
+  }
+  table.verbtable tr:hover td{background:var(--bg-soft);}
+  .table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius-sm);}
+  .search-row{margin-bottom:14px;}
+  .search-row input{
+    width:100%;
+    font-size:15px;
+    padding:13px 16px;
+    border-radius:var(--radius-sm);
+    border:1.5px solid var(--border);
+    background:var(--bg-soft);
+    color:var(--ink);
+  }
+  .rule-section{margin-bottom:22px;}
+  .rule-section h3{font-size:17px;margin-bottom:8px;}
+  .rule-section p{margin:0 0 10px;font-size:14.5px;}
+  .example-box{
+    background:var(--bg-soft);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent);
+    border-radius:var(--radius-sm);
+    padding:12px 16px;
+    font-size:14px;
+    margin-bottom:10px;
+  }
+  .example-box .infw{font-weight:800;color:var(--accent-dark);}
+  .example-box ul{margin:6px 0 0;padding-left:18px;}
+  .example-box li{margin-bottom:2px;}
+  .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 0;}
+  .pill{
+    background:var(--accent-soft);
+    color:var(--accent-dark);
+    border-radius:999px;
+    padding:3px 10px;
+    font-size:12.5px;
+    font-weight:700;
+  }
+  footer.note{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:12px;
+    margin-top:30px;
+    padding:0 16px;
+  }
+  @media (max-width:480px){
+    .prompt-word{font-size:26px;}
+    .card{padding:18px;}
+    nav#navButtons{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Goethe A1 · Präsens</div>
+    <h1>German Irregular Verbs Trainer</h1>
+    <p class="sub">50 A1 strong/irregular verbs · present tense practice</p>
+    <nav id="navButtons">
+      <button data-mode="meaningChoices">Meaning choices</button>
+      <button data-mode="typedMeaning">Typed meaning</button>
+      <button data-mode="conjChoices">Conjugation choices</button>
+      <button data-mode="typedConj">Typed conjugation</button>
+      <button data-mode="mistakes">Mistakes only</button>
+      <button data-mode="verbList">Verb list</button>
+      <button data-mode="rules">Rules</button>
+    </nav>
+  </div>
+</header>
+
+<div id="statsBar">
+  <div class="stat-pill"><span class="label">Score</span> <span id="statScore">0/0</span></div>
+  <div class="stat-pill"><span class="label">Streak</span> <span id="statStreak">0</span></div>
+  <div class="stat-pill"><span class="label">Accuracy</span> <span id="statAccuracy">—</span></div>
+  <button class="reset-link" id="resetStatsBtn">reset progress</button>
+</div>
+
+<main id="appMain"></main>
+
+<footer class="note">Verb data adapted from learngermanwithgames.com — Goethe A1 irregular verbs. Works fully offline.</footer>
+
+<script>
+/* ============================ DATA ============================ */
+const PRONOUNS = ['ich','du','er','wir','ihr','sie'];
+const PRONOUN_LABEL = {ich:'ich', du:'du', er:'er/sie/es', wir:'wir', ihr:'ihr', sie:'sie/Sie'};
+const SPECIAL_CORES = ['sein','haben','werden','wissen','mögen','tun'];
+
+const VERBS = [
+  {inf:"treffen", core:"treffen", particle:null, meaning:"to meet",
+   forms:{ich:"treffe",du:"triffst",er:"trifft",wir:"treffen",ihr:"trefft",sie:"treffen"},
+   sentenceDe:"Ich treffe meine Freunde am Samstag.", sentenceEn:"I meet my friends on Saturday."},
+  {inf:"aussehen", core:"sehen", particle:"aus", meaning:"to look, to appear",
+   forms:{ich:"sehe aus",du:"siehst aus",er:"sieht aus",wir:"sehen aus",ihr:"seht aus",sie:"sehen aus"},
+   sentenceDe:"Du siehst heute sehr müde aus.", sentenceEn:"You look very tired today."},
+  {inf:"kommen", core:"kommen", particle:null, meaning:"to come",
+   forms:{ich:"komme",du:"kommst",er:"kommt",wir:"kommen",ihr:"kommt",sie:"kommen"},
+   sentenceDe:"Ich komme aus Deutschland.", sentenceEn:"I come from Germany."},
+  {inf:"fliegen", core:"fliegen", particle:null, meaning:"to fly",
+   forms:{ich:"fliege",du:"fliegst",er:"fliegt",wir:"fliegen",ihr:"fliegt",sie:"fliegen"},
+   sentenceDe:"Ich fliege morgen nach Berlin.", sentenceEn:"I am flying to Berlin tomorrow."},
+  {inf:"aus sein", core:"sein", particle:"aus", meaning:"to be off",
+   forms:{ich:"bin aus",du:"bist aus",er:"ist aus",wir:"sind aus",ihr:"seid aus",sie:"sind aus"},
+   sentenceDe:"Sind die Lampen aus?", sentenceEn:"Are the lamps off?"},
+  {inf:"lesen", core:"lesen", particle:null, meaning:"to read",
+   forms:{ich:"lese",du:"liest",er:"liest",wir:"lesen",ihr:"lest",sie:"lesen"},
+   sentenceDe:"Ich lese jeden Morgen die Zeitung.", sentenceEn:"I read the newspaper every morning."},
+  {inf:"bringen", core:"bringen", particle:null, meaning:"to bring",
+   forms:{ich:"bringe",du:"bringst",er:"bringt",wir:"bringen",ihr:"bringt",sie:"bringen"},
+   sentenceDe:"Ich bringe das Buch zur Schule.", sentenceEn:"I bring the book to school."},
+  {inf:"abfliegen", core:"fliegen", particle:"ab", meaning:"to take off by plane",
+   forms:{ich:"fliege ab",du:"fliegst ab",er:"fliegt ab",wir:"fliegen ab",ihr:"fliegt ab",sie:"fliegen ab"},
+   sentenceDe:"Der Flieger fliegt um neun Uhr ab.", sentenceEn:"The plane takes off at nine o'clock."},
+  {inf:"aufstehen", core:"stehen", particle:"auf", meaning:"to get up",
+   forms:{ich:"stehe auf",du:"stehst auf",er:"steht auf",wir:"stehen auf",ihr:"steht auf",sie:"stehen auf"},
+   sentenceDe:"Ich stehe jeden Morgen um sieben Uhr auf.", sentenceEn:"I get up every morning at seven o'clock."},
+  {inf:"anziehen", core:"ziehen", particle:"an", meaning:"to put on clothes, to get dressed",
+   forms:{ich:"ziehe an",du:"ziehst an",er:"zieht an",wir:"ziehen an",ihr:"zieht an",sie:"ziehen an"},
+   sentenceDe:"Ich ziehe eine Jacke an.", sentenceEn:"I put on a jacket."},
+  {inf:"gehen", core:"gehen", particle:null, meaning:"to go",
+   forms:{ich:"gehe",du:"gehst",er:"geht",wir:"gehen",ihr:"geht",sie:"gehen"},
+   sentenceDe:"Ich gehe jeden Morgen zur Schule.", sentenceEn:"I go to school every morning."},
+  {inf:"bekommen", core:"bekommen", particle:null, meaning:"to get, to receive",
+   forms:{ich:"bekomme",du:"bekommst",er:"bekommt",wir:"bekommen",ihr:"bekommt",sie:"bekommen"},
+   sentenceDe:"Bekommt ihr auch das Geschenk?", sentenceEn:"Are you also getting the gift?"},
+  {inf:"aussteigen", core:"steigen", particle:"aus", meaning:"to get off",
+   forms:{ich:"steige aus",du:"steigst aus",er:"steigt aus",wir:"steigen aus",ihr:"steigt aus",sie:"steigen aus"},
+   sentenceDe:"Ich steige an der Haltestelle aus.", sentenceEn:"I get off at the stop."},
+  {inf:"geben", core:"geben", particle:null, meaning:"to give",
+   forms:{ich:"gebe",du:"gibst",er:"gibt",wir:"geben",ihr:"gebt",sie:"geben"},
+   sentenceDe:"Ich gebe dir das Buch.", sentenceEn:"I give you the book."},
+  {inf:"sprechen", core:"sprechen", particle:null, meaning:"to speak",
+   forms:{ich:"spreche",du:"sprichst",er:"spricht",wir:"sprechen",ihr:"sprecht",sie:"sprechen"},
+   sentenceDe:"Ich spreche Deutsch.", sentenceEn:"I speak German."},
+  {inf:"helfen", core:"helfen", particle:null, meaning:"to help",
+   forms:{ich:"helfe",du:"hilfst",er:"hilft",wir:"helfen",ihr:"helft",sie:"helfen"},
+   sentenceDe:"Ich helfe dir gern.", sentenceEn:"I like helping you."},
+  {inf:"tun", core:"tun", particle:null, meaning:"to do",
+   forms:{ich:"tue",du:"tust",er:"tut",wir:"tun",ihr:"tut",sie:"tun"},
+   sentenceDe:"Ich tue heute nichts.", sentenceEn:"I do nothing today."},
+  {inf:"fernsehen", core:"sehen", particle:"fern", meaning:"to watch TV",
+   forms:{ich:"sehe fern",du:"siehst fern",er:"sieht fern",wir:"sehen fern",ihr:"seht fern",sie:"sehen fern"},
+   sentenceDe:"Ich sehe jeden Abend fern.", sentenceEn:"I watch TV every evening."},
+  {inf:"heißen", core:"heißen", particle:null, meaning:"to be called",
+   forms:{ich:"heiße",du:"heißt",er:"heißt",wir:"heißen",ihr:"heißt",sie:"heißen"},
+   sentenceDe:"Er heißt Tom.", sentenceEn:"His name is Tom."},
+  {inf:"sehen", core:"sehen", particle:null, meaning:"to see",
+   forms:{ich:"sehe",du:"siehst",er:"sieht",wir:"sehen",ihr:"seht",sie:"sehen"},
+   sentenceDe:"Ich sehe den Hund im Garten.", sentenceEn:"I see the dog in the garden."},
+  {inf:"wissen", core:"wissen", particle:null, meaning:"to know, to know a fact",
+   forms:{ich:"weiß",du:"weißt",er:"weiß",wir:"wissen",ihr:"wisst",sie:"wissen"},
+   sentenceDe:"Ich weiß die Antwort.", sentenceEn:"I know the answer."},
+  {inf:"einladen", core:"laden", particle:"ein", meaning:"to invite",
+   forms:{ich:"lade ein",du:"lädst ein",er:"lädt ein",wir:"laden ein",ihr:"ladet ein",sie:"laden ein"},
+   sentenceDe:"Ich lade meinen Freund zum Essen ein.", sentenceEn:"I invite my friend to eat."},
+  {inf:"weh tun", core:"tun", particle:"weh", meaning:"to hurt",
+   forms:{ich:"tue weh",du:"tust weh",er:"tut weh",wir:"tun weh",ihr:"tut weh",sie:"tun weh"},
+   sentenceDe:"Mein Kopf tut weh.", sentenceEn:"My head hurts."},
+  {inf:"beginnen", core:"beginnen", particle:null, meaning:"to begin",
+   forms:{ich:"beginne",du:"beginnst",er:"beginnt",wir:"beginnen",ihr:"beginnt",sie:"beginnen"},
+   sentenceDe:"Ich beginne jetzt die Arbeit.", sentenceEn:"I begin the work now."},
+  {inf:"empfehlen", core:"empfehlen", particle:null, meaning:"to recommend",
+   forms:{ich:"empfehle",du:"empfiehlst",er:"empfiehlt",wir:"empfehlen",ihr:"empfehlt",sie:"empfehlen"},
+   sentenceDe:"Ich empfehle das Buch.", sentenceEn:"I recommend the book."},
+  {inf:"sein", core:"sein", particle:null, meaning:"to be",
+   forms:{ich:"bin",du:"bist",er:"ist",wir:"sind",ihr:"seid",sie:"sind"},
+   sentenceDe:"Ich bin müde.", sentenceEn:"I am tired."},
+  {inf:"bleiben", core:"bleiben", particle:null, meaning:"to stay",
+   forms:{ich:"bleibe",du:"bleibst",er:"bleibt",wir:"bleiben",ihr:"bleibt",sie:"bleiben"},
+   sentenceDe:"Ich bleibe heute zu Hause.", sentenceEn:"I am staying at home today."},
+  {inf:"trinken", core:"trinken", particle:null, meaning:"to drink",
+   forms:{ich:"trinke",du:"trinkst",er:"trinkt",wir:"trinken",ihr:"trinkt",sie:"trinken"},
+   sentenceDe:"Ich trinke Wasser.", sentenceEn:"I drink water."},
+  {inf:"werden", core:"werden", particle:null, meaning:"to become",
+   forms:{ich:"werde",du:"wirst",er:"wird",wir:"werden",ihr:"werdet",sie:"werden"},
+   sentenceDe:"Ich werde müde.", sentenceEn:"I am getting tired."},
+  {inf:"bitten", core:"bitten", particle:null, meaning:"to request, to ask for",
+   forms:{ich:"bitte",du:"bittest",er:"bittet",wir:"bitten",ihr:"bittet",sie:"bitten"},
+   sentenceDe:"Ich bitte dich um Hilfe.", sentenceEn:"I ask you for help."},
+  {inf:"fahren", core:"fahren", particle:null, meaning:"to drive, to go",
+   forms:{ich:"fahre",du:"fährst",er:"fährt",wir:"fahren",ihr:"fahrt",sie:"fahren"},
+   sentenceDe:"Ich fahre jeden Tag zur Arbeit.", sentenceEn:"I drive to work every day."},
+  {inf:"ausziehen", core:"ziehen", particle:"aus", meaning:"to take off clothes, to get undressed",
+   forms:{ich:"ziehe aus",du:"ziehst aus",er:"zieht aus",wir:"ziehen aus",ihr:"zieht aus",sie:"ziehen aus"},
+   sentenceDe:"Ich ziehe meine Jacke aus.", sentenceEn:"I take off my jacket."},
+  {inf:"an sein", core:"sein", particle:"an", meaning:"to be on",
+   forms:{ich:"bin an",du:"bist an",er:"ist an",wir:"sind an",ihr:"seid an",sie:"sind an"},
+   sentenceDe:"Das Licht ist an.", sentenceEn:"The light is on."},
+  {inf:"schließen", core:"schließen", particle:null, meaning:"to close",
+   forms:{ich:"schließe",du:"schließt",er:"schließt",wir:"schließen",ihr:"schließt",sie:"schließen"},
+   sentenceDe:"Ich schließe die Tür.", sentenceEn:"I close the door."},
+  {inf:"schlafen", core:"schlafen", particle:null, meaning:"to sleep",
+   forms:{ich:"schlafe",du:"schläfst",er:"schläft",wir:"schlafen",ihr:"schlaft",sie:"schlafen"},
+   sentenceDe:"Ich schlafe heute lange.", sentenceEn:"I sleep long today."},
+  {inf:"halten", core:"halten", particle:null, meaning:"to hold, to stop",
+   forms:{ich:"halte",du:"hältst",er:"hält",wir:"halten",ihr:"haltet",sie:"halten"},
+   sentenceDe:"Ich halte das kleine Buch in der Hand.", sentenceEn:"I hold the small book in my hand."},
+  {inf:"Rad fahren", core:"fahren", particle:"Rad", meaning:"to ride a bicycle",
+   forms:{ich:"fahre Rad",du:"fährst Rad",er:"fährt Rad",wir:"fahren Rad",ihr:"fahrt Rad",sie:"fahren Rad"},
+   sentenceDe:"Ich fahre jeden Morgen Rad.", sentenceEn:"I ride my bike every morning."},
+  {inf:"waschen", core:"waschen", particle:null, meaning:"to wash, to wash oneself",
+   forms:{ich:"wasche",du:"wäschst",er:"wäscht",wir:"waschen",ihr:"wascht",sie:"waschen"},
+   sentenceDe:"Ich wasche meine Hände.", sentenceEn:"I wash my hands."},
+  {inf:"mögen", core:"mögen", particle:null, meaning:"to like",
+   forms:{ich:"mag",du:"magst",er:"mag",wir:"mögen",ihr:"mögt",sie:"mögen"},
+   sentenceDe:"Ich mag Pizza.", sentenceEn:"I like pizza."},
+  {inf:"auf sein", core:"sein", particle:"auf", meaning:"to be open",
+   forms:{ich:"bin auf",du:"bist auf",er:"ist auf",wir:"sind auf",ihr:"seid auf",sie:"sind auf"},
+   sentenceDe:"Das Fenster ist auf.", sentenceEn:"The window is open."},
+  {inf:"essen", core:"essen", particle:null, meaning:"to eat",
+   forms:{ich:"esse",du:"isst",er:"isst",wir:"essen",ihr:"esst",sie:"essen"},
+   sentenceDe:"Ich esse einen Apfel.", sentenceEn:"I eat an apple."},
+  {inf:"laufen", core:"laufen", particle:null, meaning:"to run, to walk",
+   forms:{ich:"laufe",du:"läufst",er:"läuft",wir:"laufen",ihr:"lauft",sie:"laufen"},
+   sentenceDe:"Ich laufe jeden Morgen im Park.", sentenceEn:"I run every morning in the park."},
+  {inf:"liegen", core:"liegen", particle:null, meaning:"to lie, to be located",
+   forms:{ich:"liege",du:"liegst",er:"liegt",wir:"liegen",ihr:"liegt",sie:"liegen"},
+   sentenceDe:"Das Buch liegt auf dem Tisch.", sentenceEn:"The book is lying on the table."},
+  {inf:"gewinnen", core:"gewinnen", particle:null, meaning:"to win",
+   forms:{ich:"gewinne",du:"gewinnst",er:"gewinnt",wir:"gewinnen",ihr:"gewinnt",sie:"gewinnen"},
+   sentenceDe:"Ich gewinne oft kleine Spiele.", sentenceEn:"I often win small games."},
+  {inf:"haben", core:"haben", particle:null, meaning:"to have",
+   forms:{ich:"habe",du:"hast",er:"hat",wir:"haben",ihr:"habt",sie:"haben"},
+   sentenceDe:"Ich habe einen Hund.", sentenceEn:"I have a dog."},
+  {inf:"mitnehmen", core:"nehmen", particle:"mit", meaning:"to take along",
+   forms:{ich:"nehme mit",du:"nimmst mit",er:"nimmt mit",wir:"nehmen mit",ihr:"nehmt mit",sie:"nehmen mit"},
+   sentenceDe:"Ich nehme meine Tasche mit.", sentenceEn:"I take my bag with me."},
+  {inf:"finden", core:"finden", particle:null, meaning:"to find",
+   forms:{ich:"finde",du:"findest",er:"findet",wir:"finden",ihr:"findet",sie:"finden"},
+   sentenceDe:"Ich finde meinen Schlüssel nicht.", sentenceEn:"I cannot find my key."},
+  {inf:"sitzen", core:"sitzen", particle:null, meaning:"to sit",
+   forms:{ich:"sitze",du:"sitzt",er:"sitzt",wir:"sitzen",ihr:"sitzt",sie:"sitzen"},
+   sentenceDe:"Sitzt du hier?", sentenceEn:"Are you sitting here?"},
+  {inf:"schwimmen", core:"schwimmen", particle:null, meaning:"to swim",
+   forms:{ich:"schwimme",du:"schwimmst",er:"schwimmt",wir:"schwimmen",ihr:"schwimmt",sie:"schwimmen"},
+   sentenceDe:"Ich schwimme jeden Morgen im Schwimmbad.", sentenceEn:"I swim every morning in the pool."},
+  {inf:"nehmen", core:"nehmen", particle:null, meaning:"to take",
+   forms:{ich:"nehme",du:"nimmst",er:"nimmt",wir:"nehmen",ihr:"nehmt",sie:"nehmen"},
+   sentenceDe:"Ich nehme einen Apfel.", sentenceEn:"I take an apple."}
+];
+
+/* ============================ STATE / STORAGE ============================ */
+const LS_MISTAKES = 'a1deIrregularMistakes_v1';
+const LS_STATS = 'a1deIrregularStats_v1';
+
+function loadMistakes(){
+  try{ const v = JSON.parse(localStorage.getItem(LS_MISTAKES)); return Array.isArray(v)?v:[]; }catch(e){ return []; }
+}
+function saveMistakes(list){
+  try{ localStorage.setItem(LS_MISTAKES, JSON.stringify(list)); }catch(e){}
+}
+function loadStats(){
+  try{
+    const v = JSON.parse(localStorage.getItem(LS_STATS));
+    if(v && typeof v.total==='number') return v;
+  }catch(e){}
+  return {total:0, correct:0, streak:0, best:0};
+}
+function saveStats(){ try{ localStorage.setItem(LS_STATS, JSON.stringify(state.stats)); }catch(e){} }
+
+const state = {
+  mode:'meaningChoices',
+  mistakes: loadMistakes(),
+  stats: loadStats(),
+  lastInf: null,
+  timer: null
+};
+
+/* ============================ HELPERS ============================ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function pickVerb(excludeInf){
+  let pool = VERBS;
+  if(excludeInf){
+    const filtered = VERBS.filter(v=>v.inf!==excludeInf);
+    if(filtered.length) pool = filtered;
+  }
+  const v = pool[Math.floor(Math.random()*pool.length)];
+  state.lastInf = v.inf;
+  return v;
+}
+function pickPronoun(){
+  return PRONOUNS[Math.floor(Math.random()*PRONOUNS.length)];
+}
+function verbByInf(inf){
+  return VERBS.find(v=>v.inf===inf);
+}
+function meaningVariants(meaning){
+  return meaning.split(',').map(s=>s.trim().replace(/^to\s+/i,'').toLowerCase()).filter(Boolean);
+}
+function normalizeTyped(str){
+  return str.trim().toLowerCase().replace(/\s+/g,' ');
+}
+function normalizeDeAscii(str){
+  return normalizeTyped(str)
+    .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
+}
+function fullForm(verb, pronoun){
+  return verb.forms[pronoun];
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* grammar explanation engine */
+function regularStem(core){
+  if(core==='tun') return 'tu';
+  if(core.endsWith('en')) return core.slice(0,-2);
+  if(core.endsWith('n')) return core.slice(0,-1);
+  return core;
+}
+function duEndingFor(stem){
+  if(/(tz|[sxzß])$/.test(stem)) return 't';
+  if(/[dt]$/.test(stem)) return 'est';
+  return 'st';
+}
+function erEndingFor(stem){
+  if(/[dt]$/.test(stem)) return 'et';
+  return 't';
+}
+function regularForms(core){
+  const stem = regularStem(core);
+  return {
+    ich: stem+'e',
+    du: stem+duEndingFor(stem),
+    er: stem+erEndingFor(stem),
+    wir: core,
+    ihr: stem+erEndingFor(stem),
+    sie: core
+  };
+}
+function actualCoreForm(verb, pronoun){
+  const full = verb.forms[pronoun];
+  if(verb.particle){
+    return full.slice(0, full.length - verb.particle.length - 1);
+  }
+  return full;
+}
+function explainConjugation(verb, pronoun){
+  if(SPECIAL_CORES.includes(verb.core)){
+    return `"${verb.core}" is one of a small set of highly irregular German verbs (sein, haben, werden, wissen, mögen, tun). Their forms don't follow a stem pattern — they're memorized as a set.`;
+  }
+  const reg = regularForms(verb.core);
+  const actual = actualCoreForm(verb, pronoun);
+  if(reg[pronoun] === actual){
+    return `"${verb.core}" actually follows the regular ending pattern in the present tense — no stem change here, even though it's grouped with "irregular" verbs (because of its past-tense form).`;
+  }
+  return `"${verb.core}" is a stem-changing verb. Following the regular pattern you'd expect "${reg[pronoun]}", but the stem vowel changes in the du and er/sie/es forms, giving "${actual}" instead.`;
+}
+
+/* mistakes */
+function mistakeKey(entry){
+  return entry.type==='meaning' ? `m:${entry.inf}` : `c:${entry.inf}:${entry.pronoun}`;
+}
+function addMistake(entry){
+  const key = mistakeKey(entry);
+  if(!state.mistakes.some(m=>mistakeKey(m)===key)){
+    state.mistakes.push(entry);
+    saveMistakes(state.mistakes);
+  }
+}
+function removeMistake(entry){
+  const key = mistakeKey(entry);
+  const next = state.mistakes.filter(m=>mistakeKey(m)!==key);
+  if(next.length!==state.mistakes.length){
+    state.mistakes = next;
+    saveMistakes(state.mistakes);
+  }
+}
+
+/* stats */
+function registerAnswer(isCorrect){
+  state.stats.total++;
+  if(isCorrect){
+    state.stats.correct++;
+    state.stats.streak++;
+    if(state.stats.streak>state.stats.best) state.stats.best = state.stats.streak;
+  } else {
+    state.stats.streak = 0;
+  }
+  saveStats();
+  renderStats();
+}
+function renderStats(){
+  document.getElementById('statScore').textContent = `${state.stats.correct}/${state.stats.total}`;
+  document.getElementById('statStreak').textContent = state.stats.streak;
+  document.getElementById('statAccuracy').textContent = state.stats.total
+    ? Math.round(state.stats.correct/state.stats.total*100)+'%'
+    : '—';
+}
+
+/* ============================ TIMER / ADVANCE ============================ */
+function clearAdvanceTimer(){
+  if(state.timer){ clearTimeout(state.timer); state.timer = null; }
+}
+function scheduleAdvance(renderFn){
+  clearAdvanceTimer();
+  const bar = document.getElementById('advanceBar');
+  if(bar){
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{ bar.classList.add('run'); });
+    });
+  }
+  state.timer = setTimeout(()=>{
+    state.timer = null;
+    renderFn();
+  }, 4000);
+  const nextBtn = document.getElementById('nextNowBtn');
+  if(nextBtn){
+    nextBtn.onclick = ()=>{
+      clearAdvanceTimer();
+      renderFn();
+    };
+  }
+}
+
+/* ============================ NAV / ROUTING ============================ */
+function setMode(mode){
+  state.mode = mode;
+  clearAdvanceTimer();
+  document.querySelectorAll('#navButtons button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.mode===mode);
+  });
+  route();
+}
+function route(){
+  switch(state.mode){
+    case 'meaningChoices': renderMeaningChoices(); break;
+    case 'typedMeaning': renderTypedMeaning(); break;
+    case 'conjChoices': renderConjChoices(); break;
+    case 'typedConj': renderTypedConj(); break;
+    case 'mistakes': renderMistakesGate(); break;
+    case 'verbList': renderVerbList(); break;
+    case 'rules': renderRules(); break;
+  }
+}
+
+/* ============================ MODE 1: MEANING CHOICES ============================ */
+function renderMeaningChoices(mistakeEntry){
+  const verb = mistakeEntry ? verbByInf(mistakeEntry.inf) : pickVerb(state.lastInf);
+  const distractPool = shuffle(VERBS.filter(v=>v.inf!==verb.inf).map(v=>v.meaning));
+  const distractors = [];
+  for(const m of distractPool){
+    if(!distractors.includes(m) && m!==verb.meaning){ distractors.push(m); }
+    if(distractors.length===3) break;
+  }
+  const options = shuffle([verb.meaning, ...distractors]);
+
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">${mistakeEntry?'Mistakes · ':''}Meaning choices</span>
+      <div class="prompt-word">${escapeHtml(verb.inf)}</div>
+      <div class="prompt-sub">What does this verb mean?</div>
+      <div class="choices" id="choiceArea">
+        ${options.map((m,i)=>`<button class="choice-btn" data-val="${escapeHtml(m)}">${escapeHtml(m)}</button>`).join('')}
+      </div>
+      <div id="feedbackArea"></div>
+    </div>
+  `;
+  document.querySelectorAll('#choiceArea .choice-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const chosen = btn.dataset.val;
+      const isCorrect = chosen===verb.meaning;
+      document.querySelectorAll('#choiceArea .choice-btn').forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.val===verb.meaning) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+        else b.classList.add('dim');
+      });
+      registerAnswer(isCorrect);
+      const entry = {type:'meaning', inf:verb.inf};
+      if(isCorrect) removeMistake(entry); else addMistake(entry);
+      showFeedback(isCorrect, `Correct meaning: <strong>${escapeHtml(verb.meaning)}</strong>`,
+        null, verb, mistakeEntry, renderMeaningChoices);
+    });
+  });
+}
+
+/* ============================ MODE 2: TYPED MEANING ============================ */
+function renderTypedMeaning(mistakeEntry){
+  const verb = mistakeEntry ? verbByInf(mistakeEntry.inf) : pickVerb(state.lastInf);
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">${mistakeEntry?'Mistakes · ':''}Typed meaning</span>
+      <div class="prompt-word">${escapeHtml(verb.inf)}</div>
+      <div class="prompt-sub">Type the English meaning ("to" is optional).</div>
+      <div class="type-row">
+        <input type="text" id="typedInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. work / to work">
+        <button class="btn" id="submitBtn">Check</button>
+      </div>
+      <div id="feedbackArea"></div>
+    </div>
+  `;
+  const input = document.getElementById('typedInput');
+  input.focus();
+  const submit = ()=>{
+    const raw = input.value;
+    if(!raw.trim()) return;
+    const userVal = normalizeTyped(raw).replace(/^to\s+/i,'');
+    const variants = meaningVariants(verb.meaning);
+    const isCorrect = variants.includes(userVal);
+    input.disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+    registerAnswer(isCorrect);
+    const entry = {type:'meaning', inf:verb.inf};
+    if(isCorrect) removeMistake(entry); else addMistake(entry);
+    showFeedback(isCorrect, `Correct meaning: <strong>${escapeHtml(verb.meaning)}</strong>`,
+      null, verb, mistakeEntry, renderTypedMeaning);
+  };
+  document.getElementById('submitBtn').addEventListener('click', submit);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+}
+
+/* ============================ MODE 3: CONJUGATION CHOICES ============================ */
+function renderConjChoices(mistakeEntry){
+  const verb = mistakeEntry ? verbByInf(mistakeEntry.inf) : pickVerb(state.lastInf);
+  const pronoun = mistakeEntry ? mistakeEntry.pronoun : pickPronoun();
+  const correct = fullForm(verb, pronoun);
+
+  let pool = new Set();
+  PRONOUNS.forEach(p=>{
+    if(p!==pronoun){
+      const f = fullForm(verb,p);
+      if(f!==correct) pool.add(f);
+    }
+  });
+  let distractors = shuffle(Array.from(pool)).slice(0,3);
+  if(distractors.length<3){
+    const others = shuffle(VERBS.filter(v=>v.inf!==verb.inf));
+    for(const v of others){
+      const f = fullForm(v, pronoun);
+      if(f!==correct && !distractors.includes(f)) distractors.push(f);
+      if(distractors.length>=3) break;
+    }
+  }
+  const options = shuffle([correct, ...distractors]);
+
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">${mistakeEntry?'Mistakes · ':''}Conjugation choices</span>
+      <div class="meta-row">
+        <div><span class="k">Infinitive</span><br><span class="v">${escapeHtml(verb.inf)}</span></div>
+        <div><span class="k">Pronoun</span><br><span class="v">${escapeHtml(PRONOUN_LABEL[pronoun])}</span></div>
+        <div><span class="k">Meaning</span><br><span class="v">to ${escapeHtml(meaningVariants(verb.meaning)[0])}</span></div>
+      </div>
+      <div class="prompt-sub">What is the correct conjugation?</div>
+      <div class="choices" id="choiceArea">
+        ${options.map(o=>`<button class="choice-btn" data-val="${escapeHtml(o)}">${escapeHtml(PRONOUN_LABEL[pronoun])} ${escapeHtml(o)}</button>`).join('')}
+      </div>
+      <div id="feedbackArea"></div>
+    </div>
+  `;
+  document.querySelectorAll('#choiceArea .choice-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const chosen = btn.dataset.val;
+      const isCorrect = chosen===correct;
+      document.querySelectorAll('#choiceArea .choice-btn').forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.val===correct) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+        else b.classList.add('dim');
+      });
+      registerAnswer(isCorrect);
+      const entry = {type:'conj', inf:verb.inf, pronoun};
+      if(isCorrect) removeMistake(entry); else addMistake(entry);
+      showFeedback(isCorrect, `Correct: <strong>${escapeHtml(PRONOUN_LABEL[pronoun])} ${escapeHtml(correct)}</strong>`,
+        explainConjugation(verb, pronoun), verb, mistakeEntry, renderConjChoices);
+    });
+  });
+}
+
+/* ============================ MODE 4: TYPED CONJUGATION ============================ */
+function renderTypedConj(mistakeEntry){
+  const verb = mistakeEntry ? verbByInf(mistakeEntry.inf) : pickVerb(state.lastInf);
+  const pronoun = mistakeEntry ? mistakeEntry.pronoun : pickPronoun();
+  const correct = fullForm(verb, pronoun);
+
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">${mistakeEntry?'Mistakes · ':''}Typed conjugation</span>
+      <div class="meta-row">
+        <div><span class="k">Infinitive</span><br><span class="v">${escapeHtml(verb.inf)}</span></div>
+        <div><span class="k">Pronoun</span><br><span class="v">${escapeHtml(PRONOUN_LABEL[pronoun])}</span></div>
+        <div><span class="k">Meaning</span><br><span class="v">to ${escapeHtml(meaningVariants(verb.meaning)[0])}</span></div>
+      </div>
+      <div class="prompt-sub">Type the correct conjugated verb (include a separable part if needed). Don't include the pronoun.</div>
+      <div class="type-row">
+        <input type="text" id="typedInput" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="e.g. arbeitest">
+        <button class="btn" id="submitBtn">Check</button>
+      </div>
+      <div id="feedbackArea"></div>
+    </div>
+  `;
+  const input = document.getElementById('typedInput');
+  input.focus();
+  const submit = ()=>{
+    const raw = input.value;
+    if(!raw.trim()) return;
+    const userNorm = normalizeTyped(raw);
+    const userAscii = normalizeDeAscii(raw);
+    const correctNorm = normalizeTyped(correct);
+    const correctAscii = normalizeDeAscii(correct);
+    const isCorrect = userNorm===correctNorm || userAscii===correctAscii;
+    input.disabled = true;
+    document.getElementById('submitBtn').disabled = true;
+    registerAnswer(isCorrect);
+    const entry = {type:'conj', inf:verb.inf, pronoun};
+    if(isCorrect) removeMistake(entry); else addMistake(entry);
+    showFeedback(isCorrect, `Correct phrase: <strong>${escapeHtml(PRONOUN_LABEL[pronoun])} ${escapeHtml(correct)}</strong>`,
+      explainConjugation(verb, pronoun), verb, mistakeEntry, renderTypedConj);
+  };
+  document.getElementById('submitBtn').addEventListener('click', submit);
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') submit(); });
+}
+
+/* ============================ FEEDBACK + AUTO-ADVANCE (shared) ============================ */
+function showFeedback(isCorrect, answerLineHtml, explainText, verb, mistakeEntry, renderFnForRetry){
+  const area = document.getElementById('feedbackArea');
+  area.innerHTML = `
+    <div class="feedback ${isCorrect?'good':'bad'}">
+      <div class="verdict">${isCorrect? '&#10003; Correct!' : '&#10007; Not quite'}</div>
+      <div class="answer-line">${answerLineHtml}</div>
+      ${explainText?`<div class="explain">${escapeHtml(explainText)}</div>`:''}
+      <div class="example">“${escapeHtml(verb.sentenceDe)}” — ${escapeHtml(verb.sentenceEn)}</div>
+      <div class="next-row">
+        <div class="timerbar-wrap"><div class="timerbar" id="advanceBar"></div></div>
+        <button class="next-btn" id="nextNowBtn">Next now &rarr;</button>
+      </div>
+    </div>
+  `;
+  const goNext = ()=>{
+    if(state.mode==='mistakes'){
+      renderMistakesGate();
+    } else {
+      renderFnForRetry();
+    }
+  };
+  scheduleAdvance(goNext);
+}
+
+/* ============================ MODE 5: MISTAKES ONLY ============================ */
+function renderMistakesGate(){
+  if(state.mistakes.length===0){
+    const main = document.getElementById('appMain');
+    main.innerHTML = `
+      <div class="card">
+        <span class="tag">Mistakes only</span>
+        <div class="empty-state">
+          <div class="big">&#10003;</div>
+          <h3>No mistakes saved yet</h3>
+          <p>Answer some questions in the other modes — anything you get wrong will show up here so you can drill it.</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+  const entry = state.mistakes[Math.floor(Math.random()*state.mistakes.length)];
+  if(entry.type==='meaning'){
+    renderMeaningChoices(entry);
+  } else {
+    renderConjChoices(entry);
+  }
+  const tag = document.querySelector('#appMain .tag');
+  if(tag) tag.textContent = `Mistakes only (${state.mistakes.length} saved)`;
+}
+
+/* ============================ MODE 6: VERB LIST ============================ */
+function renderVerbList(){
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">Verb list</span>
+      <h2 style="margin-top:0;">Cheat sheet</h2>
+      <div class="search-row">
+        <input type="text" id="searchInput" placeholder="Search by German verb or English meaning…">
+      </div>
+      <div class="table-scroll">
+        <table class="verbtable">
+          <thead><tr>
+            <th>Infinitive</th><th>Meaning</th><th>ich</th><th>du</th><th>er/sie/es</th><th>wir</th><th>ihr</th><th>sie/Sie</th>
+          </tr></thead>
+          <tbody id="verbTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  const body = document.getElementById('verbTableBody');
+  function draw(filter){
+    const f = filter.trim().toLowerCase();
+    const rows = VERBS.filter(v=> !f || v.inf.toLowerCase().includes(f) || v.meaning.toLowerCase().includes(f));
+    body.innerHTML = rows.map(v=>`
+      <tr>
+        <td><strong>${escapeHtml(v.inf)}</strong></td>
+        <td>${escapeHtml(v.meaning)}</td>
+        <td>${escapeHtml(v.forms.ich)}</td>
+        <td>${escapeHtml(v.forms.du)}</td>
+        <td>${escapeHtml(v.forms.er)}</td>
+        <td>${escapeHtml(v.forms.wir)}</td>
+        <td>${escapeHtml(v.forms.ihr)}</td>
+        <td>${escapeHtml(v.forms.sie)}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="8" style="color:var(--ink-soft);">No verbs match your search.</td></tr>`;
+  }
+  draw('');
+  document.getElementById('searchInput').addEventListener('input', e=>draw(e.target.value));
+}
+
+/* ============================ MODE 7: RULES ============================ */
+function renderRules(){
+  const main = document.getElementById('appMain');
+  main.innerHTML = `
+    <div class="card">
+      <span class="tag">Rules</span>
+      <h2 style="margin-top:0;">How German irregular (strong) verbs work</h2>
+
+      <div class="rule-section">
+        <h3>1. Start with the regular endings</h3>
+        <p>Even irregular verbs use the same basic endings as regular verbs. Take off "-en" from the infinitive to get the stem, then add:</p>
+        <div class="example-box">
+          <ul>
+            <li><strong>ich</strong> = stem + <strong>e</strong></li>
+            <li><strong>du</strong> = stem + <strong>st</strong></li>
+            <li><strong>er/sie/es</strong> = stem + <strong>t</strong></li>
+            <li><strong>wir</strong> = infinitive</li>
+            <li><strong>ihr</strong> = stem + <strong>t</strong></li>
+            <li><strong>sie/Sie</strong> = infinitive</li>
+          </ul>
+        </div>
+        <p>A lot of verbs on this "irregular" list — like <em>kommen, gehen, bringen, trinken, bleiben, finden</em> — actually follow this regular pattern perfectly in the present tense. They're only called "irregular" because their past tense is irregular, not the present tense.</p>
+      </div>
+
+      <div class="rule-section">
+        <h3>2. The real irregularity: a stem-vowel change in du and er/sie/es only</h3>
+        <p>Many verbs here are "strong" verbs: in the <strong>du</strong> and <strong>er/sie/es</strong> forms only, the stem vowel changes. The <strong>ich, wir, ihr, sie/Sie</strong> forms stay regular.</p>
+        <div class="example-box">
+          <span class="infw">e → i</span>
+          <p style="margin:4px 0 0;">sprechen → du spr<strong>i</strong>chst, er spr<strong>i</strong>cht</p>
+          <div class="pill-row"><span class="pill">geben</span><span class="pill">helfen</span><span class="pill">nehmen</span><span class="pill">treffen</span><span class="pill">essen</span></div>
+        </div>
+        <div class="example-box">
+          <span class="infw">e → ie</span>
+          <p style="margin:4px 0 0;">sehen → du s<strong>ie</strong>hst, er s<strong>ie</strong>ht</p>
+          <div class="pill-row"><span class="pill">lesen</span><span class="pill">empfehlen</span><span class="pill">fernsehen</span><span class="pill">aussehen</span></div>
+        </div>
+        <div class="example-box">
+          <span class="infw">a → ä</span>
+          <p style="margin:4px 0 0;">fahren → du f<strong>ä</strong>hrst, er f<strong>ä</strong>hrt</p>
+          <div class="pill-row"><span class="pill">schlafen</span><span class="pill">waschen</span><span class="pill">halten</span><span class="pill">einladen</span></div>
+        </div>
+        <div class="example-box">
+          <span class="infw">au → äu</span>
+          <p style="margin:4px 0 0;">laufen → du l<strong>äu</strong>fst, er l<strong>äu</strong>ft</p>
+        </div>
+        <p>Note: stem-changing verbs skip the extra "e" that regular t/d-stem verbs use. <em>halten</em> → du h<strong>ä</strong>ltst (not "haltest"), because the vowel already changed.</p>
+      </div>
+
+      <div class="rule-section">
+        <h3>3. Stems ending in -s, -ß, -z merge the ending</h3>
+        <p>If the stem already ends in an "s" sound, the du-ending "-st" gets squeezed down to just "-t" — so du and er/sie/es look identical.</p>
+        <div class="example-box">
+          <span class="infw">heißen</span> → du heiß<strong>t</strong>, er heiß<strong>t</strong><br>
+          <span class="infw">sitzen</span> → du sitz<strong>t</strong>, er sitz<strong>t</strong><br>
+          <span class="infw">essen</span> (+ vowel change) → du <strong>i</strong>ss<strong>t</strong>, er <strong>i</strong>ss<strong>t</strong>
+        </div>
+      </div>
+
+      <div class="rule-section">
+        <h3>4. Separable-prefix verbs: the prefix jumps to the end</h3>
+        <p>Verbs like <em>aufstehen, anziehen, mitnehmen, einladen</em> are built from a small prefix + a base verb. Conjugate the base verb normally, then send the prefix to the end of the sentence/clause.</p>
+        <div class="example-box">
+          <span class="infw">aufstehen</span> (auf + stehen) → ich steh<strong>e</strong> <u>auf</u>, du steh<strong>st</strong> <u>auf</u>, er steh<strong>t</strong> <u>auf</u>
+        </div>
+        <div class="pill-row">
+          <span class="pill">aussehen</span><span class="pill">abfliegen</span><span class="pill">anziehen</span><span class="pill">aussteigen</span>
+          <span class="pill">ausziehen</span><span class="pill">fernsehen</span><span class="pill">einladen</span><span class="pill">mitnehmen</span>
+          <span class="pill">Rad fahren</span><span class="pill">weh tun</span>
+        </div>
+      </div>
+
+      <div class="rule-section">
+        <h3>5. Six verbs you just have to memorize</h3>
+        <p><strong>sein, haben, werden, wissen, mögen,</strong> and <strong>tun</strong> don't follow the patterns above — they're used so often that German speakers just memorize the forms directly.</p>
+        <div class="example-box">
+          sein: bin / bist / ist / sind / seid / sind<br>
+          haben: habe / hast / hat / haben / habt / haben<br>
+          werden: werde / wirst / wird / werden / werdet / werden<br>
+          wissen: weiß / weißt / weiß / wissen / wisst / wissen<br>
+          mögen: mag / magst / mag / mögen / mögt / mögen<br>
+          tun: tue / tust / tut / tun / tut / tun
+        </div>
+        <p><em>aus sein, an sein,</em> and <em>auf sein</em> are just "sein" plus a fixed little word (aus/an/auf) at the end — conjugate sein normally and keep the extra word in place.</p>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================ INIT ============================ */
+document.querySelectorAll('#navButtons button').forEach(btn=>{
+  btn.addEventListener('click', ()=>setMode(btn.dataset.mode));
+});
+document.getElementById('resetStatsBtn').addEventListener('click', ()=>{
+  if(confirm('Reset score, streak and accuracy? (Saved mistakes are kept.)')){
+    state.stats = {total:0, correct:0, streak:0, best:0};
+    saveStats();
+    renderStats();
+  }
+});
+renderStats();
+setMode('meaningChoices');
+</script>
+</body>
+</html>
