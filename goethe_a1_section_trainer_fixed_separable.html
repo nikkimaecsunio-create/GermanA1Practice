@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Goethe A1 Section Trainer</title>
+<style>
+:root{
+    --bg:#f8f1e8;
+    --card:#fffaf4;
+    --ink:#21170f;
+    --muted:#806f61;
+    --line:#dfcbb6;
+    --accent:#b85f42;
+    --accent-dark:#8f3f27;
+    --good:#167445;
+    --bad:#af3737;
+    --soft:#f0dfcb;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Georgia,"Times New Roman",serif;
+    background:var(--bg);
+    color:var(--ink);
+}
+header,.app{
+    max-width:1180px;
+    margin:auto;
+    padding:22px 24px;
+}
+.eyebrow{
+    font-family:Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:#9b3f24;
+    font-weight:900;
+    font-size:13px;
+    margin-bottom:8px;
+}
+h1{
+    font-size:clamp(30px,4vw,48px);
+    margin:0 0 8px;
+    line-height:1.05;
+}
+.sub{
+    color:var(--muted);
+    line-height:1.45;
+    font-size:16px;
+    font-family:Arial,sans-serif;
+}
+.sectionNav{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:10px;
+    margin:18px 0;
+}
+.navBtn,.btn{
+    border:0;
+    border-radius:10px;
+    padding:16px 14px;
+    font-weight:900;
+    cursor:pointer;
+    font-family:Arial,sans-serif;
+}
+.navBtn{
+    background:#fffdf9;
+    border:1px solid var(--line);
+    color:#111;
+    min-height:58px;
+}
+.navBtn:hover{
+    background:#fff6eb;
+    border-color:#cda98b;
+}
+.navBtn.active,.btn{
+    background:var(--accent);
+    color:#fff;
+}
+.btn.secondary{
+    background:#fffdf9;
+    color:#111;
+    border:1px solid var(--line);
+}
+.btn.secondary.activeMode{
+    background:var(--accent);
+    color:#fff;
+}
+.sectionTitle{
+    font-size:30px;
+    font-weight:900;
+    margin:0 0 8px;
+}
+.sectionIntro{
+    font-family:Arial,sans-serif;
+    color:var(--muted);
+    margin-bottom:14px;
+}
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 12px 28px rgba(73,43,20,.06);
+    margin-bottom:16px;
+}
+.modebar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:10px;
+    margin:14px 0 18px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:16px;
+}
+@media(max-width:900px){
+    .grid{grid-template-columns:1fr}
+}
+.kicker{
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    font-size:12px;
+    color:#9b3f24;
+    font-weight:900;
+    font-family:Arial,sans-serif;
+}
+.big{
+    font-size:clamp(38px,6vw,78px);
+    font-weight:950;
+    margin:12px 0 4px;
+    line-height:1;
+}
+.meaning{
+    font-size:18px;
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+}
+.prompt{
+    font-size:24px;
+    font-weight:850;
+    margin:14px 0;
+    font-family:Arial,sans-serif;
+}
+.options{
+    display:grid;
+    gap:10px;
+}
+.option{
+    width:100%;
+    padding:15px 16px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:white;
+    text-align:left;
+    font-size:18px;
+    font-weight:850;
+    cursor:pointer;
+    font-family:Arial,sans-serif;
+}
+.option:hover{
+    border-color:var(--accent);
+    background:#fff9f2;
+}
+.option.correct{
+    background:#e9f7ef;
+    border-color:var(--good);
+    color:var(--good);
+}
+.option.wrong{
+    background:#fdecec;
+    border-color:var(--bad);
+    color:var(--bad);
+}
+.feedback{
+    display:none;
+    margin-top:15px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    line-height:1.55;
+    font-family:Arial,sans-serif;
+}
+.feedback.good{
+    background:#eefaf3;
+    border-color:#b9e6cc;
+}
+.feedback.bad{
+    background:#fff0f0;
+    border-color:#f0bcbc;
+}
+.controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+.controls .btn{
+    padding:12px 16px;
+    border-radius:999px;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+.stat{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+    font-family:Arial,sans-serif;
+}
+.stat b{
+    display:block;
+    font-size:28px;
+}
+.rule{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:13px;
+    line-height:1.5;
+    margin-top:10px;
+    font-family:Arial,sans-serif;
+}
+.hidden{display:none}
+.search,input,select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    font-size:16px;
+    margin:10px 0;
+    background:#fff;
+    font-family:Arial,sans-serif;
+}
+.inputRow{
+    display:flex;
+    gap:8px;
+}
+.inputRow input{
+    flex:1;
+    margin:0;
+}
+.tablewrap{
+    max-height:520px;
+    overflow:auto;
+    border:1px solid var(--line);
+    border-radius:16px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    font-family:Arial,sans-serif;
+}
+th,td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+    text-align:left;
+}
+th{
+    position:sticky;
+    top:0;
+    background:#f0dfcb;
+}
+.small{
+    font-size:13px;
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+}
+.example{
+    font-size:15px;
+    color:var(--muted);
+    margin-top:8px;
+}
+.pill{
+    display:inline-block;
+    margin-left:6px;
+    background:#eadcc9;
+    border-radius:999px;
+    padding:3px 8px;
+    font-size:12px;
+    font-weight:800;
+}
+.tilegrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:12px;
+}
+.tile{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    text-align:left;
+    line-height:1.45;
+    font-family:Arial,sans-serif;
+}
+.badge{
+    display:inline-block;
+    background:var(--soft);
+    border-radius:999px;
+    padding:4px 9px;
+    margin:2px;
+    font-size:12px;
+    font-weight:850;
+}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">GOETHE A1 · SECTION TRAINER</div>
+<h1>German A1 Learning Hub</h1>
+<div class="sub">Choose one topic first, then practice that exact topic only. Modal verbs, separable verbs, adjectives, nouns, and numbers are separated. Separable verbs list fixed with aufmachen.</div>
+</header>
+
+<main class="app">
+<div class="sectionNav">
+<button class="navBtn active" data-section="modal">Modal Verbs</button>
+<button class="navBtn" data-section="separable">Separable Verbs</button>
+<button class="navBtn" data-section="adjective">Adjectives</button>
+<button class="navBtn" data-section="noun">A1 Nouns</button>
+<button class="navBtn" data-section="number">Numbers</button>
+<button class="navBtn" data-section="mistakes">Mistakes Only</button>
+</div>
+
+<section id="modal" class="topic">
+<div class="card">
+<div class="sectionTitle">Modal Verbs</div>
+<div class="sectionIntro">Practice können, müssen, dürfen, sollen, wollen, and möchten. Focus is meaning, conjugation, and A1 sentence pattern.</div>
+<div class="modebar">
+<button class="btn secondary activeMode" data-topic="modal" data-mode="meaning">Meaning choices</button>
+<button class="btn secondary" data-topic="modal" data-mode="typed_meaning">Typed meaning</button>
+<button class="btn secondary" data-topic="modal" data-mode="conj">Conjugation choices</button>
+<button class="btn secondary" data-topic="modal" data-mode="typed_conj">Typed conjugation</button>
+<button class="btn secondary" data-topic="modal" data-mode="list">Verb list</button>
+<button class="btn secondary" data-topic="modal" data-mode="rules">Rules</button>
+</div>
+</div>
+<div id="modalContent"></div>
+</section>
+
+<section id="separable" class="topic hidden">
+<div class="card">
+<div class="sectionTitle">Separable Verbs</div>
+<div class="sectionIntro">Practice verbs like anrufen, aufmachen, aufräumen, einschlafen, zurückgeben. Focus is prefix placement and conjugation.</div>
+<div class="modebar">
+<button class="btn secondary activeMode" data-topic="separable" data-mode="meaning">Meaning choices</button>
+<button class="btn secondary" data-topic="separable" data-mode="typed_meaning">Typed meaning</button>
+<button class="btn secondary" data-topic="separable" data-mode="conj">Conjugation choices</button>
+<button class="btn secondary" data-topic="separable" data-mode="typed_conj">Typed conjugation</button>
+<button class="btn secondary" data-topic="separable" data-mode="list">Verb list</button>
+<button class="btn secondary" data-topic="separable" data-mode="rules">Rules</button>
+</div>
+</div>
+<div id="separableContent"></div>
+</section>
+
+<section id="adjective" class="topic hidden">
+<div class="card">
+<div class="sectionTitle">Adjectives</div>
+<div class="sectionIntro">Practice A1 adjectives with meanings, opposites, comparatives, and examples.</div>
+<div class="modebar">
+<button class="btn secondary activeMode" data-topic="adjective" data-mode="meaning">Meaning choices</button>
+<button class="btn secondary" data-topic="adjective" data-mode="typed_meaning">Typed meaning</button>
+<button class="btn secondary" data-topic="adjective" data-mode="opposite">Opposite choices</button>
+<button class="btn secondary" data-topic="adjective" data-mode="list">Adjective list</button>
+<button class="btn secondary" data-topic="adjective" data-mode="rules">Rules</button>
+</div>
+</div>
+<div id="adjectiveContent"></div>
+</section>
+
+<section id="noun" class="topic hidden">
+<div class="card">
+<div class="sectionTitle">A1 Nouns</div>
+<div class="sectionIntro">Practice noun meanings, der die das, and plural forms. Learn article plus noun together.</div>
+<div class="modebar">
+<button class="btn secondary activeMode" data-topic="noun" data-mode="article">Der Die Das</button>
+<button class="btn secondary" data-topic="noun" data-mode="meaning">Meaning choices</button>
+<button class="btn secondary" data-topic="noun" data-mode="typed_meaning">Typed meaning</button>
+<button class="btn secondary" data-topic="noun" data-mode="plural">Plural choices</button>
+<button class="btn secondary" data-topic="noun" data-mode="list">Noun list</button>
+<button class="btn secondary" data-topic="noun" data-mode="rules">Rules</button>
+</div>
+</div>
+<div id="nounContent"></div>
+</section>
+
+<section id="number" class="topic hidden">
+<div class="card">
+<div class="sectionTitle">Numbers</div>
+<div class="sectionIntro">Practice German numbers from 0 to 100. Focus on spelling and the German reversed order like einundzwanzig.</div>
+<div class="modebar">
+<button class="btn secondary activeMode" data-topic="number" data-mode="number">Number choices</button>
+<button class="btn secondary" data-topic="number" data-mode="typed_number">Typed numbers</button>
+<button class="btn secondary" data-topic="number" data-mode="list">Number list</button>
+<button class="btn secondary" data-topic="number" data-mode="rules">Rules</button>
+</div>
+</div>
+<div id="numberContent"></div>
+</section>
+
+<section id="mistakes" class="topic hidden">
+<div class="card">
+<div class="sectionTitle">Mistakes Only</div>
+<div class="sectionIntro">Mistakes are saved in this browser. Repeat the words that keep annoying you, because apparently they have chosen violence.</div>
+<div id="mistakeList"></div>
+<div class="controls"><button class="btn secondary" id="clearMistakes">Clear mistakes</button></div>
+</div>
+</section>
+</main>
+
+<script>
+const PRONOUNS = ["ich", "du", "er/sie/es", "wir", "ihr", "sie/Sie"];
+const MODALS = [{"inf": "sollen", "meaning": "should, to be supposed to", "category": "modal verb", "note": "Modal verbs usually push the second verb to the end in infinitive form.", "example": "Ich soll heute früh schlafen gehen.", "example_en": "I should go to sleep early today.", "conj": {"ich": "soll", "du": "sollst", "er/sie/es": "soll", "wir": "sollen", "ihr": "sollt", "sie/Sie": "sollen"}}, {"inf": "wollen", "meaning": "to want", "category": "modal verb", "note": "Modal verb. Ich and er/sie/es use the same form.", "example": "Ich will heute Kaffee trinken.", "example_en": "I want to drink coffee today.", "conj": {"ich": "will", "du": "willst", "er/sie/es": "will", "wir": "wollen", "ihr": "wollt", "sie/Sie": "wollen"}}, {"inf": "dürfen", "meaning": "may, to be allowed to", "category": "modal verb", "note": "Modal verb. Singular changes from dürfen to darf.", "example": "Ich darf heute länger schlafen.", "example_en": "I may sleep longer today.", "conj": {"ich": "darf", "du": "darfst", "er/sie/es": "darf", "wir": "dürfen", "ihr": "dürft", "sie/Sie": "dürfen"}}, {"inf": "müssen", "meaning": "must, to have to", "category": "modal verb", "note": "Modal verb. Singular changes from müssen to muss.", "example": "Ich muss heute früh aufstehen.", "example_en": "I have to get up early today.", "conj": {"ich": "muss", "du": "musst", "er/sie/es": "muss", "wir": "müssen", "ihr": "müsst", "sie/Sie": "müssen"}}, {"inf": "möchten", "meaning": "would like", "category": "modal verb", "note": "Polite A1 form. It behaves like a modal verb in simple sentences.", "example": "Ich möchte einen Kaffee.", "example_en": "I would like a coffee.", "conj": {"ich": "möchte", "du": "möchtest", "er/sie/es": "möchte", "wir": "möchten", "ihr": "möchtet", "sie/Sie": "möchten"}}, {"inf": "können", "meaning": "can, to be able to", "category": "modal verb", "note": "Modal verb. Singular changes from können to kann.", "example": "Ich kann heute Deutsch lernen.", "example_en": "I can study German today.", "conj": {"ich": "kann", "du": "kannst", "er/sie/es": "kann", "wir": "können", "ihr": "könnt", "sie/Sie": "können"}}];
+const SEPARABLES = [{"inf": "anmachen", "meaning": "to turn on, to make up a date", "prefix": "an", "example": "Ich mache das Licht an.", "example_en": "I turn the light on.", "conj": {"ich": "mache an", "du": "machst an", "er/sie/es": "macht an", "wir": "machen an", "ihr": "macht an", "sie/Sie": "machen an"}}, {"inf": "ankommen", "meaning": "to arrive", "prefix": "an", "example": "Ich komme um acht Uhr an.", "example_en": "I arrive at eight o'clock.", "conj": {"ich": "komme an", "du": "kommst an", "er/sie/es": "kommt an", "wir": "kommen an", "ihr": "kommt an", "sie/Sie": "kommen an"}}, {"inf": "anfangen", "meaning": "to begin, to start", "prefix": "an", "example": "Ich fange um acht Uhr an.", "example_en": "I start at eight o'clock.", "conj": {"ich": "fange an", "du": "fängst an", "er/sie/es": "fängt an", "wir": "fangen an", "ihr": "fangt an", "sie/Sie": "fangen an"}}, {"inf": "abholen", "meaning": "to pick up", "prefix": "ab", "example": "Ich hole dich später ab.", "example_en": "I will pick you up later.", "conj": {"ich": "hole ab", "du": "holst ab", "er/sie/es": "holt ab", "wir": "holen ab", "ihr": "holt ab", "sie/Sie": "holen ab"}}, {"inf": "weggehen", "meaning": "to go away", "prefix": "weg", "example": "Ich gehe um acht Uhr weg.", "example_en": "I go away at eight o’clock.", "conj": {"ich": "gehe weg", "du": "gehst weg", "er/sie/es": "geht weg", "wir": "gehen weg", "ihr": "geht weg", "sie/Sie": "gehen weg"}}, {"inf": "zurückkommen", "meaning": "to come back", "prefix": "zurück", "example": "Ich komme morgen zurück.", "example_en": "I will come back tomorrow.", "conj": {"ich": "komme zurück", "du": "kommst zurück", "er/sie/es": "kommt zurück", "wir": "kommen zurück", "ihr": "kommt zurück", "sie/Sie": "kommen zurück"}}, {"inf": "vorbereiten", "meaning": "to prepare", "prefix": "vor", "example": "Ich bereite das Frühstück vor.", "example_en": "I prepare the breakfast.", "conj": {"ich": "bereite vor", "du": "bereitest vor", "er/sie/es": "bereitet vor", "wir": "bereiten vor", "ihr": "bereitet vor", "sie/Sie": "bereiten vor"}}, {"inf": "einsteigen", "meaning": "to get in, to board", "prefix": "ein", "example": "Ich steige in den Bus ein.", "example_en": "I get on the bus.", "conj": {"ich": "steige ein", "du": "steigst ein", "er/sie/es": "steigt ein", "wir": "steigen ein", "ihr": "steigt ein", "sie/Sie": "steigen ein"}}, {"inf": "ausschalten", "meaning": "to turn off, to switch off", "prefix": "aus", "example": "Ich schalte das Licht aus.", "example_en": "I switch off the light.", "conj": {"ich": "schalte aus", "du": "schaltest aus", "er/sie/es": "schaltet aus", "wir": "schalten aus", "ihr": "schaltet aus", "sie/Sie": "schalten aus"}}, {"inf": "anhalten", "meaning": "to stop a vehicle", "prefix": "an", "example": "Der Bus hält an der Haltestelle an.", "example_en": "The bus stops at the bus stop.", "conj": {"ich": "halte an", "du": "hältst an", "er/sie/es": "hält an", "wir": "halten an", "ihr": "haltet an", "sie/Sie": "halten an"}}, {"inf": "abwaschen", "meaning": "to wash the dishes", "prefix": "ab", "example": "Ich wasche das Geschirr ab.", "example_en": "I wash the dishes.", "conj": {"ich": "wasche ab", "du": "wäschst ab", "er/sie/es": "wäscht ab", "wir": "waschen ab", "ihr": "wascht ab", "sie/Sie": "waschen ab"}}, {"inf": "zumachen", "meaning": "to close", "prefix": "zu", "example": "Ich mache die Tür zu.", "example_en": "I close the door.", "conj": {"ich": "mache zu", "du": "machst zu", "er/sie/es": "macht zu", "wir": "machen zu", "ihr": "macht zu", "sie/Sie": "machen zu"}}, {"inf": "aufwachen", "meaning": "to wake up", "prefix": "auf", "example": "Ich wache jeden Morgen um sieben Uhr auf.", "example_en": "I wake up every morning at seven o'clock.", "conj": {"ich": "wache auf", "du": "wachst auf", "er/sie/es": "wacht auf", "wir": "wachen auf", "ihr": "wacht auf", "sie/Sie": "wachen auf"}}, {"inf": "teilnehmen", "meaning": "to take part, to participate", "prefix": "teil", "example": "Ich nehme am Kurs teil.", "example_en": "I take part in the course.", "conj": {"ich": "nehme teil", "du": "nimmst teil", "er/sie/es": "nimmt teil", "wir": "nehmen teil", "ihr": "nehmt teil", "sie/Sie": "nehmen teil"}}, {"inf": "wegwerfen", "meaning": "to throw away", "prefix": "weg", "example": "Ich werfe den alten Apfel weg.", "example_en": "I throw the old apple away.", "conj": {"ich": "werfe weg", "du": "wirfst weg", "er/sie/es": "wirft weg", "wir": "werfen weg", "ihr": "werft weg", "sie/Sie": "werfen weg"}}, {"inf": "zurückgeben", "meaning": "to give back, to return", "prefix": "zurück", "example": "Ich gebe das Buch morgen zurück.", "example_en": "I will return the book tomorrow.", "conj": {"ich": "gebe zurück", "du": "gibst zurück", "er/sie/es": "gibt zurück", "wir": "geben zurück", "ihr": "gebt zurück", "sie/Sie": "geben zurück"}}, {"inf": "ausgehen", "meaning": "to go out", "prefix": "aus", "example": "Ich gehe heute Abend aus.", "example_en": "I am going out tonight.", "conj": {"ich": "gehe aus", "du": "gehst aus", "er/sie/es": "geht aus", "wir": "gehen aus", "ihr": "geht aus", "sie/Sie": "gehen aus"}}, {"inf": "aufräumen", "meaning": "to tidy up", "prefix": "auf", "example": "Ich räume jeden Morgen mein Zimmer auf.", "example_en": "I tidy up my room every morning.", "conj": {"ich": "räume auf", "du": "räumst auf", "er/sie/es": "räumt auf", "wir": "räumen auf", "ihr": "räumt auf", "sie/Sie": "räumen auf"}}, {"inf": "aufpassen", "meaning": "to pay attention, to look after", "prefix": "auf", "example": "Ich passe im Unterricht auf.", "example_en": "I pay attention in class.", "conj": {"ich": "passe auf", "du": "passt auf", "er/sie/es": "passt auf", "wir": "passen auf", "ihr": "passt auf", "sie/Sie": "passen auf"}}, {"inf": "einschlafen", "meaning": "to fall asleep", "prefix": "ein", "example": "Ich schlafe jeden Abend schnell ein.", "example_en": "I fall asleep quickly every evening.", "conj": {"ich": "schlafe ein", "du": "schläfst ein", "er/sie/es": "schläft ein", "wir": "schlafen ein", "ihr": "schlaft ein", "sie/Sie": "schlafen ein"}}, {"inf": "anrufen", "meaning": "to call on the phone", "prefix": "an", "example": "Ich rufe meine Mutter an.", "example_en": "I call my mother.", "conj": {"ich": "rufe an", "du": "rufst an", "er/sie/es": "ruft an", "wir": "rufen an", "ihr": "ruft an", "sie/Sie": "rufen an"}}, {"inf": "aufmachen", "meaning": "to open", "prefix": "auf", "example": "Ich mache die Tür auf.", "example_en": "I open the door.", "conj": {"ich": "mache auf", "du": "machst auf", "er/sie/es": "macht auf", "wir": "machen auf", "ihr": "macht auf", "sie/Sie": "machen auf"}}];
+const ADJECTIVES = [{"word": "fertig", "meaning": "finished, ready", "comp": "fertiger", "sup": "am fertigsten", "syn": "bereit", "ant": "unfertig", "example": "Ich bin fertig.", "example_en": "I am finished."}, {"word": "schlecht", "meaning": "bad", "comp": "schlechter", "sup": "am schlechtesten", "syn": "mies", "ant": "gut", "example": "Der Kaffee schmeckt schlecht.", "example_en": "The coffee tastes bad."}, {"word": "gültig", "meaning": "valid", "comp": "gültiger", "sup": "am gültigsten", "syn": "aktuell", "ant": "ungültig", "example": "Die Fahrkarte ist heute gültig.", "example_en": "The ticket is valid today."}, {"word": "falsch", "meaning": "false, wrong", "comp": "falscher", "sup": "am falschsten", "syn": "unrichtig", "ant": "richtig, korrekt", "example": "Der Preis ist falsch.", "example_en": "The price is wrong."}, {"word": "glücklich", "meaning": "happy", "comp": "glücklicher", "sup": "am glücklichsten", "syn": "froh", "ant": "traurig", "example": "Ich bin heute glücklich.", "example_en": "I am happy today."}, {"word": "klar", "meaning": "clear, ready", "comp": "klarer", "sup": "am klarsten", "syn": "deutlich", "ant": "unklar", "example": "Die Antwort ist klar.", "example_en": "The answer is clear."}, {"word": "teuer", "meaning": "expensive", "comp": "teurer", "sup": "am teuersten", "syn": "kostspielig", "ant": "billig", "example": "Das Buch ist teuer.", "example_en": "The book is expensive."}, {"word": "bitter", "meaning": "bitter", "comp": "bitterer", "sup": "am bittersten", "syn": "herb", "ant": "süß", "example": "Der Kaffee ist bitter.", "example_en": "The coffee is bitter."}, {"word": "richtig", "meaning": "correct", "comp": "richtiger", "sup": "am richtigsten", "syn": "korrekt", "ant": "falsch", "example": "Das ist richtig.", "example_en": "That is correct."}, {"word": "wichtig", "meaning": "important", "comp": "wichtiger", "sup": "am wichtigsten", "syn": "bedeutend", "ant": "unwichtig", "example": "Das ist wichtig für mich.", "example_en": "That is important for me."}, {"word": "zufrieden", "meaning": "satisfied", "comp": "zufriedener", "sup": "am zufriedensten", "syn": "glücklich", "ant": "unzufrieden", "example": "Ich bin heute zufrieden.", "example_en": "I am satisfied today."}, {"word": "weit", "meaning": "far", "comp": "weiter", "sup": "am weitesten", "syn": "fern", "ant": "nah", "example": "Der Bahnhof ist weit entfernt.", "example_en": "The train station is far away."}, {"word": "breit", "meaning": "wide", "comp": "breiter", "sup": "am breitesten", "syn": "weit", "ant": "schmal, eng", "example": "Die Straße ist sehr breit.", "example_en": "The street is very wide."}, {"word": "klein", "meaning": "small", "comp": "kleiner", "sup": "am kleinsten", "syn": "winzig", "ant": "groß", "example": "Das kleine Kind spielt im Garten.", "example_en": "The small child is playing in the garden."}, {"word": "schön", "meaning": "beautiful", "comp": "schöner", "sup": "am schönsten", "syn": "hübsch", "ant": "hässlich", "example": "Das Bild ist schön.", "example_en": "The picture is beautiful."}, {"word": "ausländisch", "meaning": "foreign", "comp": "ausländischer", "sup": "am ausländischsten", "syn": "fremd", "ant": "inländisch", "example": "Ich kaufe ausländische Bücher.", "example_en": "I buy foreign books."}, {"word": "ruhig", "meaning": "quiet, calm", "comp": "ruhiger", "sup": "am ruhigsten", "syn": "still", "ant": "laut", "example": "Das Baby schläft ruhig.", "example_en": "The baby sleeps calmly."}, {"word": "lieb", "meaning": "dear, sweet", "comp": "lieber", "sup": "am liebsten", "syn": "nett", "ant": "böse", "example": "Das ist ein lieber Hund.", "example_en": "That is a sweet dog."}, {"word": "ander", "meaning": "other", "comp": "—", "sup": "—", "syn": "sonstig", "ant": "gleich", "example": "Ich nehme einen anderen Kaffee.", "example_en": "I take another coffee."}, {"word": "schwer", "meaning": "heavy, difficult", "comp": "schwerer", "sup": "am schwersten", "syn": "schwierig", "ant": "leicht", "example": "Das Buch ist schwer.", "example_en": "The book is heavy."}, {"word": "günstig", "meaning": "favorable, cheap", "comp": "günstiger", "sup": "am günstigsten", "syn": "billig", "ant": "teuer", "example": "Das Hotel ist günstig.", "example_en": "The hotel is inexpensive."}, {"word": "möglich", "meaning": "possible", "comp": "möglicher", "sup": "am möglichsten", "syn": "machbar", "ant": "unmöglich", "example": "Das ist möglich.", "example_en": "That is possible."}, {"word": "frei", "meaning": "free", "comp": "freier", "sup": "am freiesten", "syn": "unbesetzt", "ant": "besetzt", "example": "Der Stuhl ist frei.", "example_en": "The chair is free."}, {"word": "groß", "meaning": "big, large", "comp": "größer", "sup": "am größten", "syn": "riesig", "ant": "klein", "example": "Das Haus ist groß.", "example_en": "The house is big."}, {"word": "böse", "meaning": "angry", "comp": "böser", "sup": "am bösesten", "syn": "wütend", "ant": "lieb, nett", "example": "Ich bin heute nicht böse.", "example_en": "I am not angry today."}, {"word": "eilig", "meaning": "in a hurry", "comp": "eiliger", "sup": "am eiligsten", "syn": "hastig", "ant": "ruhig", "example": "Ich bin heute eilig.", "example_en": "I am in a hurry today."}, {"word": "gut", "meaning": "good", "comp": "besser", "sup": "am besten", "syn": "prima, toll", "ant": "schlecht", "example": "Das Essen ist gut.", "example_en": "The food is good."}, {"word": "kaputt", "meaning": "broken", "comp": "kaputter", "sup": "am kaputtesten", "syn": "defekt", "ant": "ganz", "example": "Mein Handy ist kaputt.", "example_en": "My phone is broken."}, {"word": "müde", "meaning": "tired", "comp": "müder", "sup": "am müdesten", "syn": "erschöpft", "ant": "wach", "example": "Ich bin heute sehr müde.", "example_en": "I am very tired today."}, {"word": "alt", "meaning": "old", "comp": "älter", "sup": "am ältesten", "syn": "bejahrt", "ant": "neu, jung", "example": "Das Haus ist alt.", "example_en": "The house is old."}, {"word": "bekannt", "meaning": "known", "comp": "bekannter", "sup": "am bekanntesten", "syn": "berühmt", "ant": "unbekannt", "example": "Der Ort ist bekannt.", "example_en": "The place is known."}, {"word": "neu", "meaning": "new", "comp": "neuer", "sup": "am neuesten", "syn": "frisch", "ant": "alt", "example": "Ich habe ein neues Buch.", "example_en": "I have a new book."}, {"word": "hell", "meaning": "bright, light", "comp": "heller", "sup": "am hellsten", "syn": "licht", "ant": "dunkel", "example": "Das Zimmer ist hell.", "example_en": "The room is bright."}, {"word": "leicht", "meaning": "easy, light", "comp": "leichter", "sup": "am leichtesten", "syn": "einfach", "ant": "schwer", "example": "Das Buch ist leicht.", "example_en": "The book is light."}, {"word": "lang", "meaning": "long", "comp": "länger", "sup": "am längsten", "syn": "ausgedehnt", "ant": "kurz", "example": "Die Straße ist lang.", "example_en": "The street is long."}, {"word": "fremd", "meaning": "foreign, strange", "comp": "fremder", "sup": "am fremdesten", "syn": "ausländisch", "ant": "bekannt", "example": "Das ist ein fremdes Wort.", "example_en": "That is a foreign word."}, {"word": "einfach", "meaning": "simple, easy", "comp": "einfacher", "sup": "am einfachsten", "syn": "leicht", "ant": "schwer, kompliziert", "example": "Das ist einfach gut.", "example_en": "That is simply good."}, {"word": "dunkel", "meaning": "dark", "comp": "dunkler", "sup": "am dunkelsten", "syn": "finster", "ant": "hell", "example": "Das Zimmer ist dunkel.", "example_en": "The room is dark."}, {"word": "kurz", "meaning": "short", "comp": "kürzer", "sup": "am kürzesten", "syn": "knapp", "ant": "lang", "example": "Der Text ist kurz.", "example_en": "The text is short."}, {"word": "jung", "meaning": "young", "comp": "jünger", "sup": "am jüngsten", "syn": "jugendlich", "ant": "alt", "example": "Das Kind ist jung.", "example_en": "The child is young."}, {"word": "traurig", "meaning": "sad", "comp": "trauriger", "sup": "am traurigsten", "syn": "unglücklich", "ant": "glücklich", "example": "Sie ist heute traurig.", "example_en": "She is sad today."}, {"word": "billig", "meaning": "cheap", "comp": "billiger", "sup": "am billigsten", "syn": "günstig", "ant": "teuer", "example": "Der Stift ist billig.", "example_en": "The pen is cheap."}, {"word": "nah", "meaning": "near, close", "comp": "näher", "sup": "am nächsten", "syn": "in der Nähe", "ant": "weit", "example": "Die Schule ist nah.", "example_en": "The school is near."}];
+const NOUNS = [{"article": "das", "word": "Salz", "plural": "die Salze", "meaning": "salt", "example": "Ich brauche das Salz für die Suppe.", "example_en": "I need the salt for the soup."}, {"article": "das", "word": "Handy", "plural": "die Handys", "meaning": "mobile phone", "example": "Hast du dein Handy?", "example_en": "Do you have your phone?"}, {"article": "der", "word": "Schalter", "plural": "die Schalter", "meaning": "counter, switch", "example": "Der Schalter ist neu.", "example_en": "The switch is new."}, {"article": "die", "word": "Birne", "plural": "die Birnen", "meaning": "pear, bulb", "example": "Die Birne ist gelb.", "example_en": "The pear is yellow."}, {"article": "der", "word": "Schuh", "plural": "die Schuhe", "meaning": "shoe", "example": "Der Schuh ist schwarz.", "example_en": "The shoe is black."}, {"article": "die", "word": "Schwester", "plural": "die Schwestern", "meaning": "sister", "example": "Meine Schwester ist sehr nett.", "example_en": "My sister is very nice."}, {"article": "das", "word": "Geschenk", "plural": "die Geschenke", "meaning": "gift, present", "example": "Ich habe das Geschenk.", "example_en": "I have the present."}, {"article": "das", "word": "Datum", "plural": "die Daten", "meaning": "date", "example": "Ich schreibe das Datum auf das Blatt.", "example_en": "I write the date on the sheet."}, {"article": "die", "word": "Vorsicht", "plural": "—", "meaning": "caution", "example": "Ich arbeite mit Vorsicht.", "example_en": "I work with caution."}, {"article": "der", "word": "Aufzug", "plural": "die Aufzüge", "meaning": "elevator, lift", "example": "Der Aufzug ist kaputt.", "example_en": "The elevator is broken."}, {"article": "die", "word": "Farbe", "plural": "die Farben", "meaning": "color", "example": "Die Farbe ist schön.", "example_en": "The color is beautiful."}, {"article": "das", "word": "Getränk", "plural": "die Getränke", "meaning": "drink, beverage", "example": "Ich finde das Getränk nicht.", "example_en": "I can't find the drink."}, {"article": "der", "word": "Zoll", "plural": "die Zölle", "meaning": "customs", "example": "Ich warte am Zoll.", "example_en": "I am waiting at customs."}, {"article": "der", "word": "Computer", "plural": "die Computer", "meaning": "computer", "example": "Der Computer ist neu.", "example_en": "The computer is new."}, {"article": "die", "word": "Führung", "plural": "die Führungen", "meaning": "guided tour", "example": "Die Führung beginnt um zehn Uhr.", "example_en": "The tour starts at ten o’clock."}, {"article": "die", "word": "Partnerin", "plural": "die Partnerinnen", "meaning": "female partner", "example": "Die Partnerin ist freundlich.", "example_en": "The partner is friendly."}, {"article": "das", "word": "Baby", "plural": "die Babys", "meaning": "baby", "example": "Ich halte das Baby im Arm.", "example_en": "I hold the baby in my arms."}, {"article": "die", "word": "Mitte", "plural": "die Mitten", "meaning": "middle", "example": "Ich stehe in der Mitte des Raumes.", "example_en": "I am standing in the middle of the room."}, {"article": "der", "word": "Teil", "plural": "die Teile", "meaning": "part", "example": "Das ist der erste Teil.", "example_en": "That is the first part."}, {"article": "der", "word": "Name", "plural": "die Namen", "meaning": "name", "example": "Mein Name ist Anna.", "example_en": "My name is Anna."}, {"article": "die", "word": "Adresse", "plural": "die Adressen", "meaning": "address", "example": "Wie ist deine Adresse?", "example_en": "What is your address?"}, {"article": "die", "word": "Stadt", "plural": "die Städte", "meaning": "city", "example": "Die Stadt ist groß.", "example_en": "The city is big."}, {"article": "das", "word": "Land", "plural": "die Länder", "meaning": "country, land", "example": "Deutschland ist ein Land.", "example_en": "Germany is a country."}, {"article": "die", "word": "Straße", "plural": "die Straßen", "meaning": "street", "example": "Die Straße ist lang.", "example_en": "The street is long."}, {"article": "das", "word": "Haus", "plural": "die Häuser", "meaning": "house", "example": "Das Haus ist alt.", "example_en": "The house is old."}, {"article": "die", "word": "Wohnung", "plural": "die Wohnungen", "meaning": "apartment", "example": "Meine Wohnung ist klein.", "example_en": "My apartment is small."}, {"article": "das", "word": "Zimmer", "plural": "die Zimmer", "meaning": "room", "example": "Das Zimmer ist hell.", "example_en": "The room is bright."}, {"article": "die", "word": "Tür", "plural": "die Türen", "meaning": "door", "example": "Die Tür ist offen.", "example_en": "The door is open."}, {"article": "das", "word": "Fenster", "plural": "die Fenster", "meaning": "window", "example": "Das Fenster ist offen.", "example_en": "The window is open."}, {"article": "der", "word": "Tisch", "plural": "die Tische", "meaning": "table", "example": "Der Tisch ist rund.", "example_en": "The table is round."}, {"article": "der", "word": "Stuhl", "plural": "die Stühle", "meaning": "chair", "example": "Der Stuhl ist frei.", "example_en": "The chair is free."}, {"article": "das", "word": "Bett", "plural": "die Betten", "meaning": "bed", "example": "Das Bett ist weich.", "example_en": "The bed is soft."}, {"article": "die", "word": "Küche", "plural": "die Küchen", "meaning": "kitchen", "example": "Die Küche ist sauber.", "example_en": "The kitchen is clean."}, {"article": "das", "word": "Bad", "plural": "die Bäder", "meaning": "bathroom", "example": "Das Bad ist klein.", "example_en": "The bathroom is small."}, {"article": "die", "word": "Familie", "plural": "die Familien", "meaning": "family", "example": "Meine Familie ist groß.", "example_en": "My family is big."}, {"article": "die", "word": "Mutter", "plural": "die Mütter", "meaning": "mother", "example": "Meine Mutter kocht.", "example_en": "My mother is cooking."}, {"article": "der", "word": "Vater", "plural": "die Väter", "meaning": "father", "example": "Mein Vater arbeitet.", "example_en": "My father works."}, {"article": "das", "word": "Kind", "plural": "die Kinder", "meaning": "child", "example": "Das Kind spielt.", "example_en": "The child is playing."}, {"article": "der", "word": "Bruder", "plural": "die Brüder", "meaning": "brother", "example": "Mein Bruder lernt Deutsch.", "example_en": "My brother studies German."}, {"article": "die", "word": "Freundin", "plural": "die Freundinnen", "meaning": "female friend, girlfriend", "example": "Meine Freundin kommt heute.", "example_en": "My friend is coming today."}, {"article": "der", "word": "Freund", "plural": "die Freunde", "meaning": "friend, boyfriend", "example": "Mein Freund ist nett.", "example_en": "My friend is nice."}, {"article": "der", "word": "Lehrer", "plural": "die Lehrer", "meaning": "teacher", "example": "Der Lehrer erklärt die Aufgabe.", "example_en": "The teacher explains the task."}, {"article": "die", "word": "Schule", "plural": "die Schulen", "meaning": "school", "example": "Die Schule beginnt um acht Uhr.", "example_en": "School starts at eight."}, {"article": "das", "word": "Buch", "plural": "die Bücher", "meaning": "book", "example": "Das Buch ist interessant.", "example_en": "The book is interesting."}, {"article": "der", "word": "Stift", "plural": "die Stifte", "meaning": "pen", "example": "Der Stift ist blau.", "example_en": "The pen is blue."}, {"article": "das", "word": "Heft", "plural": "die Hefte", "meaning": "notebook", "example": "Das Heft liegt auf dem Tisch.", "example_en": "The notebook is on the table."}, {"article": "die", "word": "Aufgabe", "plural": "die Aufgaben", "meaning": "task, exercise", "example": "Die Aufgabe ist schwer.", "example_en": "The task is difficult."}, {"article": "die", "word": "Arbeit", "plural": "die Arbeiten", "meaning": "work, job", "example": "Die Arbeit beginnt früh.", "example_en": "Work starts early."}, {"article": "der", "word": "Beruf", "plural": "die Berufe", "meaning": "profession, job", "example": "Was ist dein Beruf?", "example_en": "What is your profession?"}, {"article": "das", "word": "Büro", "plural": "die Büros", "meaning": "office", "example": "Ich bin im Büro.", "example_en": "I am in the office."}, {"article": "der", "word": "Bahnhof", "plural": "die Bahnhöfe", "meaning": "train station", "example": "Der Bahnhof ist nah.", "example_en": "The train station is near."}, {"article": "der", "word": "Bus", "plural": "die Busse", "meaning": "bus", "example": "Der Bus kommt jetzt.", "example_en": "The bus is coming now."}, {"article": "der", "word": "Zug", "plural": "die Züge", "meaning": "train", "example": "Der Zug fährt nach Berlin.", "example_en": "The train goes to Berlin."}, {"article": "das", "word": "Auto", "plural": "die Autos", "meaning": "car", "example": "Das Auto ist rot.", "example_en": "The car is red."}, {"article": "das", "word": "Fahrrad", "plural": "die Fahrräder", "meaning": "bicycle", "example": "Das Fahrrad ist neu.", "example_en": "The bicycle is new."}, {"article": "das", "word": "Ticket", "plural": "die Tickets", "meaning": "ticket", "example": "Ich kaufe ein Ticket.", "example_en": "I buy a ticket."}, {"article": "das", "word": "Geld", "plural": "—", "meaning": "money", "example": "Ich brauche Geld.", "example_en": "I need money."}, {"article": "der", "word": "Preis", "plural": "die Preise", "meaning": "price", "example": "Der Preis ist gut.", "example_en": "The price is good."}, {"article": "der", "word": "Kaffee", "plural": "die Kaffees", "meaning": "coffee", "example": "Ich trinke Kaffee.", "example_en": "I drink coffee."}, {"article": "das", "word": "Wasser", "plural": "—", "meaning": "water", "example": "Ich trinke Wasser.", "example_en": "I drink water."}, {"article": "das", "word": "Brot", "plural": "die Brote", "meaning": "bread", "example": "Das Brot ist frisch.", "example_en": "The bread is fresh."}, {"article": "der", "word": "Apfel", "plural": "die Äpfel", "meaning": "apple", "example": "Der Apfel ist rot.", "example_en": "The apple is red."}, {"article": "die", "word": "Banane", "plural": "die Bananen", "meaning": "banana", "example": "Die Banane ist gelb.", "example_en": "The banana is yellow."}, {"article": "das", "word": "Essen", "plural": "—", "meaning": "food, meal", "example": "Das Essen schmeckt gut.", "example_en": "The food tastes good."}, {"article": "die", "word": "Suppe", "plural": "die Suppen", "meaning": "soup", "example": "Die Suppe ist heiß.", "example_en": "The soup is hot."}, {"article": "das", "word": "Restaurant", "plural": "die Restaurants", "meaning": "restaurant", "example": "Das Restaurant ist voll.", "example_en": "The restaurant is full."}, {"article": "der", "word": "Supermarkt", "plural": "die Supermärkte", "meaning": "supermarket", "example": "Der Supermarkt ist offen.", "example_en": "The supermarket is open."}, {"article": "die", "word": "Uhr", "plural": "die Uhren", "meaning": "clock, watch", "example": "Die Uhr ist kaputt.", "example_en": "The clock is broken."}, {"article": "der", "word": "Tag", "plural": "die Tage", "meaning": "day", "example": "Der Tag ist schön.", "example_en": "The day is beautiful."}, {"article": "die", "word": "Woche", "plural": "die Wochen", "meaning": "week", "example": "Die Woche ist lang.", "example_en": "The week is long."}, {"article": "der", "word": "Monat", "plural": "die Monate", "meaning": "month", "example": "Der Monat ist kurz.", "example_en": "The month is short."}, {"article": "das", "word": "Jahr", "plural": "die Jahre", "meaning": "year", "example": "Das Jahr ist bald vorbei.", "example_en": "The year is almost over."}, {"article": "der", "word": "Morgen", "plural": "die Morgen", "meaning": "morning", "example": "Der Morgen ist ruhig.", "example_en": "The morning is quiet."}, {"article": "der", "word": "Abend", "plural": "die Abende", "meaning": "evening", "example": "Der Abend ist schön.", "example_en": "The evening is beautiful."}, {"article": "die", "word": "Nacht", "plural": "die Nächte", "meaning": "night", "example": "Die Nacht ist dunkel.", "example_en": "The night is dark."}];
+const NUMBERS = [{"num": 0, "words": ["null"]}, {"num": 1, "words": ["eins"]}, {"num": 2, "words": ["zwei", "zwo"]}, {"num": 3, "words": ["drei"]}, {"num": 4, "words": ["vier"]}, {"num": 5, "words": ["fünf", "fuenf"]}, {"num": 6, "words": ["sechs"]}, {"num": 7, "words": ["sieben"]}, {"num": 8, "words": ["acht"]}, {"num": 9, "words": ["neun"]}, {"num": 10, "words": ["zehn"]}, {"num": 11, "words": ["elf"]}, {"num": 12, "words": ["zwölf", "zwoelf"]}, {"num": 13, "words": ["dreizehn"]}, {"num": 14, "words": ["vierzehn"]}, {"num": 15, "words": ["fünfzehn", "fuenfzehn"]}, {"num": 16, "words": ["sechzehn"]}, {"num": 17, "words": ["siebzehn"]}, {"num": 18, "words": ["achtzehn"]}, {"num": 19, "words": ["neunzehn"]}, {"num": 20, "words": ["zwanzig"]}, {"num": 21, "words": ["einundzwanzig"]}, {"num": 22, "words": ["zweiundzwanzig", "zwoundzwanzig"]}, {"num": 23, "words": ["dreiundzwanzig"]}, {"num": 24, "words": ["vierundzwanzig"]}, {"num": 25, "words": ["fünfundzwanzig", "fuenfundzwanzig"]}, {"num": 26, "words": ["sechsundzwanzig"]}, {"num": 27, "words": ["siebenundzwanzig"]}, {"num": 28, "words": ["achtundzwanzig"]}, {"num": 29, "words": ["neunundzwanzig"]}, {"num": 30, "words": ["dreißig", "dreissig"]}, {"num": 31, "words": ["einunddreißig", "einunddreissig"]}, {"num": 32, "words": ["zweiunddreißig", "zweiunddreissig", "zwounddreißig", "zwounddreissig"]}, {"num": 33, "words": ["dreiunddreißig", "dreiunddreissig"]}, {"num": 34, "words": ["vierunddreißig", "vierunddreissig"]}, {"num": 35, "words": ["fünfunddreißig", "fünfunddreissig", "fuenfunddreißig", "fuenfunddreissig"]}, {"num": 36, "words": ["sechsunddreißig", "sechsunddreissig"]}, {"num": 37, "words": ["siebenunddreißig", "siebenunddreissig"]}, {"num": 38, "words": ["achtunddreißig", "achtunddreissig"]}, {"num": 39, "words": ["neununddreißig", "neununddreissig"]}, {"num": 40, "words": ["vierzig"]}, {"num": 41, "words": ["einundvierzig"]}, {"num": 42, "words": ["zweiundvierzig", "zwoundvierzig"]}, {"num": 43, "words": ["dreiundvierzig"]}, {"num": 44, "words": ["vierundvierzig"]}, {"num": 45, "words": ["fünfundvierzig", "fuenfundvierzig"]}, {"num": 46, "words": ["sechsundvierzig"]}, {"num": 47, "words": ["siebenundvierzig"]}, {"num": 48, "words": ["achtundvierzig"]}, {"num": 49, "words": ["neunundvierzig"]}, {"num": 50, "words": ["fünfzig", "fuenfzig"]}, {"num": 51, "words": ["einundfünfzig", "einundfuenfzig"]}, {"num": 52, "words": ["zweiundfünfzig", "zweiundfuenfzig", "zwoundfünfzig", "zwoundfuenfzig"]}, {"num": 53, "words": ["dreiundfünfzig", "dreiundfuenfzig"]}, {"num": 54, "words": ["vierundfünfzig", "vierundfuenfzig"]}, {"num": 55, "words": ["fünfundfünfzig", "fünfundfuenfzig", "fuenfundfünfzig", "fuenfundfuenfzig"]}, {"num": 56, "words": ["sechsundfünfzig", "sechsundfuenfzig"]}, {"num": 57, "words": ["siebenundfünfzig", "siebenundfuenfzig"]}, {"num": 58, "words": ["achtundfünfzig", "achtundfuenfzig"]}, {"num": 59, "words": ["neunundfünfzig", "neunundfuenfzig"]}, {"num": 60, "words": ["sechzig"]}, {"num": 61, "words": ["einundsechzig"]}, {"num": 62, "words": ["zweiundsechzig", "zwoundsechzig"]}, {"num": 63, "words": ["dreiundsechzig"]}, {"num": 64, "words": ["vierundsechzig"]}, {"num": 65, "words": ["fünfundsechzig", "fuenfundsechzig"]}, {"num": 66, "words": ["sechsundsechzig"]}, {"num": 67, "words": ["siebenundsechzig"]}, {"num": 68, "words": ["achtundsechzig"]}, {"num": 69, "words": ["neunundsechzig"]}, {"num": 70, "words": ["siebzig"]}, {"num": 71, "words": ["einundsiebzig"]}, {"num": 72, "words": ["zweiundsiebzig", "zwoundsiebzig"]}, {"num": 73, "words": ["dreiundsiebzig"]}, {"num": 74, "words": ["vierundsiebzig"]}, {"num": 75, "words": ["fünfundsiebzig", "fuenfundsiebzig"]}, {"num": 76, "words": ["sechsundsiebzig"]}, {"num": 77, "words": ["siebenundsiebzig"]}, {"num": 78, "words": ["achtundsiebzig"]}, {"num": 79, "words": ["neunundsiebzig"]}, {"num": 80, "words": ["achtzig"]}, {"num": 81, "words": ["einundachtzig"]}, {"num": 82, "words": ["zweiundachtzig", "zwoundachtzig"]}, {"num": 83, "words": ["dreiundachtzig"]}, {"num": 84, "words": ["vierundachtzig"]}, {"num": 85, "words": ["fünfundachtzig", "fuenfundachtzig"]}, {"num": 86, "words": ["sechsundachtzig"]}, {"num": 87, "words": ["siebenundachtzig"]}, {"num": 88, "words": ["achtundachtzig"]}, {"num": 89, "words": ["neunundachtzig"]}, {"num": 90, "words": ["neunzig"]}, {"num": 91, "words": ["einundneunzig"]}, {"num": 92, "words": ["zweiundneunzig", "zwoundneunzig"]}, {"num": 93, "words": ["dreiundneunzig"]}, {"num": 94, "words": ["vierundneunzig"]}, {"num": 95, "words": ["fünfundneunzig", "fuenfundneunzig"]}, {"num": 96, "words": ["sechsundneunzig"]}, {"num": 97, "words": ["siebenundneunzig"]}, {"num": 98, "words": ["achtundneunzig"]}, {"num": 99, "words": ["neunundneunzig"]}, {"num": 100, "words": ["hundert", "einhundert"]}];
+
+let state = {
+    currentTopic:'modal',
+    modes:{modal:'meaning',separable:'meaning',adjective:'meaning',noun:'article',number:'number'},
+    current:null,
+    pron:null,
+    score:0,total:0,correct:0,streak:0,answered:false,timer:null
+};
+let mistakes=JSON.parse(localStorage.getItem('goetheA1SectionMistakes')||'{}');
+
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+const norm=s=>(s||'').trim().toLowerCase().replace(/[.,;:!?]/g,'').replace(/ß/g,'ss').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/\s+/g,' ');
+
+function saveMistakes(){localStorage.setItem('goetheA1SectionMistakes',JSON.stringify(mistakes));renderMistakes();}
+function addMistake(label){mistakes[label]=(mistakes[label]||0)+1;saveMistakes();}
+
+function shell(topic){
+    return `<div class="grid">
+    <div class="card">
+        <div class="kicker" id="${topic}ModeLabel"></div>
+        <div class="big" id="${topic}Word"></div>
+        <div class="meaning" id="${topic}Hint"></div>
+        <div class="prompt" id="${topic}Prompt"></div>
+        <div id="${topic}Answers" class="options"></div>
+        <div id="${topic}Feedback" class="feedback"></div>
+        <div class="controls"><button class="btn" onclick="renderTopic('${topic}')">Next question</button></div>
+    </div>
+    <aside class="card">
+        <div class="stats">
+            <div class="stat"><span class="small">Score</span><b id="${topic}Score">${state.score}</b></div>
+            <div class="stat"><span class="small">Streak</span><b id="${topic}Streak">${state.streak}</b></div>
+            <div class="stat"><span class="small">Accuracy</span><b id="${topic}Acc">${state.total?Math.round(state.correct/state.total*100):0}%</b></div>
+            <div class="stat"><span class="small">Mistakes</span><b id="${topic}Mistakes">${Object.keys(mistakes).length}</b></div>
+        </div>
+        ${sideRule(topic)}
+    </aside>
+    </div>`;
+}
+
+function sideRule(topic){
+    if(topic==='modal') return `<div class="rule"><b>Modal pattern</b><br>Subject + modal verb + information + infinitive at the end.<br><b>Ich muss heute Deutsch lernen.</b></div>`;
+    if(topic==='separable') return `<div class="rule"><b>Separable pattern</b><br>The prefix goes to the end in simple present sentences.<br><b>Ich rufe meine Mutter an.</b></div>`;
+    if(topic==='adjective') return `<div class="rule"><b>Adjective basics</b><br>Use adjectives after sein for simple A1 sentences.<br><b>Das Haus ist groß.</b></div>`;
+    if(topic==='noun') return `<div class="rule"><b>Article habit</b><br>Memorize the article together with the noun.<br><b>der Tisch, die Tür, das Buch</b></div>`;
+    if(topic==='number') return `<div class="rule"><b>German number order</b><br>21 to 99 say ones first, then und, then tens.<br><b>einundzwanzig</b></div>`;
+    return '';
+}
+
+function updateStats(topic){
+    let ids=['Score','Streak','Acc','Mistakes'];
+    if($(topic+'Score')) {
+        $(topic+'Score').textContent=state.score;
+        $(topic+'Streak').textContent=state.streak;
+        $(topic+'Acc').textContent=state.total?Math.round(state.correct/state.total*100)+'%':'0%';
+        $(topic+'Mistakes').textContent=Object.keys(mistakes).length;
+    }
+}
+
+function feedback(topic,ok,html){
+    let f=$(topic+'Feedback');
+    f.className='feedback '+(ok?'good':'bad');
+    f.innerHTML=(ok?'<b>Correct.</b><br>':'<b>Not quite.</b><br>')+html;
+    f.style.display='block';
+    updateStats(topic);
+}
+
+function setQuestionBase(topic,label,word,hint,prompt){
+    $(topic+'ModeLabel').textContent=label;
+    $(topic+'Word').textContent=word;
+    $(topic+'Hint').textContent=hint;
+    $(topic+'Prompt').innerHTML=prompt;
+    $(topic+'Answers').innerHTML='';
+    $(topic+'Feedback').style.display='none';
+    state.answered=false;
+    updateStats(topic);
+}
+
+function opt(topic,text,ok,fb,label){
+    let b=document.createElement('button');
+    b.className='option';
+    b.innerHTML=text;
+    b.dataset.ok=ok?'1':'0';
+    b.onclick=()=>answer(topic,b,ok,fb,label);
+    $(topic+'Answers').appendChild(b);
+}
+
+function answer(topic,btn,ok,fb,label){
+    if(state.answered)return;
+    state.answered=true;
+    state.total++;
+    if(ok){state.correct++;state.score+=10;state.streak++;btn.classList.add('correct');}
+    else{
+        state.streak=0;
+        btn.classList.add('wrong');
+        addMistake(label||$(topic+'Word').textContent);
+        document.querySelectorAll(`#${topic}Answers .option`).forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct')});
+    }
+    document.querySelectorAll(`#${topic}Answers .option`).forEach(x=>x.disabled=true);
+    feedback(topic,ok,fb);
+}
+
+function cleanMeaning(s){return norm(s).replace(/^to /,'').trim()}
+function meaningOk(val,correct){
+    let a=cleanMeaning(val);
+    let parts=correct.split(',').flatMap(x=>x.split(' to ')).map(x=>cleanMeaning(x)).filter(Boolean);
+    parts.push(cleanMeaning(correct));
+    return parts.some(x=>a===x||a.includes(x)||x.includes(a));
+}
+
+function typedInput(topic,placeholder,checkFn){
+    $(topic+'Answers').innerHTML=`<div class="inputRow"><input id="${topic}Input" placeholder="${placeholder}"><button class="btn" id="${topic}Check">Check</button></div>`;
+    $(topic+'Input').focus();
+    $(topic+'Check').onclick=checkFn;
+    $(topic+'Input').addEventListener('keydown',e=>{if(e.key==='Enter')checkFn()});
+}
+
+function qVerbMeaning(topic,verbs,typed=false){
+    let v=pick(verbs);
+    state.current=v;
+    setQuestionBase(topic,typed?'Typed meaning':'Meaning choices',v.inf,v.category||'Verb','What does this verb mean?');
+    let fb=`<b>${v.inf}</b> means <b>${v.meaning}</b>.<div class="example">${v.example}<br>${v.example_en}</div>`;
+    if(typed){
+        typedInput(topic,'Type English meaning',()=>{
+            if(state.answered)return;
+            let val=$(topic+'Input').value;
+            let ok=meaningOk(val,v.meaning);
+            state.answered=true;state.total++;
+            if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;addMistake(v.inf);}
+            feedback(topic,ok,fb+`<br>Your answer: <b>${val||'(empty)'}</b>`);
+        });
+    } else {
+        let opts=shuffle([v.meaning,...shuffle(verbs.filter(x=>x.inf!==v.inf)).slice(0,3).map(x=>x.meaning)]);
+        opts.forEach(o=>opt(topic,o,o===v.meaning,fb,v.inf));
+    }
+}
+
+function qVerbConj(topic,verbs,typed=false){
+    let v=pick(verbs);
+    let pron=pick(PRONOUNS);
+    state.current=v; state.pron=pron;
+    setQuestionBase(topic,typed?'Typed conjugation':'Conjugation choices',v.inf,`Meaning: ${v.meaning}`,`Conjugate for <b>${pron}</b>`);
+    let correct=v.conj[pron];
+    let fb=`Correct form: <b>${pron} ${correct}</b>.<br>${v.note||''}<div class="example">${v.example}<br>${v.example_en}</div>`;
+    if(typed){
+        typedInput(topic,'Type verb form only',()=>{
+            if(state.answered)return;
+            let val=$(topic+'Input').value;
+            let ok=norm(val)===norm(correct);
+            state.answered=true;state.total++;
+            if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;addMistake(v.inf);}
+            feedback(topic,ok,fb+`<br>Your answer: <b>${val||'(empty)'}</b>`);
+        });
+    } else {
+        let pool=[...new Set(verbs.flatMap(x=>PRONOUNS.map(p=>x.conj[p])).filter(x=>x!==correct))];
+        shuffle([correct,...shuffle(pool).slice(0,3)]).forEach(o=>opt(topic,o,o===correct,fb,v.inf));
+    }
+}
+
+function qAdjectiveMeaning(typed=false){
+    let topic='adjective';
+    let a=pick(ADJECTIVES);
+    state.current=a;
+    setQuestionBase(topic,typed?'Typed meaning':'Meaning choices',a.word,'Adjective','What does this adjective mean?');
+    let fb=`<b>${a.word}</b> means <b>${a.meaning}</b>.<div class="example">${a.example}<br>${a.example_en}</div>`;
+    if(typed){
+        typedInput(topic,'Type English meaning',()=>{
+            if(state.answered)return;
+            let val=$(topic+'Input').value;
+            let ok=meaningOk(val,a.meaning);
+            state.answered=true;state.total++;
+            if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;addMistake(a.word);}
+            feedback(topic,ok,fb+`<br>Your answer: <b>${val||'(empty)'}</b>`);
+        });
+    } else {
+        let opts=shuffle([a.meaning,...shuffle(ADJECTIVES.filter(x=>x.word!==a.word)).slice(0,3).map(x=>x.meaning)]);
+        opts.forEach(o=>opt(topic,o,o===a.meaning,fb,a.word));
+    }
+}
+
+function qAdjectiveOpposite(){
+    let topic='adjective';
+    let a=pick(ADJECTIVES.filter(x=>x.ant && x.ant!=='—'));
+    setQuestionBase(topic,'Opposite choices',a.word,`Meaning: ${a.meaning}`,'Choose the opposite.');
+    let correct=a.ant;
+    let opts=shuffle([correct,...shuffle(ADJECTIVES.filter(x=>x.word!==a.word)).slice(0,3).map(x=>x.word)]);
+    let fb=`Opposite of <b>${a.word}</b> is <b>${correct}</b>.<br>Comparative: <b>${a.comp}</b><br>Superlative: <b>${a.sup}</b>`;
+    opts.forEach(o=>opt(topic,o,o===correct,fb,a.word));
+}
+
+function qNounArticle(){
+    let topic='noun';
+    let n=pick(NOUNS);
+    setQuestionBase(topic,'Der Die Das',n.word,`Meaning: ${n.meaning} | Plural: ${n.plural}`,'Choose the correct article.');
+    let fb=`Correct answer: <b>${n.article} ${n.word}</b>.<div class="example">${n.example}<br>${n.example_en}</div>`;
+    ['der','die','das'].forEach(a=>opt(topic,a,a===n.article,fb,n.article+' '+n.word));
+}
+
+function qNounMeaning(typed=false){
+    let topic='noun';
+    let n=pick(NOUNS);
+    setQuestionBase(topic,typed?'Typed meaning':'Meaning choices',n.article+' '+n.word,`Plural: ${n.plural}`,'What does this noun mean?');
+    let fb=`<b>${n.article} ${n.word}</b> means <b>${n.meaning}</b>.<div class="example">${n.example}<br>${n.example_en}</div>`;
+    if(typed){
+        typedInput(topic,'Type English meaning',()=>{
+            if(state.answered)return;
+            let val=$(topic+'Input').value;
+            let ok=meaningOk(val,n.meaning);
+            state.answered=true;state.total++;
+            if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;addMistake(n.article+' '+n.word);}
+            feedback(topic,ok,fb+`<br>Your answer: <b>${val||'(empty)'}</b>`);
+        });
+    } else {
+        let opts=shuffle([n.meaning,...shuffle(NOUNS.filter(x=>x.word!==n.word)).slice(0,3).map(x=>x.meaning)]);
+        opts.forEach(o=>opt(topic,o,o===n.meaning,fb,n.article+' '+n.word));
+    }
+}
+
+function qNounPlural(){
+    let topic='noun';
+    let n=pick(NOUNS.filter(x=>x.plural && x.plural!=='—'));
+    setQuestionBase(topic,'Plural choices',n.article+' '+n.word,`Meaning: ${n.meaning}`,'Choose the plural.');
+    let correct=n.plural;
+    let opts=shuffle([correct,...shuffle(NOUNS.filter(x=>x.word!==n.word && x.plural && x.plural!=='—')).slice(0,3).map(x=>x.plural)]);
+    let fb=`Plural of <b>${n.article} ${n.word}</b> is <b>${correct}</b>.`;
+    opts.forEach(o=>opt(topic,o,o===correct,fb,n.article+' '+n.word));
+}
+
+function qNumber(typed=false){
+    let topic='number';
+    let n=pick(NUMBERS);
+    setQuestionBase(topic,typed?'Typed number':'Number choices',String(n.num),'German number spelling','What is this number in German?');
+    let correct=n.words[0];
+    let fb=`Correct answer: <b>${correct}</b>.<br>Accepted: ${n.words.join(', ')}`;
+    if(typed){
+        typedInput(topic,'Example: einundzwanzig',()=>{
+            if(state.answered)return;
+            let val=$(topic+'Input').value;
+            let ok=n.words.some(w=>norm(w)===norm(val));
+            state.answered=true;state.total++;
+            if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;addMistake(String(n.num));}
+            feedback(topic,ok,fb+`<br>Your answer: <b>${val||'(empty)'}</b>`);
+        });
+    } else {
+        let opts=shuffle([correct,...shuffle(NUMBERS.filter(x=>x.num!==n.num)).slice(0,3).map(x=>x.words[0])]);
+        opts.forEach(o=>opt(topic,o,o===correct,fb,String(n.num)));
+    }
+}
+
+function listTable(topic,rows,headers){
+    let content=$(topic+'Content');
+    let searchId=topic+'Search';
+    content.innerHTML=`<div class="card"><input id="${searchId}" class="search" placeholder="Search this list"><div class="tablewrap"><table id="${topic}Table"></table></div></div>`;
+    function render(){
+        let q=norm($(searchId).value);
+        let filtered=rows.filter(r=>norm(Object.values(r).join(' ')).includes(q));
+        $(topic+'Table').innerHTML='<thead><tr>'+headers.map(h=>`<th>${h}</th>`).join('')+'</tr></thead><tbody>'+
+        filtered.map(r=>'<tr>'+headers.map(h=>`<td>${r[h]||''}</td>`).join('')+'</tr>').join('')+'</tbody>';
+    }
+    $(searchId).oninput=render;
+    render();
+}
+
+function rules(topic){
+    let c=$(topic+'Content');
+    if(topic==='modal') c.innerHTML=`<div class="tilegrid"><div class="tile"><b>Modal sentence</b><br>Subject + modal + details + infinitive.<br><br>Ich muss Deutsch lernen.</div><div class="tile"><b>Important</b><br>For many modal verbs, ich and er/sie/es have the same form.<br><br>ich kann, er kann</div><div class="tile"><b>A1 modals</b><br>können, müssen, dürfen, sollen, wollen, möchten</div></div>`;
+    if(topic==='separable') c.innerHTML=`<div class="tilegrid"><div class="tile"><b>Prefix moves</b><br>In present tense, the prefix goes to the end.<br><br>Ich rufe dich an.</div><div class="tile"><b>Question</b><br>Rufst du mich heute an?</div><div class="tile"><b>Memory tip</b><br>Learn the infinitive and one example sentence together.</div></div>`;
+    if(topic==='adjective') c.innerHTML=`<div class="tilegrid"><div class="tile"><b>Simple adjective sentence</b><br>Das Haus ist groß.<br>Der Kaffee ist gut.</div><div class="tile"><b>Opposites</b><br>gut and schlecht<br>groß and klein<br>hell and dunkel</div><div class="tile"><b>Comparison</b><br>gut, besser, am besten<br>groß, größer, am größten</div></div>`;
+    if(topic==='noun') c.innerHTML=`<div class="tilegrid"><div class="tile"><b>Learn articles</b><br>Never memorize only Buch. Memorize <b>das Buch</b>.</div><div class="tile"><b>Plural</b><br>Plural is not always predictable. Learn plural with the noun.</div><div class="tile"><b>A1 habit</b><br>Say article plus noun out loud several times.</div></div>`;
+    if(topic==='number') c.innerHTML=`<div class="tilegrid"><div class="tile"><b>0 to 20</b><br>These are mostly memorized.</div><div class="tile"><b>21 to 99</b><br>Say ones first, then und, then tens.<br><br>25 = fünfundzwanzig</div><div class="tile"><b>100</b><br>hundert or einhundert</div></div>`;
+}
+
+function renderTopic(topic){
+    clearTimeout(state.timer);
+    let mode=state.modes[topic];
+    if(topic==='modal'){
+        if(mode==='list') return listTable(topic, MODALS.map(v=>({'Verb':v.inf,'Meaning':v.meaning,'ich':v.conj.ich,'du':v.conj.du,'er/sie/es':v.conj['er/sie/es'],'wir':v.conj.wir,'ihr':v.conj.ihr,'sie/Sie':v.conj['sie/Sie']})), ['Verb','Meaning','ich','du','er/sie/es','wir','ihr','sie/Sie']);
+        if(mode==='rules') return rules(topic);
+        $(topic+'Content').innerHTML=shell(topic);
+        if(mode==='meaning') return qVerbMeaning(topic,MODALS,false);
+        if(mode==='typed_meaning') return qVerbMeaning(topic,MODALS,true);
+        if(mode==='conj') return qVerbConj(topic,MODALS,false);
+        if(mode==='typed_conj') return qVerbConj(topic,MODALS,true);
+    }
+    if(topic==='separable'){
+        if(mode==='list') return listTable(topic, SEPARABLES.map(v=>({'Verb':v.inf,'Meaning':v.meaning,'Prefix':v.prefix,'ich':v.conj.ich,'du':v.conj.du,'er/sie/es':v.conj['er/sie/es'],'wir':v.conj.wir,'ihr':v.conj.ihr,'sie/Sie':v.conj['sie/Sie']})), ['Verb','Meaning','Prefix','ich','du','er/sie/es','wir','ihr','sie/Sie']);
+        if(mode==='rules') return rules(topic);
+        $(topic+'Content').innerHTML=shell(topic);
+        if(mode==='meaning') return qVerbMeaning(topic,SEPARABLES,false);
+        if(mode==='typed_meaning') return qVerbMeaning(topic,SEPARABLES,true);
+        if(mode==='conj') return qVerbConj(topic,SEPARABLES,false);
+        if(mode==='typed_conj') return qVerbConj(topic,SEPARABLES,true);
+    }
+    if(topic==='adjective'){
+        if(mode==='list') return listTable(topic, ADJECTIVES.map(a=>({'Adjective':a.word,'Meaning':a.meaning,'Comparative':a.comp,'Superlative':a.sup,'Opposite':a.ant,'Example':a.example})), ['Adjective','Meaning','Comparative','Superlative','Opposite','Example']);
+        if(mode==='rules') return rules(topic);
+        $(topic+'Content').innerHTML=shell(topic);
+        if(mode==='meaning') return qAdjectiveMeaning(false);
+        if(mode==='typed_meaning') return qAdjectiveMeaning(true);
+        if(mode==='opposite') return qAdjectiveOpposite();
+    }
+    if(topic==='noun'){
+        if(mode==='list') return listTable(topic, NOUNS.map(n=>({'Noun':n.article+' '+n.word,'Article':n.article,'Meaning':n.meaning,'Plural':n.plural,'Example':n.example})), ['Noun','Article','Meaning','Plural','Example']);
+        if(mode==='rules') return rules(topic);
+        $(topic+'Content').innerHTML=shell(topic);
+        if(mode==='article') return qNounArticle();
+        if(mode==='meaning') return qNounMeaning(false);
+        if(mode==='typed_meaning') return qNounMeaning(true);
+        if(mode==='plural') return qNounPlural();
+    }
+    if(topic==='number'){
+        if(mode==='list') return listTable(topic, NUMBERS.map(n=>({'Number':String(n.num),'German':n.words.join(', ')})), ['Number','German']);
+        if(mode==='rules') return rules(topic);
+        $(topic+'Content').innerHTML=shell(topic);
+        if(mode==='number') return qNumber(false);
+        if(mode==='typed_number') return qNumber(true);
+    }
+}
+
+function showSection(section){
+    state.currentTopic=section;
+    document.querySelectorAll('.topic').forEach(x=>x.classList.add('hidden'));
+    $(section).classList.remove('hidden');
+    document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.section===section));
+    if(section==='mistakes') renderMistakes();
+    else renderTopic(section);
+}
+
+function renderMistakes(){
+    let entries=Object.entries(mistakes).sort((a,b)=>b[1]-a[1]);
+    if(!entries.length){$('mistakeList').innerHTML='<p>No mistakes saved yet.</p>';return;}
+    $('mistakeList').innerHTML=entries.map(([w,n])=>`<div class="rule"><b>${w}</b><span class="pill">${n}</span></div>`).join('');
+}
+
+document.querySelectorAll('.navBtn').forEach(b=>b.onclick=()=>showSection(b.dataset.section));
+document.querySelectorAll('[data-topic][data-mode]').forEach(b=>b.onclick=()=>{
+    let topic=b.dataset.topic;
+    state.modes[topic]=b.dataset.mode;
+    document.querySelectorAll(`[data-topic="${topic}"]`).forEach(x=>x.classList.remove('activeMode'));
+    b.classList.add('activeMode');
+    renderTopic(topic);
+});
+$('clearMistakes').onclick=()=>{mistakes={};saveMistakes();renderMistakes();};
+renderTopic('modal');
+</script>
+</body>
+</html>

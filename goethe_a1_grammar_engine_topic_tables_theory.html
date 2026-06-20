@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Goethe A1 Grammar Engine</title>
+<style>
+:root{--bg:#f8f1e8;--card:#fffaf4;--ink:#21170f;--muted:#806f61;--line:#dfcbb6;--accent:#b85f42;--good:#167445;--bad:#af3737;--soft:#f0dfcb}
+*{box-sizing:border-box}
+body{margin:0;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink)}
+header,.app{max-width:1180px;margin:auto;padding:22px 24px}
+.eyebrow{font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:.16em;color:#9b3f24;font-weight:900;font-size:13px;margin-bottom:8px}
+h1{font-size:clamp(30px,4vw,48px);margin:0 0 8px;line-height:1.05}
+.sub{color:var(--muted);line-height:1.45;font-size:16px;font-family:Arial,sans-serif}
+.nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.btn{border:0;border-radius:10px;padding:15px 12px;font-weight:900;cursor:pointer;font-family:Arial,sans-serif;background:#fffdf9;border:1px solid var(--line);color:#111;min-height:56px}
+.btn:hover{background:#fff6eb;border-color:#cda98b}
+.btn.active,.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 12px 28px rgba(73,43,20,.06);margin-bottom:16px}
+.grid{display:grid;grid-template-columns:1.12fr .88fr;gap:16px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.kicker{text-transform:uppercase;letter-spacing:.1em;font-size:12px;color:#9b3f24;font-weight:900;font-family:Arial,sans-serif}
+.big{font-size:clamp(32px,5.5vw,68px);font-weight:950;margin:12px 0 4px;line-height:1.05}
+.meaning{font-size:18px;color:var(--muted);font-family:Arial,sans-serif}
+.prompt{font-size:24px;font-weight:850;margin:14px 0;font-family:Arial,sans-serif}
+.options{display:grid;gap:10px}
+.option{width:100%;padding:15px 16px;border-radius:14px;border:1px solid var(--line);background:white;text-align:left;font-size:18px;font-weight:850;cursor:pointer;font-family:Arial,sans-serif}
+.option:hover{border-color:var(--accent);background:#fff9f2}
+.option.correct{background:#e9f7ef;border-color:var(--good);color:var(--good)}
+.option.wrong{background:#fdecec;border-color:var(--bad);color:var(--bad)}
+.feedback{display:none;margin-top:15px;background:white;border:1px solid var(--line);border-radius:16px;padding:14px;line-height:1.55;font-family:Arial,sans-serif}
+.feedback.good{background:#eefaf3;border-color:#b9e6cc}
+.feedback.bad{background:#fff0f0;border-color:#f0bcbc}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.controls .btn{min-height:auto;padding:12px 16px;border-radius:999px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;font-family:Arial,sans-serif}
+.stat b{display:block;font-size:28px}
+.rule{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;line-height:1.5;margin-top:10px;font-family:Arial,sans-serif}
+.tilegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.tile{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;line-height:1.45;font-family:Arial,sans-serif}
+.badge{display:inline-block;background:var(--soft);border-radius:999px;padding:4px 9px;margin:2px;font-size:12px;font-weight:850;font-family:Arial,sans-serif}
+.wordchip{display:inline-block;background:white;border:1px solid var(--line);border-radius:999px;padding:10px 14px;margin:4px;cursor:pointer;font-family:Arial,sans-serif;font-weight:850}
+.answerBox{min-height:54px;background:#fff;border:1px dashed var(--accent);border-radius:16px;padding:10px;margin:12px 0;font-family:Arial,sans-serif}
+.small{font-size:13px;color:var(--muted);font-family:Arial,sans-serif}
+
+.caseTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border-radius:16px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-family:Arial,sans-serif;
+    margin:12px 0;
+}
+.caseTable th,
+.caseTable td{
+    padding:12px 10px;
+    border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);
+    text-align:center;
+    white-space:normal;
+}
+.caseTable th{
+    background:#f0dfcb;
+    color:#3b2416;
+    font-weight:900;
+}
+.caseTable td:first-child,
+.caseTable th:first-child{
+    text-align:left;
+    font-weight:900;
+}
+.caseTable tr:last-child td{
+    border-bottom:0;
+}
+.caseTable th:last-child,
+.caseTable td:last-child{
+    border-right:0;
+}
+.caseTable .changed{
+    background:#fff1e8;
+    color:#9b3f24;
+    font-weight:900;
+}
+.caseTable .same{
+    color:#167445;
+    font-weight:900;
+}
+.caseNote{
+    font-family:Arial,sans-serif;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.45;
+    margin-top:8px;
+}
+.miniTable{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:white;
+    font-family:Arial,sans-serif;
+    margin-top:10px;
+}
+.miniTable th,.miniTable td{
+    padding:10px 8px;
+    border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);
+    text-align:center;
+}
+.miniTable th{
+    background:#f0dfcb;
+}
+.miniTable tr:last-child td{border-bottom:0}
+.miniTable th:last-child,.miniTable td:last-child{border-right:0}
+
+
+.theoryBlock{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    margin:14px 0;
+    font-family:Arial,sans-serif;
+    line-height:1.55;
+}
+.theoryBlock h2{
+    margin:0 0 8px;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:28px;
+}
+.theoryBlock h3{
+    margin:16px 0 8px;
+    font-size:18px;
+}
+.theoryBlock p{
+    margin:8px 0;
+}
+.exampleGrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:10px;
+    margin-top:10px;
+}
+.exampleCard{
+    background:#fffaf4;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px;
+}
+.callout{
+    background:#fff1e8;
+    border:1px solid #e2b092;
+    border-radius:14px;
+    padding:12px;
+    margin-top:10px;
+}
+.formula{
+    font-family:Arial,sans-serif;
+    background:#f0dfcb;
+    border-radius:12px;
+    padding:10px;
+    font-weight:900;
+    margin:8px 0;
+}
+
+
+.sideTitle{
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:20px;
+    font-weight:900;
+    margin:0 0 8px;
+}
+.sideMini{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-family:Arial,sans-serif;
+    margin:10px 0;
+    font-size:14px;
+}
+.sideMini th,.sideMini td{
+    padding:9px 8px;
+    border-bottom:1px solid var(--line);
+    border-right:1px solid var(--line);
+    text-align:center;
+    white-space:normal;
+}
+.sideMini th{
+    background:#f0dfcb;
+    color:#3b2416;
+    font-weight:900;
+}
+.sideMini td:first-child,.sideMini th:first-child{
+    text-align:left;
+    font-weight:900;
+}
+.sideMini tr:last-child td{border-bottom:0}
+.sideMini th:last-child,.sideMini td:last-child{border-right:0}
+.sideMini .hot{
+    background:#fff1e8;
+    color:#9b3f24;
+    font-weight:900;
+}
+.sideMini .ok{
+    color:#167445;
+    font-weight:900;
+}
+.prepList{
+    display:grid;
+    gap:8px;
+    margin-top:10px;
+}
+.prepItem{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:10px;
+    font-family:Arial,sans-serif;
+    line-height:1.4;
+}
+.prepItem b{
+    color:#9b3f24;
+}
+.topicHint{
+    font-family:Arial,sans-serif;
+    color:var(--muted);
+    line-height:1.45;
+    font-size:14px;
+    margin-top:8px;
+}
+
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">GOETHE A1 · GRAMMAR ENGINE</div>
+<h1>German A1 Grammar Trainer</h1>
+<div class="sub">Cases, prepositions, pronouns, possessives, negation, word order, question words, adjective endings, sentence patterns, and clear theory explanations.</div>
+</header>
+
+<main class="app">
+<div class="nav">
+<button class="btn active" data-mode="caseArticle">Cases Articles</button>
+<button class="btn" data-mode="caseIdentify">Identify Case</button>
+<button class="btn" data-mode="preposition">Prepositions</button>
+<button class="btn" data-mode="twoWay">Two Way Prep</button>
+<button class="btn" data-mode="pronoun">Pronouns</button>
+<button class="btn" data-mode="possessive">Possessives</button>
+<button class="btn" data-mode="negation">Negation</button>
+<button class="btn" data-mode="wordOrder">Word Order</button>
+<button class="btn" data-mode="questionWords">W Questions</button>
+<button class="btn" data-mode="adjectiveEnding">Adjective Endings</button>
+<button class="btn" data-mode="patterns">Sentence Patterns</button>
+<button class="btn" data-mode="rules">Theory & Rules</button>
+</div>
+<div id="content"></div>
+</main>
+
+<script>
+const DATA = {"caseArticles": [{"case": "Nominativ", "sentence": "___ Mann trinkt Kaffee.", "answer": "der", "hint": "der Mann", "explain": "Subject = Nominativ. Masculine uses der."}, {"case": "Nominativ", "sentence": "___ Frau kommt heute.", "answer": "die", "hint": "die Frau", "explain": "Subject = Nominativ. Feminine uses die."}, {"case": "Nominativ", "sentence": "___ Kind spielt.", "answer": "das", "hint": "das Kind", "explain": "Subject = Nominativ. Neuter uses das."}, {"case": "Akkusativ", "sentence": "Ich sehe ___ Mann.", "answer": "den", "hint": "der Mann", "explain": "Direct object = Akkusativ. Masculine der changes to den."}, {"case": "Akkusativ", "sentence": "Ich kaufe ___ Tasche.", "answer": "die", "hint": "die Tasche", "explain": "Feminine die stays die in Akkusativ."}, {"case": "Akkusativ", "sentence": "Ich lese ___ Buch.", "answer": "das", "hint": "das Buch", "explain": "Neuter das stays das in Akkusativ."}, {"case": "Dativ", "sentence": "Ich helfe ___ Vater.", "answer": "dem", "hint": "der Vater", "explain": "helfen uses Dativ. Masculine der becomes dem."}, {"case": "Dativ", "sentence": "Ich helfe ___ Mutter.", "answer": "der", "hint": "die Mutter", "explain": "helfen uses Dativ. Feminine die becomes der."}, {"case": "Dativ", "sentence": "Ich helfe ___ Kind.", "answer": "dem", "hint": "das Kind", "explain": "helfen uses Dativ. Neuter das becomes dem."}, {"case": "Dativ", "sentence": "Ich helfe ___ Kindern.", "answer": "den", "hint": "die Kinder", "explain": "Plural Dativ uses den plus often n on the noun."}], "caseIdentify": [{"sentence": "Der Mann trinkt Kaffee.", "answer": "Nominativ", "explain": "Der Mann is the subject."}, {"sentence": "Ich sehe den Mann.", "answer": "Akkusativ", "explain": "den Mann is the direct object."}, {"sentence": "Ich helfe dem Mann.", "answer": "Dativ", "explain": "helfen uses Dativ."}, {"sentence": "Ich fahre mit dem Bus.", "answer": "Dativ", "explain": "mit always uses Dativ."}, {"sentence": "Das Geschenk ist für den Vater.", "answer": "Akkusativ", "explain": "für always uses Akkusativ."}], "prepositions": [{"prep": "durch", "meaning": "through", "case": "Akkusativ", "sentence": "Ich gehe durch den Park."}, {"prep": "für", "meaning": "for", "case": "Akkusativ", "sentence": "Das Geschenk ist für den Vater."}, {"prep": "gegen", "meaning": "against", "case": "Akkusativ", "sentence": "Ich bin gegen den Plan."}, {"prep": "ohne", "meaning": "without", "case": "Akkusativ", "sentence": "Ich komme ohne den Bruder."}, {"prep": "um", "meaning": "around / at", "case": "Akkusativ", "sentence": "Wir sitzen um den Tisch."}, {"prep": "aus", "meaning": "from / out of", "case": "Dativ", "sentence": "Ich komme aus der Schule."}, {"prep": "bei", "meaning": "at / with", "case": "Dativ", "sentence": "Ich bin bei dem Arzt."}, {"prep": "mit", "meaning": "with", "case": "Dativ", "sentence": "Ich fahre mit dem Bus."}, {"prep": "nach", "meaning": "after / to", "case": "Dativ", "sentence": "Ich fahre nach Berlin."}, {"prep": "seit", "meaning": "since / for", "case": "Dativ", "sentence": "Ich lerne seit einem Monat Deutsch."}, {"prep": "von", "meaning": "from / of", "case": "Dativ", "sentence": "Das Geschenk ist von der Mutter."}, {"prep": "zu", "meaning": "to", "case": "Dativ", "sentence": "Ich gehe zu dem Arzt."}], "twoWay": [{"prep": "in", "meaning": "in / into", "movement": "Ich gehe in die Schule.", "location": "Ich bin in der Schule."}, {"prep": "auf", "meaning": "on / onto", "movement": "Ich lege das Buch auf den Tisch.", "location": "Das Buch liegt auf dem Tisch."}, {"prep": "an", "meaning": "on / at", "movement": "Ich gehe an die Tür.", "location": "Ich stehe an der Tür."}, {"prep": "unter", "meaning": "under", "movement": "Die Katze geht unter den Tisch.", "location": "Die Katze ist unter dem Tisch."}, {"prep": "neben", "meaning": "next to", "movement": "Ich stelle den Stuhl neben den Tisch.", "location": "Der Stuhl steht neben dem Tisch."}, {"prep": "hinter", "meaning": "behind", "movement": "Ich gehe hinter das Haus.", "location": "Ich bin hinter dem Haus."}, {"prep": "vor", "meaning": "in front of / before", "movement": "Ich gehe vor die Tür.", "location": "Ich stehe vor der Tür."}, {"prep": "über", "meaning": "over / above", "movement": "Ich hänge das Bild über das Sofa.", "location": "Das Bild hängt über dem Sofa."}, {"prep": "zwischen", "meaning": "between", "movement": "Ich stelle den Tisch zwischen die Stühle.", "location": "Der Tisch steht zwischen den Stühlen."}], "pronouns": [{"nom": "ich", "akk": "mich", "dat": "mir"}, {"nom": "du", "akk": "dich", "dat": "dir"}, {"nom": "er", "akk": "ihn", "dat": "ihm"}, {"nom": "sie", "akk": "sie", "dat": "ihr"}, {"nom": "es", "akk": "es", "dat": "ihm"}, {"nom": "wir", "akk": "uns", "dat": "uns"}, {"nom": "ihr", "akk": "euch", "dat": "euch"}, {"nom": "sie plural", "akk": "sie", "dat": "ihnen"}, {"nom": "Sie", "akk": "Sie", "dat": "Ihnen"}], "possessives": [{"owner": "ich", "nomM": "mein", "nomF": "meine", "nomN": "mein", "akkM": "meinen", "datF": "meiner"}, {"owner": "du", "nomM": "dein", "nomF": "deine", "nomN": "dein", "akkM": "deinen", "datF": "deiner"}, {"owner": "er/es", "nomM": "sein", "nomF": "seine", "nomN": "sein", "akkM": "seinen", "datF": "seiner"}, {"owner": "sie", "nomM": "ihr", "nomF": "ihre", "nomN": "ihr", "akkM": "ihren", "datF": "ihrer"}, {"owner": "wir", "nomM": "unser", "nomF": "unsere", "nomN": "unser", "akkM": "unseren", "datF": "unserer"}, {"owner": "ihr", "nomM": "euer", "nomF": "eure", "nomN": "euer", "akkM": "euren", "datF": "eurer"}, {"owner": "Sie", "nomM": "Ihr", "nomF": "Ihre", "nomN": "Ihr", "akkM": "Ihren", "datF": "Ihrer"}], "negation": [{"sentence": "Ich habe ___ Hund.", "answer": "keinen", "choices": ["nicht", "kein", "keine", "keinen"], "explain": "Hund is masculine Akkusativ, so kein becomes keinen."}, {"sentence": "Das ist ___ Tasche.", "answer": "keine", "choices": ["nicht", "kein", "keine", "keinen"], "explain": "Tasche is feminine, so use keine."}, {"sentence": "Ich trinke Kaffee ___.", "answer": "nicht", "choices": ["nicht", "kein", "keine", "keinen"], "explain": "Use nicht to negate the action."}, {"sentence": "Er ist ___ müde.", "answer": "nicht", "choices": ["nicht", "kein", "keine", "keinen"], "explain": "Use nicht before adjectives."}, {"sentence": "Ich habe ___ Geld.", "answer": "kein", "choices": ["nicht", "kein", "keine", "keinen"], "explain": "Geld is neuter, so use kein."}], "wordOrder": [{"type": "Normal sentence", "answer": "Ich lerne heute Deutsch.", "words": ["heute", "Deutsch", "Ich", "lerne"], "explain": "Subject plus verb plus time plus object."}, {"type": "W question", "answer": "Wann kommst du heute?", "words": ["du", "heute", "Wann", "kommst"], "explain": "Question word plus verb plus subject."}, {"type": "Yes or no question", "answer": "Kommst du heute?", "words": ["du", "heute", "Kommst"], "explain": "The verb goes first."}, {"type": "Modal sentence", "answer": "Ich muss heute Deutsch lernen.", "words": ["Deutsch", "muss", "lernen", "heute", "Ich"], "explain": "Modal verb in position 2, main verb at the end."}, {"type": "Time manner place", "answer": "Ich fahre heute mit dem Bus nach Berlin.", "words": ["nach Berlin", "mit dem Bus", "Ich", "heute", "fahre"], "explain": "Basic pattern: time, manner, place."}, {"type": "Separable verb", "answer": "Ich rufe meine Mutter an.", "words": ["meine Mutter", "Ich", "an", "rufe"], "explain": "The separable prefix goes to the end."}], "questionWords": [{"answer": "Wer", "meaning": "who", "sentence": "___ kommt heute?", "explain": "Wer asks about a person as the subject."}, {"answer": "Was", "meaning": "what", "sentence": "___ machst du?", "explain": "Was means what."}, {"answer": "Wann", "meaning": "when", "sentence": "___ kommst du?", "explain": "Wann asks about time."}, {"answer": "Wo", "meaning": "where", "sentence": "___ wohnst du?", "explain": "Wo asks about location."}, {"answer": "Wohin", "meaning": "where to", "sentence": "___ gehst du?", "explain": "Wohin asks about direction."}, {"answer": "Woher", "meaning": "where from", "sentence": "___ kommst du?", "explain": "Woher asks about origin."}, {"answer": "Wie", "meaning": "how", "sentence": "___ heißt du?", "explain": "Wie asks how."}, {"answer": "Warum", "meaning": "why", "sentence": "___ lernst du Deutsch?", "explain": "Warum asks for a reason."}, {"answer": "Wie viel", "meaning": "how much", "sentence": "___ kostet das Brot?", "explain": "Wie viel asks price or amount."}, {"answer": "Wie viele", "meaning": "how many", "sentence": "___ Kinder hast du?", "explain": "Wie viele asks about countable plural nouns."}], "adjectiveEndings": [{"sentence": "Das ist ein ___ Hund.", "answer": "kleiner", "choices": ["kleiner", "kleine", "kleines", "kleinen"], "explain": "ein plus masculine Nominativ: ein kleiner Hund."}, {"sentence": "Das ist eine ___ Tasche.", "answer": "kleine", "choices": ["kleiner", "kleine", "kleines", "kleinen"], "explain": "eine plus feminine Nominativ: eine kleine Tasche."}, {"sentence": "Das ist ein ___ Kind.", "answer": "kleines", "choices": ["kleiner", "kleine", "kleines", "kleinen"], "explain": "ein plus neuter Nominativ: ein kleines Kind."}, {"sentence": "Ich sehe einen ___ Hund.", "answer": "kleinen", "choices": ["kleiner", "kleine", "kleines", "kleinen"], "explain": "einen plus masculine Akkusativ: einen kleinen Hund."}, {"sentence": "Der ___ Hund spielt.", "answer": "kleine", "choices": ["kleiner", "kleine", "kleines", "kleinen"], "explain": "der plus adjective usually uses e: der kleine Hund."}], "patterns": [{"sentence": "Ich habe ___ Bruder.", "answer": "einen", "choices": ["ein", "eine", "einen", "einem"], "explain": "haben takes Akkusativ. Bruder is masculine, so einen."}, {"sentence": "Ich bin ___.", "answer": "müde", "choices": ["müde", "einen", "dem", "für"], "explain": "sein plus adjective: Ich bin müde."}, {"sentence": "Ich möchte ___ Kaffee.", "answer": "einen", "choices": ["ein", "eine", "einen", "einem"], "explain": "Kaffee is masculine Akkusativ here."}, {"sentence": "Ich kann gut ___.", "answer": "kochen", "choices": ["koche", "kochst", "kochen", "gekocht"], "explain": "After a modal verb, use infinitive at the end."}, {"sentence": "Es gibt ___ Supermarkt.", "answer": "einen", "choices": ["ein", "eine", "einen", "einem"], "explain": "Es gibt uses Akkusativ. Supermarkt is masculine, so einen."}]};
+let state = {mode:'caseArticle', score:0, total:0, correct:0, streak:0, answered:false, buildWords:[], buildAnswer:[]};
+const $ = id => document.getElementById(id);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+const norm = s => (s||'').trim().toLowerCase().replace(/[.,;:!?]/g,'').replace(/ß/g,'ss').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/\s+/g,' ');
+
+function labelMode(m){
+    const labels={caseArticle:'Cases',caseIdentify:'Case ID',preposition:'Prep',twoWay:'Two Way',pronoun:'Pronouns',possessive:'Possessives',negation:'Negation',wordOrder:'Order',questionWords:'W Fragen',adjectiveEnding:'Adj endings',patterns:'Patterns',rules:'Rules'};
+    return labels[m]||m;
+}
+function statsHtml(){
+    return `<div class="stats">
+    <div class="stat"><span class="small">Score</span><b>${state.score}</b></div>
+    <div class="stat"><span class="small">Streak</span><b>${state.streak}</b></div>
+    <div class="stat"><span class="small">Accuracy</span><b>${state.total?Math.round(state.correct/state.total*100):0}%</b></div>
+    <div class="stat"><span class="small">Mode</span><b style="font-size:18px">${labelMode(state.mode)}</b></div>
+    </div>`;
+}
+function sideRule(){
+    if(state.mode==='possessive'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Possessive articles</div>
+            <table class="sideMini">
+                <tr><th>Owner</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+                <tr><td>ich</td><td>mein</td><td>meine</td><td>mein</td><td>meine</td></tr>
+                <tr><td>du</td><td>dein</td><td>deine</td><td>dein</td><td>deine</td></tr>
+                <tr><td>er/es</td><td>sein</td><td>seine</td><td>sein</td><td>seine</td></tr>
+                <tr><td>sie</td><td>ihr</td><td>ihre</td><td>ihr</td><td>ihre</td></tr>
+                <tr><td>wir</td><td>unser</td><td>unsere</td><td>unser</td><td>unsere</td></tr>
+                <tr><td>ihr</td><td>euer</td><td>eure</td><td>euer</td><td>eure</td></tr>
+                <tr><td>Sie</td><td>Ihr</td><td>Ihre</td><td>Ihr</td><td>Ihre</td></tr>
+            </table>
+            <div class="topicHint">These follow ein-word endings: mein Vater, meine Mutter, mein Kind. In masculine Akkusativ: meinen Vater.</div>
+        </div>`;
+    }
+    if(state.mode==='pronoun'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Personal pronouns by case</div>
+            <table class="sideMini">
+                <tr><th>Nom</th><th>Akk</th><th>Dat</th></tr>
+                <tr><td>ich</td><td>mich</td><td>mir</td></tr>
+                <tr><td>du</td><td>dich</td><td>dir</td></tr>
+                <tr><td>er</td><td>ihn</td><td>ihm</td></tr>
+                <tr><td>sie</td><td>sie</td><td>ihr</td></tr>
+                <tr><td>es</td><td>es</td><td>ihm</td></tr>
+                <tr><td>wir</td><td>uns</td><td>uns</td></tr>
+                <tr><td>ihr</td><td>euch</td><td>euch</td></tr>
+                <tr><td>sie</td><td>sie</td><td>ihnen</td></tr>
+                <tr><td>Sie</td><td>Sie</td><td>Ihnen</td></tr>
+            </table>
+            <div class="topicHint">Akkusativ often answers wen/was. Dativ often answers wem.</div>
+        </div>`;
+    }
+    if(state.mode==='preposition'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Prepositions with fixed case</div>
+            <table class="sideMini">
+                <tr><th>Akkusativ</th><th>English</th></tr>
+                <tr><td>durch</td><td>through</td></tr>
+                <tr><td>für</td><td>for</td></tr>
+                <tr><td>gegen</td><td>against</td></tr>
+                <tr><td>ohne</td><td>without</td></tr>
+                <tr><td>um</td><td>around / at</td></tr>
+            </table>
+            <table class="sideMini">
+                <tr><th>Dativ</th><th>English</th></tr>
+                <tr><td>aus</td><td>from / out of</td></tr>
+                <tr><td>bei</td><td>at / with</td></tr>
+                <tr><td>mit</td><td>with / by</td></tr>
+                <tr><td>nach</td><td>to / after</td></tr>
+                <tr><td>seit</td><td>since / for</td></tr>
+                <tr><td>von</td><td>from / of</td></tr>
+                <tr><td>zu</td><td>to</td></tr>
+            </table>
+        </div>`;
+    }
+    if(state.mode==='twoWay'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Two way prepositions</div>
+            <table class="sideMini">
+                <tr><th>Prep</th><th>English</th></tr>
+                <tr><td>an</td><td>at / on side</td></tr>
+                <tr><td>auf</td><td>on top of</td></tr>
+                <tr><td>hinter</td><td>behind</td></tr>
+                <tr><td>in</td><td>in / into</td></tr>
+                <tr><td>neben</td><td>next to</td></tr>
+                <tr><td>über</td><td>over / above</td></tr>
+                <tr><td>unter</td><td>under</td></tr>
+                <tr><td>vor</td><td>in front of / before</td></tr>
+                <tr><td>zwischen</td><td>between</td></tr>
+            </table>
+            <div class="topicHint"><b>Wohin?</b> movement = Akkusativ. <b>Wo?</b> location = Dativ.</div>
+        </div>`;
+    }
+    if(state.mode==='adjectiveEnding'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Adjective endings, A1 focus</div>
+            <table class="sideMini">
+                <tr><th>Pattern</th><th>Example</th></tr>
+                <tr><td>ein + der-word noun</td><td>ein kleiner Hund</td></tr>
+                <tr><td>eine + die-word noun</td><td>eine kleine Tasche</td></tr>
+                <tr><td>ein + das-word noun</td><td>ein kleines Kind</td></tr>
+                <tr><td>einen + masculine Akk</td><td>einen kleinen Hund</td></tr>
+                <tr><td>der/die/das + adjective</td><td>der kleine Hund</td></tr>
+            </table>
+            <div class="topicHint">This is a simplified A1 starter table. Full adjective declension has more forms, especially Dativ and plural.</div>
+        </div>`;
+    }
+    if(state.mode==='negation'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">nicht vs kein</div>
+            <table class="sideMini">
+                <tr><th>Use</th><th>Example</th></tr>
+                <tr><td>kein + noun</td><td>Ich habe keinen Hund.</td></tr>
+                <tr><td>nicht + adjective</td><td>Ich bin nicht müde.</td></tr>
+                <tr><td>nicht + verb/action</td><td>Ich komme nicht.</td></tr>
+            </table>
+            <div class="topicHint">kein changes like ein: kein Hund, keine Tasche, kein Kind, keinen Hund.</div>
+        </div>`;
+    }
+    if(state.mode==='wordOrder'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">Word order patterns</div>
+            <table class="sideMini">
+                <tr><th>Type</th><th>Pattern</th></tr>
+                <tr><td>Normal</td><td>Subject + Verb + rest</td></tr>
+                <tr><td>W question</td><td>W word + Verb + Subject</td></tr>
+                <tr><td>Yes/No</td><td>Verb + Subject + rest</td></tr>
+                <tr><td>Modal</td><td>Modal verb + infinitive at end</td></tr>
+                <tr><td>Separable</td><td>Prefix at end</td></tr>
+            </table>
+        </div>`;
+    }
+    if(state.mode==='questionWords'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">W questions</div>
+            <table class="sideMini">
+                <tr><th>German</th><th>English</th></tr>
+                <tr><td>wer</td><td>who</td></tr>
+                <tr><td>was</td><td>what</td></tr>
+                <tr><td>wann</td><td>when</td></tr>
+                <tr><td>wo</td><td>where</td></tr>
+                <tr><td>wohin</td><td>where to</td></tr>
+                <tr><td>woher</td><td>where from</td></tr>
+                <tr><td>wie</td><td>how</td></tr>
+                <tr><td>warum</td><td>why</td></tr>
+                <tr><td>wie viel</td><td>how much</td></tr>
+                <tr><td>wie viele</td><td>how many</td></tr>
+            </table>
+        </div>`;
+    }
+    if(state.mode==='patterns'){
+        return `<div id="statsBox">${statsHtml()}</div>
+        <div class="rule">
+            <div class="sideTitle">A1 sentence patterns</div>
+            <table class="sideMini">
+                <tr><th>Pattern</th><th>Example</th></tr>
+                <tr><td>haben + Akk</td><td>Ich habe einen Bruder.</td></tr>
+                <tr><td>sein + adjective</td><td>Ich bin müde.</td></tr>
+                <tr><td>möchten + noun</td><td>Ich möchte einen Kaffee.</td></tr>
+                <tr><td>modal + infinitive</td><td>Ich kann kochen.</td></tr>
+                <tr><td>es gibt + Akk</td><td>Es gibt einen Supermarkt.</td></tr>
+            </table>
+        </div>`;
+    }
+    return `<div id="statsBox">${statsHtml()}</div>
+    <div class="rule">
+        <div class="sideTitle">Cases by gender</div>
+        <table class="sideMini">
+            <tr><th>Case</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+            <tr><td>Nominativ</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+            <tr><td>Akkusativ</td><td class="hot">den</td><td>die</td><td>das</td><td>die</td></tr>
+            <tr><td>Dativ</td><td class="hot">dem</td><td class="hot">der</td><td class="hot">dem</td><td class="hot">den + n</td></tr>
+        </table>
+        <div class="topicHint">Subject = Nominativ. Direct object = Akkusativ. After dative prepositions = Dativ.</div>
+    </div>`;
+}
+function shell(){
+    $('content').innerHTML = `<div class="grid">
+    <div class="card">
+        <div class="kicker" id="modeLabel"></div>
+        <div class="big" id="word"></div>
+        <div class="meaning" id="hint"></div>
+        <div class="prompt" id="prompt"></div>
+        <div id="answers" class="options"></div>
+        <div id="feedback" class="feedback"></div>
+        <div class="controls"><button class="btn primary" onclick="render()">Next question</button></div>
+    </div>
+    <aside class="card">${sideRule()}</aside>
+    </div>`;
+}
+function updateStats(){ if($('statsBox')) $('statsBox').innerHTML=statsHtml(); }
+function setBase(label, word, hint, prompt){
+    shell();
+    $('modeLabel').textContent=label;
+    $('word').textContent=word;
+    $('hint').textContent=hint;
+    $('prompt').innerHTML=prompt;
+    $('answers').innerHTML='';
+    $('feedback').style.display='none';
+    state.answered=false;
+}
+function feedback(ok, html){
+    let f=$('feedback');
+    f.className='feedback '+(ok?'good':'bad');
+    f.innerHTML=(ok?'<b>Correct.</b><br>':'<b>Not quite.</b><br>')+html;
+    f.style.display='block';
+    updateStats();
+}
+function answer(btn, ok, fb){
+    if(state.answered)return;
+    state.answered=true;
+    state.total++;
+    if(ok){state.correct++;state.score+=10;state.streak++;btn.classList.add('correct');}
+    else{state.streak=0;btn.classList.add('wrong');document.querySelectorAll('.option').forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});}
+    document.querySelectorAll('.option').forEach(x=>x.disabled=true);
+    feedback(ok, fb);
+}
+function opt(text, ok, fb){
+    let b=document.createElement('button');
+    b.className='option';
+    b.innerHTML=text;
+    b.dataset.ok=ok?'1':'0';
+    b.onclick=()=>answer(b,ok,fb);
+    $('answers').appendChild(b);
+}
+function choices(correct, arr){ return shuffle([correct,...shuffle([...new Set(arr)].filter(x=>x!==correct)).slice(0,3)]); }
+
+function caseArticleQ(){
+    let q=pick(DATA.caseArticles);
+    setBase('Cases Articles', q.sentence, `${q.case} · ${q.hint}`, 'Choose the correct article.');
+    choices(q.answer,['der','die','das','den','dem','einen','eine','einem']).forEach(c=>opt(c,c===q.answer,`Answer: <b>${q.answer}</b>.<br>${q.explain}`));
+}
+function caseIdentifyQ(){
+    let q=pick(DATA.caseIdentify);
+    setBase('Identify Case', q.sentence, 'Which case is used here?', 'Choose the case.');
+    ['Nominativ','Akkusativ','Dativ'].forEach(c=>opt(c,c===q.answer,`Answer: <b>${q.answer}</b>.<br>${q.explain}`));
+}
+function prepositionQ(){
+    let q=pick(DATA.prepositions);
+    setBase('Prepositions', q.prep, `${q.meaning} · ${q.sentence}`, 'Which case does this preposition take?');
+    ['Akkusativ','Dativ','Nominativ'].forEach(c=>opt(c,c===q.case,`<b>${q.prep}</b> uses <b>${q.case}</b>.<br>${q.sentence}`));
+}
+function twoWayQ(){
+    let q=pick(DATA.twoWay);
+    let askMove=Math.random()<.5;
+    let sent=askMove?q.movement:q.location;
+    setBase('Two Way Prepositions', sent, `${q.prep} = ${q.meaning}`, 'Is this movement or location?');
+    ['Movement · Akkusativ','Location · Dativ'].forEach(c=>{
+        let ok=(askMove && c==='Movement · Akkusativ') || (!askMove && c==='Location · Dativ');
+        opt(c,ok,`Movement answers wohin and uses Akkusativ.<br>Location answers wo and uses Dativ.<br><br>Movement: ${q.movement}<br>Location: ${q.location}`);
+    });
+}
+function pronounQ(){
+    let p=pick(DATA.pronouns);
+    let useDat=Math.random()<.5;
+    let sent=useDat?'Ich helfe ___.':'Ich sehe ___.';
+    let ans=useDat?p.dat:p.akk;
+    setBase('Personal Pronouns', sent, `Base pronoun: ${p.nom}`, `Choose the ${useDat?'Dativ':'Akkusativ'} pronoun.`);
+    choices(ans,DATA.pronouns.flatMap(x=>[x.akk,x.dat])).forEach(c=>opt(c,c===ans,`Answer: <b>${ans}</b>.<br>Akkusativ: ${p.akk}<br>Dativ: ${p.dat}`));
+}
+function possessiveQ(){
+    let p=pick(DATA.possessives);
+    let types=[['nomM','Das ist ___ Vater.','masculine Nominativ'],['nomF','Das ist ___ Mutter.','feminine Nominativ'],['nomN','Das ist ___ Kind.','neuter Nominativ'],['akkM','Ich sehe ___ Vater.','masculine Akkusativ'],['datF','Ich helfe ___ Mutter.','feminine Dativ']];
+    let t=pick(types);
+    let ans=p[t[0]];
+    setBase('Possessives', t[1], `Owner: ${p.owner} · ${t[2]}`, 'Choose the correct possessive article.');
+    choices(ans,DATA.possessives.flatMap(x=>[x.nomM,x.nomF,x.nomN,x.akkM,x.datF])).forEach(c=>opt(c,c===ans,`Answer: <b>${ans}</b>.<br>Owner: ${p.owner}`));
+}
+function fillChoiceQ(key,label){
+    let q=pick(DATA[key]);
+    setBase(label, q.sentence, q.explain || '', 'Choose the correct answer.');
+    q.choices.forEach(c=>opt(c,c===q.answer,`Answer: <b>${q.answer}</b>.<br>${q.explain}`));
+}
+function questionWordQ(){
+    let q=pick(DATA.questionWords);
+    setBase('W Questions', q.sentence, `${q.answer} = ${q.meaning}`, 'Choose the correct question word.');
+    choices(q.answer,DATA.questionWords.map(x=>x.answer)).forEach(c=>opt(c,c===q.answer,`Answer: <b>${q.answer}</b>.<br>${q.explain}`));
+}
+function wordOrderQ(){
+    let q=pick(DATA.wordOrder);
+    shell();
+    $('modeLabel').textContent='Word Order';
+    $('word').textContent=q.type;
+    $('hint').textContent='Click the words in correct order.';
+    $('prompt').innerHTML='Build the sentence.';
+    state.buildWords=[...q.words];
+    state.buildAnswer=[];
+    $('answers').innerHTML=`<div class="answerBox" id="answerBox"></div><div id="chips"></div><div class="controls"><button class="btn primary" id="checkOrder">Check</button><button class="btn" id="resetOrder">Reset</button></div>`;
+    function draw(){
+        $('answerBox').innerHTML=state.buildAnswer.map(w=>`<span class="badge">${w}</span>`).join(' ');
+        $('chips').innerHTML=state.buildWords.map((w,i)=>`<span class="wordchip" data-i="${i}">${w}</span>`).join('');
+        document.querySelectorAll('.wordchip').forEach(ch=>ch.onclick=()=>{
+            let i=Number(ch.dataset.i);
+            state.buildAnswer.push(state.buildWords[i]);
+            state.buildWords.splice(i,1);
+            draw();
+        });
+    }
+    draw();
+    $('resetOrder').onclick=()=>{state.buildWords=[...q.words];state.buildAnswer=[];draw();};
+    $('checkOrder').onclick=()=>{
+        if(state.answered)return;
+        let built=state.buildAnswer.join(' ');
+        let ok=norm(built)===norm(q.answer);
+        state.answered=true;
+        state.total++;
+        if(ok){state.correct++;state.score+=10;state.streak++;}else{state.streak=0;}
+        feedback(ok,`Correct sentence: <b>${q.answer}</b><br>Your sentence: <b>${built||'(empty)'}</b><br>${q.explain}`);
+    };
+}
+function rulesView(){
+    $('content').innerHTML = `<div class="card">
+    <div class="kicker">Theory Section</div>
+    <div class="big" style="font-size:42px">A1 Grammar Theory</div>
+    <div class="meaning">Tables are separated by topic so you can study the exact grammar before doing the exercise.</div>
+
+    <div class="theoryBlock">
+        <h2>1. Cases by gender</h2>
+        <p>Cases show the job of the noun in the sentence. In A1, focus on Nominativ, Akkusativ, and Dativ.</p>
+        <table class="caseTable">
+            <tr><th>Case</th><th>Meaning</th><th>Masculine</th><th>Feminine</th><th>Neuter</th><th>Plural</th></tr>
+            <tr><td>Nominativ</td><td>Subject</td><td>der Mann</td><td>die Frau</td><td>das Kind</td><td>die Kinder</td></tr>
+            <tr><td>Akkusativ</td><td>Direct object</td><td class="changed">den Mann</td><td>die Frau</td><td>das Kind</td><td>die Kinder</td></tr>
+            <tr><td>Dativ</td><td>Indirect object / after dative preposition</td><td class="changed">dem Mann</td><td class="changed">der Frau</td><td class="changed">dem Kind</td><td class="changed">den Kindern</td></tr>
+        </table>
+        <div class="exampleGrid">
+            <div class="exampleCard"><b>Nominativ</b><br>Der Mann trinkt Kaffee.<br><span class="small">The man is doing the action.</span></div>
+            <div class="exampleCard"><b>Akkusativ</b><br>Ich sehe den Mann.<br><span class="small">The man receives the action.</span></div>
+            <div class="exampleCard"><b>Dativ</b><br>Ich helfe dem Mann.<br><span class="small">helfen uses Dativ.</span></div>
+        </div>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>2. Prepositions with English meaning and use</h2>
+        <p>These prepositions force a case. Learn the preposition together with its case and a small sentence.</p>
+        <h3>Akkusativ prepositions</h3>
+        <table class="caseTable">
+            <tr><th>German</th><th>English</th><th>When to use</th><th>Example</th></tr>
+            <tr><td>durch</td><td>through</td><td>movement through a place</td><td>Ich gehe durch den Park.</td></tr>
+            <tr><td>für</td><td>for</td><td>for a person, purpose, or price</td><td>Das Geschenk ist für den Vater.</td></tr>
+            <tr><td>gegen</td><td>against / around time</td><td>opposition or approximate time</td><td>Ich bin gegen den Plan. · Ich komme gegen acht Uhr.</td></tr>
+            <tr><td>ohne</td><td>without</td><td>absence of a person or thing</td><td>Ich komme ohne den Bruder.</td></tr>
+            <tr><td>um</td><td>around / at</td><td>around a place or exact time</td><td>Wir sitzen um den Tisch. · Um acht Uhr.</td></tr>
+        </table>
+        <h3>Dativ prepositions</h3>
+        <table class="caseTable">
+            <tr><th>German</th><th>English</th><th>When to use</th><th>Example</th></tr>
+            <tr><td>aus</td><td>from / out of</td><td>origin, material, coming out of a place</td><td>Ich komme aus der Schule.</td></tr>
+            <tr><td>bei</td><td>at / with / near</td><td>at someone's place, workplace, or near something</td><td>Ich bin bei dem Arzt.</td></tr>
+            <tr><td>mit</td><td>with / by</td><td>with someone or by transport</td><td>Ich fahre mit dem Bus.</td></tr>
+            <tr><td>nach</td><td>to / after</td><td>to a city or country without article, or after time</td><td>Ich fahre nach Berlin. · Nach dem Essen.</td></tr>
+            <tr><td>seit</td><td>since / for</td><td>something started in the past and continues now</td><td>Ich lerne seit einem Monat Deutsch.</td></tr>
+            <tr><td>von</td><td>from / of</td><td>origin, possession, source</td><td>Das Geschenk ist von der Mutter.</td></tr>
+            <tr><td>zu</td><td>to</td><td>going to a person, place, event, or institution</td><td>Ich gehe zu dem Arzt.</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>3. Two way prepositions</h2>
+        <p>Two way prepositions can use Akkusativ or Dativ. The case depends on the meaning of the sentence.</p>
+        <div class="formula">Movement / direction, wohin? = Akkusativ · Location / position, wo? = Dativ</div>
+        <table class="caseTable">
+            <tr><th>German</th><th>English</th><th>Movement, Akkusativ</th><th>Location, Dativ</th></tr>
+            <tr><td>in</td><td>in / into</td><td>Ich gehe in die Schule.</td><td>Ich bin in der Schule.</td></tr>
+            <tr><td>auf</td><td>on top of / onto</td><td>Ich lege das Buch auf den Tisch.</td><td>Das Buch liegt auf dem Tisch.</td></tr>
+            <tr><td>an</td><td>at / on vertical side</td><td>Ich gehe an die Tür.</td><td>Ich stehe an der Tür.</td></tr>
+            <tr><td>unter</td><td>under</td><td>Die Katze geht unter den Tisch.</td><td>Die Katze ist unter dem Tisch.</td></tr>
+            <tr><td>neben</td><td>next to</td><td>Ich stelle den Stuhl neben den Tisch.</td><td>Der Stuhl steht neben dem Tisch.</td></tr>
+            <tr><td>hinter</td><td>behind</td><td>Ich gehe hinter das Haus.</td><td>Ich bin hinter dem Haus.</td></tr>
+            <tr><td>vor</td><td>in front of / before</td><td>Ich gehe vor die Tür.</td><td>Ich stehe vor der Tür.</td></tr>
+            <tr><td>über</td><td>over / above</td><td>Ich hänge das Bild über das Sofa.</td><td>Das Bild hängt über dem Sofa.</td></tr>
+            <tr><td>zwischen</td><td>between</td><td>Ich stelle den Tisch zwischen die Stühle.</td><td>Der Tisch steht zwischen den Stühlen.</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>4. Personal pronouns by case</h2>
+        <table class="caseTable">
+            <tr><th>Nominativ</th><th>Akkusativ</th><th>Dativ</th><th>Akk example</th><th>Dativ example</th></tr>
+            <tr><td>ich</td><td>mich</td><td>mir</td><td>Sie sieht mich.</td><td>Sie hilft mir.</td></tr>
+            <tr><td>du</td><td>dich</td><td>dir</td><td>Ich sehe dich.</td><td>Ich helfe dir.</td></tr>
+            <tr><td>er</td><td>ihn</td><td>ihm</td><td>Ich sehe ihn.</td><td>Ich helfe ihm.</td></tr>
+            <tr><td>sie</td><td>sie</td><td>ihr</td><td>Ich sehe sie.</td><td>Ich helfe ihr.</td></tr>
+            <tr><td>es</td><td>es</td><td>ihm</td><td>Ich sehe es.</td><td>Ich helfe ihm.</td></tr>
+            <tr><td>wir</td><td>uns</td><td>uns</td><td>Er sieht uns.</td><td>Er hilft uns.</td></tr>
+            <tr><td>ihr</td><td>euch</td><td>euch</td><td>Ich sehe euch.</td><td>Ich helfe euch.</td></tr>
+            <tr><td>sie</td><td>sie</td><td>ihnen</td><td>Ich sehe sie.</td><td>Ich helfe ihnen.</td></tr>
+            <tr><td>Sie</td><td>Sie</td><td>Ihnen</td><td>Ich sehe Sie.</td><td>Ich helfe Ihnen.</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>5. Possessive articles</h2>
+        <p>Possessive articles mean my, your, his, her, our. They change depending on gender and case.</p>
+        <table class="caseTable">
+            <tr><th>Owner</th><th>Masculine Nom</th><th>Feminine Nom</th><th>Neuter Nom</th><th>Plural Nom</th><th>Masculine Akk</th><th>Feminine Dativ</th></tr>
+            <tr><td>ich</td><td>mein Vater</td><td>meine Mutter</td><td>mein Kind</td><td>meine Kinder</td><td>meinen Vater</td><td>meiner Mutter</td></tr>
+            <tr><td>du</td><td>dein Vater</td><td>deine Mutter</td><td>dein Kind</td><td>deine Kinder</td><td>deinen Vater</td><td>deiner Mutter</td></tr>
+            <tr><td>er/es</td><td>sein Vater</td><td>seine Mutter</td><td>sein Kind</td><td>seine Kinder</td><td>seinen Vater</td><td>seiner Mutter</td></tr>
+            <tr><td>sie</td><td>ihr Vater</td><td>ihre Mutter</td><td>ihr Kind</td><td>ihre Kinder</td><td>ihren Vater</td><td>ihrer Mutter</td></tr>
+            <tr><td>wir</td><td>unser Vater</td><td>unsere Mutter</td><td>unser Kind</td><td>unsere Kinder</td><td>unseren Vater</td><td>unserer Mutter</td></tr>
+            <tr><td>ihr</td><td>euer Vater</td><td>eure Mutter</td><td>euer Kind</td><td>eure Kinder</td><td>euren Vater</td><td>eurer Mutter</td></tr>
+            <tr><td>Sie</td><td>Ihr Vater</td><td>Ihre Mutter</td><td>Ihr Kind</td><td>Ihre Kinder</td><td>Ihren Vater</td><td>Ihrer Mutter</td></tr>
+        </table>
+        <div class="callout">Practice chain: Das ist mein Vater. Ich sehe meinen Vater. Ich helfe meiner Mutter.</div>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>6. Negation: nicht or kein</h2>
+        <table class="caseTable">
+            <tr><th>Use</th><th>Meaning</th><th>Example</th></tr>
+            <tr><td>kein</td><td>not a / no, used with nouns</td><td>Ich habe keinen Hund. · Das ist keine Tasche.</td></tr>
+            <tr><td>nicht</td><td>not, used with verbs, adjectives, or whole statements</td><td>Ich komme nicht. · Ich bin nicht müde.</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>7. Word order</h2>
+        <table class="caseTable">
+            <tr><th>Type</th><th>Rule</th><th>Example</th></tr>
+            <tr><td>Normal sentence</td><td>Subject + verb + rest</td><td>Ich lerne Deutsch.</td></tr>
+            <tr><td>W question</td><td>Question word + verb + subject</td><td>Wann kommst du?</td></tr>
+            <tr><td>Yes or no question</td><td>Verb + subject + rest</td><td>Kommst du heute?</td></tr>
+            <tr><td>Modal verb</td><td>Modal verb in position 2, main verb at the end</td><td>Ich muss Deutsch lernen.</td></tr>
+            <tr><td>Separable verb</td><td>Prefix goes to the end</td><td>Ich rufe meine Mutter an.</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>8. W questions</h2>
+        <table class="caseTable">
+            <tr><th>German</th><th>English</th><th>Use</th><th>Example</th></tr>
+            <tr><td>wer</td><td>who</td><td>person as subject</td><td>Wer kommt heute?</td></tr>
+            <tr><td>was</td><td>what</td><td>thing or action</td><td>Was machst du?</td></tr>
+            <tr><td>wann</td><td>when</td><td>time</td><td>Wann kommst du?</td></tr>
+            <tr><td>wo</td><td>where</td><td>location</td><td>Wo wohnst du?</td></tr>
+            <tr><td>wohin</td><td>where to</td><td>direction</td><td>Wohin gehst du?</td></tr>
+            <tr><td>woher</td><td>where from</td><td>origin</td><td>Woher kommst du?</td></tr>
+            <tr><td>wie</td><td>how</td><td>name, condition, manner</td><td>Wie heißt du?</td></tr>
+            <tr><td>warum</td><td>why</td><td>reason</td><td>Warum lernst du Deutsch?</td></tr>
+            <tr><td>wie viel</td><td>how much</td><td>price or uncountable amount</td><td>Wie viel kostet das Brot?</td></tr>
+            <tr><td>wie viele</td><td>how many</td><td>countable plural nouns</td><td>Wie viele Kinder hast du?</td></tr>
+        </table>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>9. Adjective endings, corrected A1 starter</h2>
+        <p>Full adjective endings are a big topic. This trainer only drills the safest A1 starter patterns.</p>
+        <table class="caseTable">
+            <tr><th>Article type</th><th>Gender / Case</th><th>Ending</th><th>Example</th></tr>
+            <tr><td>ein word</td><td>Masculine Nominativ</td><td>-er</td><td>ein kleiner Hund</td></tr>
+            <tr><td>ein word</td><td>Feminine Nominativ</td><td>-e</td><td>eine kleine Tasche</td></tr>
+            <tr><td>ein word</td><td>Neuter Nominativ</td><td>-es</td><td>ein kleines Kind</td></tr>
+            <tr><td>ein word</td><td>Masculine Akkusativ</td><td>-en</td><td>einen kleinen Hund</td></tr>
+            <tr><td>definite article</td><td>Nom der/die/das</td><td>-e</td><td>der kleine Hund · die kleine Tasche · das kleine Kind</td></tr>
+            <tr><td>definite article</td><td>Masculine Akkusativ</td><td>-en</td><td>den kleinen Hund</td></tr>
+        </table>
+        <div class="callout">Important: Do not treat this as the full adjective declension table. For A1, master these common speaking/writing patterns first.</div>
+    </div>
+
+    <div class="theoryBlock">
+        <h2>10. A1 sentence patterns</h2>
+        <table class="caseTable">
+            <tr><th>Pattern</th><th>Meaning</th><th>Example</th></tr>
+            <tr><td>haben + Akkusativ</td><td>to have something</td><td>Ich habe einen Bruder.</td></tr>
+            <tr><td>sein + adjective</td><td>to be something / feel something</td><td>Ich bin müde.</td></tr>
+            <tr><td>möchten + noun</td><td>would like something</td><td>Ich möchte einen Kaffee.</td></tr>
+            <tr><td>modal + infinitive</td><td>can, must, want, should + verb</td><td>Ich kann gut kochen.</td></tr>
+            <tr><td>es gibt + Akkusativ</td><td>there is / there are</td><td>Es gibt einen Supermarkt.</td></tr>
+        </table>
+    </div>
+
+    <div class="callout"><b>Recommended order:</b> Cases first, then prepositions, then pronouns, possessives, negation, word order, W questions, adjective endings, and patterns.</div>
+    </div>`;
+}
+function render(){
+    document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===state.mode));
+    if(state.mode==='caseArticle') return caseArticleQ();
+    if(state.mode==='caseIdentify') return caseIdentifyQ();
+    if(state.mode==='preposition') return prepositionQ();
+    if(state.mode==='twoWay') return twoWayQ();
+    if(state.mode==='pronoun') return pronounQ();
+    if(state.mode==='possessive') return possessiveQ();
+    if(state.mode==='negation') return fillChoiceQ('negation','Negation');
+    if(state.mode==='wordOrder') return wordOrderQ();
+    if(state.mode==='questionWords') return questionWordQ();
+    if(state.mode==='adjectiveEnding') return fillChoiceQ('adjectiveEndings','Adjective Endings');
+    if(state.mode==='patterns') return fillChoiceQ('patterns','Sentence Patterns');
+    if(state.mode==='rules') return rulesView();
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;render();});
+render();
+</script>
+</body>
+</html>

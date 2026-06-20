@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Goethe A1 Nouns Trainer</title>
+<style>
+:root {
+    --bg:#f8f1e8;
+    --card:#fffaf4;
+    --ink:#21170f;
+    --muted:#806f61;
+    --line:#dfcbb6;
+    --accent:#b85f42;
+    --accent-dark:#8f3f27;
+    --good:#167445;
+    --bad:#af3737;
+    --soft:#f0dfcb;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Georgia,"Times New Roman",serif;
+    background:var(--bg);
+    color:var(--ink);
+}
+header,.app{
+    max-width:1180px;
+    margin:auto;
+    padding:22px 24px;
+}
+.eyebrow{
+    font-family:Arial,sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    color:#9b3f24;
+    font-weight:900;
+    font-size:13px;
+    margin-bottom:8px;
+}
+h1{
+    font-size:clamp(30px,4vw,48px);
+    margin:0 0 8px;
+    line-height:1.05;
+}
+.sub{
+    color:var(--muted);
+    line-height:1.45;
+    font-size:16px;
+    font-family:Arial,sans-serif;
+}
+.modebar{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(155px,1fr));
+    gap:10px;
+    margin:18px 0;
+}
+.btn{
+    border:0;
+    border-radius:10px;
+    padding:16px 14px;
+    font-weight:900;
+    cursor:pointer;
+    font-family:Arial,sans-serif;
+    background:#fffdf9;
+    border:1px solid var(--line);
+    color:#111;
+    min-height:58px;
+}
+.btn:hover{
+    background:#fff6eb;
+    border-color:#cda98b;
+}
+.btn.active,.btn.primary{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+}
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 12px 28px rgba(73,43,20,.06);
+    margin-bottom:16px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:1.12fr .88fr;
+    gap:16px;
+}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.kicker{
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    font-size:12px;
+    color:#9b3f24;
+    font-weight:900;
+    font-family:Arial,sans-serif;
+}
+.big{
+    font-size:clamp(38px,6vw,78px);
+    font-weight:950;
+    margin:12px 0 4px;
+    line-height:1;
+}
+.meaning{
+    font-size:18px;
+    color:var(--muted);
+    font-family:Arial,sans-serif;
+}
+.prompt{
+    font-size:24px;
+    font-weight:850;
+    margin:14px 0;
+    font-family:Arial,sans-serif;
+}
+.options{
+    display:grid;
+    gap:10px;
+}
+.option{
+    width:100%;
+    padding:15px 16px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:white;
+    text-align:left;
+    font-size:18px;
+    font-weight:850;
+    cursor:pointer;
+    font-family:Arial,sans-serif;
+}
+.option:hover{
+    border-color:var(--accent);
+    background:#fff9f2;
+}
+.option.correct{
+    background:#e9f7ef;
+    border-color:var(--good);
+    color:var(--good);
+}
+.option.wrong{
+    background:#fdecec;
+    border-color:var(--bad);
+    color:var(--bad);
+}
+.feedback{
+    display:none;
+    margin-top:15px;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    line-height:1.55;
+    font-family:Arial,sans-serif;
+}
+.feedback.good{background:#eefaf3;border-color:#b9e6cc}
+.feedback.bad{background:#fff0f0;border-color:#f0bcbc}
+.controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:16px;
+}
+.controls .btn{
+    min-height:auto;
+    padding:12px 16px;
+    border-radius:999px;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+.stat{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+    font-family:Arial,sans-serif;
+}
+.stat b{display:block;font-size:28px}
+.rule{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:13px;
+    line-height:1.5;
+    margin-top:10px;
+    font-family:Arial,sans-serif;
+}
+.hidden{display:none}
+.search,input,select{
+    width:100%;
+    padding:13px 14px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    font-size:16px;
+    margin:10px 0;
+    background:#fff;
+    font-family:Arial,sans-serif;
+}
+.inputRow{display:flex;gap:8px}
+.inputRow input{flex:1;margin:0}
+.tablewrap{
+    max-height:640px;
+    overflow:auto;
+    border:1px solid var(--line);
+    border-radius:16px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    font-family:Arial,sans-serif;
+}
+th,td{
+    padding:10px 12px;
+    border-bottom:1px solid var(--line);
+    white-space:nowrap;
+    text-align:left;
+}
+th{position:sticky;top:0;background:#f0dfcb}
+.small{font-size:13px;color:var(--muted);font-family:Arial,sans-serif}
+.example{font-size:15px;color:var(--muted);margin-top:8px}
+.pill{
+    display:inline-block;
+    margin-left:6px;
+    background:#eadcc9;
+    border-radius:999px;
+    padding:3px 8px;
+    font-size:12px;
+    font-weight:800;
+}
+.badge{
+    display:inline-block;
+    background:var(--soft);
+    border-radius:999px;
+    padding:4px 9px;
+    margin:2px;
+    font-size:12px;
+    font-weight:850;
+    font-family:Arial,sans-serif;
+}
+.tilegrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:12px;
+}
+.tile{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:14px;
+    text-align:left;
+    line-height:1.45;
+    font-family:Arial,sans-serif;
+}
+.countLine{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">GOETHE A1 · NOUNS ONLY</div>
+<h1>German A1 Nouns Trainer</h1>
+<div class="sub">320 A1 nouns with article, plural, English meaning, category, quizzes, typing exercises, and searchable list.</div>
+<div class="countLine">
+<span class="badge">320 nouns</span>
+<span class="badge">der · die · das</span>
+<span class="badge">plural practice</span>
+<span class="badge">English to German</span>
+<span class="badge">offline HTML</span>
+</div>
+</header>
+
+<main class="app">
+<div class="modebar">
+<button class="btn active" data-mode="article">Der Die Das</button>
+<button class="btn" data-mode="meaning">Meaning choices</button>
+<button class="btn" data-mode="typed_meaning">Typed meaning</button>
+<button class="btn" data-mode="plural">Plural choices</button>
+<button class="btn" data-mode="typed_german">English to German</button>
+<button class="btn" data-mode="truefalse">True or False</button>
+<button class="btn" data-mode="list">Noun list</button>
+<button class="btn" data-mode="rules">Rules</button>
+<button class="btn" data-mode="mistakes">Mistakes only</button>
+</div>
+
+<div id="content"></div>
+</main>
+
+<script>
+const NOUNS = [{"article": "das", "word": "Salz", "plural": "die Salze", "meaning": "salt", "category": "Food", "example": "Das Salz ist wichtig.", "example_en": "The salt is important."}, {"article": "das", "word": "Handy", "plural": "die Handys", "meaning": "mobile phone", "category": "Communication", "example": "Das Handy ist wichtig.", "example_en": "The mobile phone is important."}, {"article": "der", "word": "Schalter", "plural": "die Schalter", "meaning": "counter, switch", "category": "Services", "example": "Der Schalter ist wichtig.", "example_en": "The counter is important."}, {"article": "die", "word": "Birne", "plural": "die Birnen", "meaning": "pear, bulb", "category": "Food", "example": "Die Birne ist wichtig.", "example_en": "The pear is important."}, {"article": "der", "word": "Schuh", "plural": "die Schuhe", "meaning": "shoe", "category": "Clothing", "example": "Der Schuh ist wichtig.", "example_en": "The shoe is important."}, {"article": "die", "word": "Schwester", "plural": "die Schwestern", "meaning": "sister", "category": "People", "example": "Die Schwester ist wichtig.", "example_en": "The sister is important."}, {"article": "das", "word": "Geschenk", "plural": "die Geschenke", "meaning": "gift, present", "category": "Shopping", "example": "Das Geschenk ist wichtig.", "example_en": "The gift is important."}, {"article": "das", "word": "Datum", "plural": "die Daten", "meaning": "date", "category": "Time", "example": "Das Datum ist wichtig.", "example_en": "The date is important."}, {"article": "die", "word": "Vorsicht", "plural": "-", "meaning": "caution", "category": "Abstract", "example": "Die Vorsicht ist wichtig.", "example_en": "The caution is important."}, {"article": "der", "word": "Aufzug", "plural": "die Aufzüge", "meaning": "elevator, lift", "category": "City", "example": "Der Aufzug ist wichtig.", "example_en": "The elevator is important."}, {"article": "die", "word": "Farbe", "plural": "die Farben", "meaning": "color", "category": "Description", "example": "Die Farbe ist wichtig.", "example_en": "The color is important."}, {"article": "das", "word": "Getränk", "plural": "die Getränke", "meaning": "drink, beverage", "category": "Food", "example": "Das Getränk ist wichtig.", "example_en": "The drink is important."}, {"article": "der", "word": "Zoll", "plural": "die Zölle", "meaning": "customs", "category": "Travel", "example": "Der Zoll ist wichtig.", "example_en": "The customs is important."}, {"article": "der", "word": "Computer", "plural": "die Computer", "meaning": "computer", "category": "Work", "example": "Der Computer ist wichtig.", "example_en": "The computer is important."}, {"article": "die", "word": "Führung", "plural": "die Führungen", "meaning": "guided tour", "category": "Travel", "example": "Die Führung ist wichtig.", "example_en": "The guided tour is important."}, {"article": "die", "word": "Partnerin", "plural": "die Partnerinnen", "meaning": "female partner", "category": "People", "example": "Die Partnerin ist wichtig.", "example_en": "The female partner is important."}, {"article": "das", "word": "Baby", "plural": "die Babys", "meaning": "baby", "category": "People", "example": "Das Baby ist wichtig.", "example_en": "The baby is important."}, {"article": "die", "word": "Mitte", "plural": "die Mitten", "meaning": "middle", "category": "Place", "example": "Die Mitte ist wichtig.", "example_en": "The middle is important."}, {"article": "der", "word": "Teil", "plural": "die Teile", "meaning": "part", "category": "Abstract", "example": "Der Teil ist wichtig.", "example_en": "The part is important."}, {"article": "der", "word": "Apfel", "plural": "die Äpfel", "meaning": "apple", "category": "Food", "example": "Der Apfel ist wichtig.", "example_en": "The apple is important."}, {"article": "der", "word": "Kugelschreiber", "plural": "die Kugelschreiber", "meaning": "ballpoint pen", "category": "Education", "example": "Der Kugelschreiber ist wichtig.", "example_en": "The ballpoint pen is important."}, {"article": "der", "word": "Kopf", "plural": "die Köpfe", "meaning": "head", "category": "Body", "example": "Der Kopf ist wichtig.", "example_en": "The head is important."}, {"article": "der", "word": "Bus", "plural": "die Busse", "meaning": "bus", "category": "Transport", "example": "Der Bus ist wichtig.", "example_en": "The bus is important."}, {"article": "der", "word": "Laden", "plural": "die Läden", "meaning": "shop", "category": "Shopping", "example": "Der Laden ist wichtig.", "example_en": "The shop is important."}, {"article": "die", "word": "Banane", "plural": "die Bananen", "meaning": "banana", "category": "Food", "example": "Die Banane ist wichtig.", "example_en": "The banana is important."}, {"article": "der", "word": "Fußball", "plural": "die Fußbälle", "meaning": "soccer ball, football", "category": "Leisure", "example": "Der Fußball ist wichtig.", "example_en": "The soccer ball is important."}, {"article": "die", "word": "Flasche", "plural": "die Flaschen", "meaning": "bottle", "category": "Food", "example": "Die Flasche ist wichtig.", "example_en": "The bottle is important."}, {"article": "die", "word": "Stadt", "plural": "die Städte", "meaning": "city", "category": "City", "example": "Die Stadt ist wichtig.", "example_en": "The city is important."}, {"article": "der", "word": "Schlüssel", "plural": "die Schlüssel", "meaning": "key", "category": "Home", "example": "Der Schlüssel ist wichtig.", "example_en": "The key is important."}, {"article": "der", "word": "Hund", "plural": "die Hunde", "meaning": "dog", "category": "Animals", "example": "Der Hund ist wichtig.", "example_en": "The dog is important."}, {"article": "die", "word": "Antwort", "plural": "die Antworten", "meaning": "answer", "category": "Communication", "example": "Die Antwort ist wichtig.", "example_en": "The answer is important."}, {"article": "der", "word": "Fisch", "plural": "die Fische", "meaning": "fish", "category": "Food", "example": "Der Fisch ist wichtig.", "example_en": "The fish is important."}, {"article": "das", "word": "Studium", "plural": "die Studien", "meaning": "degree course, studies", "category": "Education", "example": "Das Studium ist wichtig.", "example_en": "The degree course is important."}, {"article": "der", "word": "Bauch", "plural": "die Bäuche", "meaning": "belly, stomach", "category": "Body", "example": "Der Bauch ist wichtig.", "example_en": "The belly is important."}, {"article": "die", "word": "Aussage", "plural": "die Aussagen", "meaning": "statement", "category": "Communication", "example": "Die Aussage ist wichtig.", "example_en": "The statement is important."}, {"article": "die", "word": "Straße", "plural": "die Straßen", "meaning": "street", "category": "City", "example": "Die Straße ist wichtig.", "example_en": "The street is important."}, {"article": "der", "word": "See", "plural": "die Seen", "meaning": "lake", "category": "Nature", "example": "Der See ist wichtig.", "example_en": "The lake is important."}, {"article": "das", "word": "Doppelzimmer", "plural": "die Doppelzimmer", "meaning": "double room", "category": "Travel", "example": "Das Doppelzimmer ist wichtig.", "example_en": "The double room is important."}, {"article": "der", "word": "Chef", "plural": "die Chefs", "meaning": "boss", "category": "Work", "example": "Der Chef ist wichtig.", "example_en": "The boss is important."}, {"article": "die", "word": "Freundin", "plural": "die Freundinnen", "meaning": "female friend, girlfriend", "category": "People", "example": "Die Freundin ist wichtig.", "example_en": "The female friend is important."}, {"article": "das", "word": "Wiedersehen", "plural": "-", "meaning": "reunion, goodbye", "category": "Communication", "example": "Das Wiedersehen ist wichtig.", "example_en": "The reunion is important."}, {"article": "der", "word": "Schrank", "plural": "die Schränke", "meaning": "cupboard, wardrobe", "category": "Home", "example": "Der Schrank ist wichtig.", "example_en": "The cupboard is important."}, {"article": "die", "word": "CD", "plural": "die CDs", "meaning": "CD", "category": "Leisure", "example": "Die CD ist wichtig.", "example_en": "The CD is important."}, {"article": "das", "word": "Fieber", "plural": "-", "meaning": "fever", "category": "Health", "example": "Das Fieber ist wichtig.", "example_en": "The fever is important."}, {"article": "das", "word": "Praktikum", "plural": "die Praktika", "meaning": "internship", "category": "Work", "example": "Das Praktikum ist wichtig.", "example_en": "The internship is important."}, {"article": "der", "word": "Verein", "plural": "die Vereine", "meaning": "club, association", "category": "Leisure", "example": "Der Verein ist wichtig.", "example_en": "The club is important."}, {"article": "das", "word": "Papier", "plural": "die Papiere", "meaning": "paper", "category": "Education", "example": "Das Papier ist wichtig.", "example_en": "The paper is important."}, {"article": "die", "word": "Pause", "plural": "die Pausen", "meaning": "break", "category": "Time", "example": "Die Pause ist wichtig.", "example_en": "The break is important."}, {"article": "die", "word": "Kasse", "plural": "die Kassen", "meaning": "cash desk", "category": "Shopping", "example": "Die Kasse ist wichtig.", "example_en": "The cash desk is important."}, {"article": "das", "word": "Feuer", "plural": "die Feuer", "meaning": "fire", "category": "Nature", "example": "Das Feuer ist wichtig.", "example_en": "The fire is important."}, {"article": "das", "word": "Bier", "plural": "die Biere", "meaning": "beer", "category": "Food", "example": "Das Bier ist wichtig.", "example_en": "The beer is important."}, {"article": "das", "word": "Thema", "plural": "die Themen", "meaning": "topic", "category": "Communication", "example": "Das Thema ist wichtig.", "example_en": "The topic is important."}, {"article": "das", "word": "Zimmer", "plural": "die Zimmer", "meaning": "room", "category": "Home", "example": "Das Zimmer ist wichtig.", "example_en": "The room is important."}, {"article": "der", "word": "Garten", "plural": "die Gärten", "meaning": "garden", "category": "Home", "example": "Der Garten ist wichtig.", "example_en": "The garden is important."}, {"article": "das", "word": "Café", "plural": "die Cafés", "meaning": "café", "category": "Restaurant", "example": "Das Café ist wichtig.", "example_en": "The café is important."}, {"article": "die", "word": "Treppe", "plural": "die Treppen", "meaning": "stairs", "category": "Home", "example": "Die Treppe ist wichtig.", "example_en": "The stairs is important."}, {"article": "die", "word": "Durchsage", "plural": "die Durchsagen", "meaning": "announcement", "category": "Travel", "example": "Die Durchsage ist wichtig.", "example_en": "The announcement is important."}, {"article": "der", "word": "Vorname", "plural": "die Vornamen", "meaning": "first name", "category": "People", "example": "Der Vorname ist wichtig.", "example_en": "The first name is important."}, {"article": "die", "word": "Firma", "plural": "die Firmen", "meaning": "company", "category": "Work", "example": "Die Firma ist wichtig.", "example_en": "The company is important."}, {"article": "die", "word": "Küche", "plural": "die Küchen", "meaning": "kitchen", "category": "Home", "example": "Die Küche ist wichtig.", "example_en": "The kitchen is important."}, {"article": "der/die", "word": "Bekannte", "plural": "die Bekannten", "meaning": "acquaintance", "category": "People", "example": "Der/die Bekannte ist wichtig.", "example_en": "The acquaintance is important."}, {"article": "der", "word": "Satz", "plural": "die Sätze", "meaning": "sentence", "category": "Language", "example": "Der Satz ist wichtig.", "example_en": "The sentence is important."}, {"article": "der", "word": "Bahnsteig", "plural": "die Bahnsteige", "meaning": "platform", "category": "Travel", "example": "Der Bahnsteig ist wichtig.", "example_en": "The platform is important."}, {"article": "der", "word": "Ausgang", "plural": "die Ausgänge", "meaning": "exit", "category": "Travel", "example": "Der Ausgang ist wichtig.", "example_en": "The exit is important."}, {"article": "die", "word": "Hausaufgabe", "plural": "die Hausaufgaben", "meaning": "homework", "category": "Education", "example": "Die Hausaufgabe ist wichtig.", "example_en": "The homework is important."}, {"article": "die", "word": "Kartoffel", "plural": "die Kartoffeln", "meaning": "potato", "category": "Food", "example": "Die Kartoffel ist wichtig.", "example_en": "The potato is important."}, {"article": "die", "word": "Toilette", "plural": "die Toiletten", "meaning": "toilet", "category": "Place", "example": "Die Toilette ist wichtig.", "example_en": "The toilet is important."}, {"article": "das", "word": "Ergebnis", "plural": "die Ergebnisse", "meaning": "result", "category": "Abstract", "example": "Das Ergebnis ist wichtig.", "example_en": "The result is important."}, {"article": "die", "word": "Familie", "plural": "die Familien", "meaning": "family", "category": "People", "example": "Die Familie ist wichtig.", "example_en": "The family is important."}, {"article": "der", "word": "Brief", "plural": "die Briefe", "meaning": "letter", "category": "Communication", "example": "Der Brief ist wichtig.", "example_en": "The letter is important."}, {"article": "der", "word": "Buchstabe", "plural": "die Buchstaben", "meaning": "letter of alphabet", "category": "Language", "example": "Der Buchstabe ist wichtig.", "example_en": "The letter of alphabet is important."}, {"article": "die", "word": "Reise", "plural": "die Reisen", "meaning": "trip, journey", "category": "Travel", "example": "Die Reise ist wichtig.", "example_en": "The trip is important."}, {"article": "der", "word": "Flughafen", "plural": "die Flughäfen", "meaning": "airport", "category": "Travel", "example": "Der Flughafen ist wichtig.", "example_en": "The airport is important."}, {"article": "die", "word": "Bitte", "plural": "die Bitten", "meaning": "request", "category": "Communication", "example": "Die Bitte ist wichtig.", "example_en": "The request is important."}, {"article": "das", "word": "Gleis", "plural": "die Gleise", "meaning": "track, platform", "category": "Travel", "example": "Das Gleis ist wichtig.", "example_en": "The track is important."}, {"article": "der", "word": "Reiseführer", "plural": "die Reiseführer", "meaning": "guidebook, tour guide", "category": "Travel", "example": "Der Reiseführer ist wichtig.", "example_en": "The guidebook is important."}, {"article": "die", "word": "Blume", "plural": "die Blumen", "meaning": "flower", "category": "Nature", "example": "Die Blume ist wichtig.", "example_en": "The flower is important."}, {"article": "die", "word": "Autobahn", "plural": "die Autobahnen", "meaning": "highway", "category": "Transport", "example": "Die Autobahn ist wichtig.", "example_en": "The highway is important."}, {"article": "das", "word": "Frühstück", "plural": "die Frühstücke", "meaning": "breakfast", "category": "Food", "example": "Das Frühstück ist wichtig.", "example_en": "The breakfast is important."}, {"article": "der", "word": "Durst", "plural": "-", "meaning": "thirst", "category": "Health", "example": "Der Durst ist wichtig.", "example_en": "The thirst is important."}, {"article": "die", "word": "Ordnung", "plural": "die Ordnungen", "meaning": "order, tidiness", "category": "Home", "example": "Die Ordnung ist wichtig.", "example_en": "The order is important."}, {"article": "der", "word": "Film", "plural": "die Filme", "meaning": "film, movie", "category": "Leisure", "example": "Der Film ist wichtig.", "example_en": "The film is important."}, {"article": "die", "word": "Sehenswürdigkeit", "plural": "die Sehenswürdigkeiten", "meaning": "sight, tourist attraction", "category": "Travel", "example": "Die Sehenswürdigkeit ist wichtig.", "example_en": "The sight is important."}, {"article": "der", "word": "Beruf", "plural": "die Berufe", "meaning": "profession, job", "category": "Work", "example": "Der Beruf ist wichtig.", "example_en": "The profession is important."}, {"article": "das", "word": "Internet", "plural": "-", "meaning": "internet", "category": "Communication", "example": "Das Internet ist wichtig.", "example_en": "The internet is important."}, {"article": "das", "word": "Apartment", "plural": "die Apartments", "meaning": "apartment", "category": "Home", "example": "Das Apartment ist wichtig.", "example_en": "The apartment is important."}, {"article": "das", "word": "Land", "plural": "die Länder", "meaning": "country, land", "category": "Place", "example": "Das Land ist wichtig.", "example_en": "The country is important."}, {"article": "der", "word": "Ehemann", "plural": "die Ehemänner", "meaning": "husband", "category": "People", "example": "Der Ehemann ist wichtig.", "example_en": "The husband is important."}, {"article": "der", "word": "Student", "plural": "die Studenten", "meaning": "student", "category": "Education", "example": "Der Student ist wichtig.", "example_en": "The student is important."}, {"article": "der", "word": "Baum", "plural": "die Bäume", "meaning": "tree", "category": "Nature", "example": "Der Baum ist wichtig.", "example_en": "The tree is important."}, {"article": "das", "word": "Öl", "plural": "die Öle", "meaning": "oil", "category": "Food", "example": "Das Öl ist wichtig.", "example_en": "The oil is important."}, {"article": "die", "word": "Lösung", "plural": "die Lösungen", "meaning": "solution", "category": "Abstract", "example": "Die Lösung ist wichtig.", "example_en": "The solution is important."}, {"article": "das", "word": "Fleisch", "plural": "-", "meaning": "meat", "category": "Food", "example": "Das Fleisch ist wichtig.", "example_en": "The meat is important."}, {"article": "der", "word": "Drucker", "plural": "die Drucker", "meaning": "printer", "category": "Work", "example": "Der Drucker ist wichtig.", "example_en": "The printer is important."}, {"article": "die", "word": "Zeitung", "plural": "die Zeitungen", "meaning": "newspaper", "category": "Media", "example": "Die Zeitung ist wichtig.", "example_en": "The newspaper is important."}, {"article": "das", "word": "Sofa", "plural": "die Sofas", "meaning": "sofa", "category": "Home", "example": "Das Sofa ist wichtig.", "example_en": "The sofa is important."}, {"article": "der", "word": "Urlaub", "plural": "die Urlaube", "meaning": "vacation, holiday", "category": "Travel", "example": "Der Urlaub ist wichtig.", "example_en": "The vacation is important."}, {"article": "der", "word": "Doktor", "plural": "die Doktoren", "meaning": "doctor", "category": "Health", "example": "Der Doktor ist wichtig.", "example_en": "The doctor is important."}, {"article": "die", "word": "Leute", "plural": "die Leute", "meaning": "people", "category": "People", "example": "Die Leute sind wichtig.", "example_en": "The people are important."}, {"article": "der", "word": "Familienname", "plural": "die Familiennamen", "meaning": "last name, family name", "category": "People", "example": "Der Familienname ist wichtig.", "example_en": "The last name is important."}, {"article": "der", "word": "Pass", "plural": "die Pässe", "meaning": "passport", "category": "Travel", "example": "Der Pass ist wichtig.", "example_en": "The passport is important."}, {"article": "die", "word": "Welt", "plural": "die Welten", "meaning": "world", "category": "Place", "example": "Die Welt ist wichtig.", "example_en": "The world is important."}, {"article": "die", "word": "Wohnung", "plural": "die Wohnungen", "meaning": "apartment, flat", "category": "Home", "example": "Die Wohnung ist wichtig.", "example_en": "The apartment is important."}, {"article": "der", "word": "Moment", "plural": "die Momente", "meaning": "moment", "category": "Time", "example": "Der Moment ist wichtig.", "example_en": "The moment is important."}, {"article": "die", "word": "Speisekarte", "plural": "die Speisekarten", "meaning": "menu", "category": "Restaurant", "example": "Die Speisekarte ist wichtig.", "example_en": "The menu is important."}, {"article": "der", "word": "Jugendliche", "plural": "die Jugendlichen", "meaning": "teenager, young person", "category": "People", "example": "Der Jugendliche ist wichtig.", "example_en": "The teenager is important."}, {"article": "die", "word": "Stelle", "plural": "die Stellen", "meaning": "position, place", "category": "Work", "example": "Die Stelle ist wichtig.", "example_en": "The position is important."}, {"article": "das", "word": "Formular", "plural": "die Formulare", "meaning": "form", "category": "Services", "example": "Das Formular ist wichtig.", "example_en": "The form is important."}, {"article": "der", "word": "Bleistift", "plural": "die Bleistifte", "meaning": "pencil", "category": "Education", "example": "Der Bleistift ist wichtig.", "example_en": "The pencil is important."}, {"article": "das", "word": "Wasser", "plural": "die Wasser", "meaning": "water", "category": "Food", "example": "Das Wasser ist wichtig.", "example_en": "The water is important."}, {"article": "die", "word": "Frau", "plural": "die Frauen", "meaning": "woman, wife", "category": "People", "example": "Die Frau ist wichtig.", "example_en": "The woman is important."}, {"article": "der", "word": "Kurs", "plural": "die Kurse", "meaning": "course", "category": "Education", "example": "Der Kurs ist wichtig.", "example_en": "The course is important."}, {"article": "die", "word": "Eltern", "plural": "die Eltern", "meaning": "parents", "category": "People", "example": "Die Eltern sind wichtig.", "example_en": "The parents are important."}, {"article": "das", "word": "Konto", "plural": "die Konten", "meaning": "account", "category": "Services", "example": "Das Konto ist wichtig.", "example_en": "The account is important."}, {"article": "der", "word": "Opa", "plural": "die Opas", "meaning": "grandpa", "category": "People", "example": "Der Opa ist wichtig.", "example_en": "The grandpa is important."}, {"article": "das", "word": "Restaurant", "plural": "die Restaurants", "meaning": "restaurant", "category": "Restaurant", "example": "Das Restaurant ist wichtig.", "example_en": "The restaurant is important."}, {"article": "der", "word": "Kollege", "plural": "die Kollegen", "meaning": "colleague", "category": "Work", "example": "Der Kollege ist wichtig.", "example_en": "The colleague is important."}, {"article": "der", "word": "Gast", "plural": "die Gäste", "meaning": "guest", "category": "People", "example": "Der Gast ist wichtig.", "example_en": "The guest is important."}, {"article": "das", "word": "Lied", "plural": "die Lieder", "meaning": "song", "category": "Leisure", "example": "Das Lied ist wichtig.", "example_en": "The song is important."}, {"article": "der", "word": "Familienstand", "plural": "die Familienstände", "meaning": "marital status", "category": "Personal info", "example": "Der Familienstand ist wichtig.", "example_en": "The marital status is important."}, {"article": "die", "word": "Maschine", "plural": "die Maschinen", "meaning": "machine", "category": "Work", "example": "Die Maschine ist wichtig.", "example_en": "The machine is important."}, {"article": "die", "word": "Miete", "plural": "die Mieten", "meaning": "rent", "category": "Home", "example": "Die Miete ist wichtig.", "example_en": "The rent is important."}, {"article": "der", "word": "Schluss", "plural": "die Schlüsse", "meaning": "end, conclusion", "category": "Time", "example": "Der Schluss ist wichtig.", "example_en": "The end is important."}, {"article": "das", "word": "Bett", "plural": "die Betten", "meaning": "bed", "category": "Home", "example": "Das Bett ist wichtig.", "example_en": "The bed is important."}, {"article": "die", "word": "Ehefrau", "plural": "die Ehefrauen", "meaning": "wife", "category": "People", "example": "Die Ehefrau ist wichtig.", "example_en": "The wife is important."}, {"article": "die", "word": "E-Mail", "plural": "die E-Mails", "meaning": "email", "category": "Communication", "example": "Die E-Mail ist wichtig.", "example_en": "The email is important."}, {"article": "die", "word": "Hochzeit", "plural": "die Hochzeiten", "meaning": "wedding", "category": "People", "example": "Die Hochzeit ist wichtig.", "example_en": "The wedding is important."}, {"article": "die", "word": "Nummer", "plural": "die Nummern", "meaning": "number", "category": "Personal info", "example": "Die Nummer ist wichtig.", "example_en": "The number is important."}, {"article": "die", "word": "Oma", "plural": "die Omas", "meaning": "grandma", "category": "People", "example": "Die Oma ist wichtig.", "example_en": "The grandma is important."}, {"article": "die", "word": "Freizeit", "plural": "-", "meaning": "free time", "category": "Leisure", "example": "Die Freizeit ist wichtig.", "example_en": "The free time is important."}, {"article": "der", "word": "Glückwunsch", "plural": "die Glückwünsche", "meaning": "congratulations", "category": "Communication", "example": "Der Glückwunsch ist wichtig.", "example_en": "The congratulations is important."}, {"article": "das", "word": "Kino", "plural": "die Kinos", "meaning": "cinema", "category": "Leisure", "example": "Das Kino ist wichtig.", "example_en": "The cinema is important."}, {"article": "die", "word": "Tasche", "plural": "die Taschen", "meaning": "bag", "category": "Shopping", "example": "Die Tasche ist wichtig.", "example_en": "The bag is important."}, {"article": "die", "word": "Polizei", "plural": "-", "meaning": "police", "category": "City", "example": "Die Polizei ist wichtig.", "example_en": "The police is important."}, {"article": "das", "word": "Dorf", "plural": "die Dörfer", "meaning": "village", "category": "Place", "example": "Das Dorf ist wichtig.", "example_en": "The village is important."}, {"article": "der", "word": "Salat", "plural": "die Salate", "meaning": "salad", "category": "Food", "example": "Der Salat ist wichtig.", "example_en": "The salad is important."}, {"article": "die", "word": "Briefmarke", "plural": "die Briefmarken", "meaning": "stamp", "category": "Communication", "example": "Die Briefmarke ist wichtig.", "example_en": "The stamp is important."}, {"article": "der", "word": "Mensch", "plural": "die Menschen", "meaning": "human, person", "category": "People", "example": "Der Mensch ist wichtig.", "example_en": "The human is important."}, {"article": "der", "word": "Kiosk", "plural": "die Kioske", "meaning": "kiosk", "category": "Shopping", "example": "Der Kiosk ist wichtig.", "example_en": "The kiosk is important."}, {"article": "die", "word": "Dame", "plural": "die Damen", "meaning": "lady", "category": "People", "example": "Die Dame ist wichtig.", "example_en": "The lady is important."}, {"article": "das", "word": "Haar", "plural": "die Haare", "meaning": "hair", "category": "Body", "example": "Das Haar ist wichtig.", "example_en": "The hair is important."}, {"article": "der", "word": "Balkon", "plural": "die Balkone", "meaning": "balcony", "category": "Home", "example": "Der Balkon ist wichtig.", "example_en": "The balcony is important."}, {"article": "die", "word": "Größe", "plural": "die Größen", "meaning": "size", "category": "Shopping", "example": "Die Größe ist wichtig.", "example_en": "The size is important."}, {"article": "der", "word": "Kuchen", "plural": "die Kuchen", "meaning": "cake", "category": "Food", "example": "Der Kuchen ist wichtig.", "example_en": "The cake is important."}, {"article": "das", "word": "Lokal", "plural": "die Lokale", "meaning": "pub, restaurant", "category": "Restaurant", "example": "Das Lokal ist wichtig.", "example_en": "The pub is important."}, {"article": "das", "word": "Hähnchen", "plural": "die Hähnchen", "meaning": "chicken", "category": "Food", "example": "Das Hähnchen ist wichtig.", "example_en": "The chicken is important."}, {"article": "die", "word": "Sonne", "plural": "die Sonnen", "meaning": "sun", "category": "Nature", "example": "Die Sonne ist wichtig.", "example_en": "The sun is important."}, {"article": "die", "word": "Straßenbahn", "plural": "die Straßenbahnen", "meaning": "tram", "category": "Transport", "example": "Die Straßenbahn ist wichtig.", "example_en": "The tram is important."}, {"article": "der", "word": "Mund", "plural": "die Münder", "meaning": "mouth", "category": "Body", "example": "Der Mund ist wichtig.", "example_en": "The mouth is important."}, {"article": "das", "word": "Gewicht", "plural": "die Gewichte", "meaning": "weight", "category": "Health", "example": "Das Gewicht ist wichtig.", "example_en": "The weight is important."}, {"article": "der", "word": "Eingang", "plural": "die Eingänge", "meaning": "entrance", "category": "Place", "example": "Der Eingang ist wichtig.", "example_en": "The entrance is important."}, {"article": "der", "word": "Schüler", "plural": "die Schüler", "meaning": "pupil, student", "category": "Education", "example": "Der Schüler ist wichtig.", "example_en": "The pupil is important."}, {"article": "das", "word": "Glas", "plural": "die Gläser", "meaning": "glass", "category": "Food", "example": "Das Glas ist wichtig.", "example_en": "The glass is important."}, {"article": "der", "word": "Verkäufer", "plural": "die Verkäufer", "meaning": "salesperson", "category": "Shopping", "example": "Der Verkäufer ist wichtig.", "example_en": "The salesperson is important."}, {"article": "der", "word": "Mann", "plural": "die Männer", "meaning": "man, husband", "category": "People", "example": "Der Mann ist wichtig.", "example_en": "The man is important."}, {"article": "das", "word": "Kind", "plural": "die Kinder", "meaning": "child", "category": "People", "example": "Das Kind ist wichtig.", "example_en": "The child is important."}, {"article": "die", "word": "Schule", "plural": "die Schulen", "meaning": "school", "category": "Education", "example": "Die Schule ist wichtig.", "example_en": "The school is important."}, {"article": "das", "word": "Buch", "plural": "die Bücher", "meaning": "book", "category": "Education", "example": "Das Buch ist wichtig.", "example_en": "The book is important."}, {"article": "der", "word": "Stift", "plural": "die Stifte", "meaning": "pen", "category": "Education", "example": "Der Stift ist wichtig.", "example_en": "The pen is important."}, {"article": "das", "word": "Heft", "plural": "die Hefte", "meaning": "notebook", "category": "Education", "example": "Das Heft ist wichtig.", "example_en": "The notebook is important."}, {"article": "die", "word": "Aufgabe", "plural": "die Aufgaben", "meaning": "task, exercise", "category": "Education", "example": "Die Aufgabe ist wichtig.", "example_en": "The task is important."}, {"article": "die", "word": "Arbeit", "plural": "die Arbeiten", "meaning": "work", "category": "Work", "example": "Die Arbeit ist wichtig.", "example_en": "The work is important."}, {"article": "das", "word": "Büro", "plural": "die Büros", "meaning": "office", "category": "Work", "example": "Das Büro ist wichtig.", "example_en": "The office is important."}, {"article": "der", "word": "Bahnhof", "plural": "die Bahnhöfe", "meaning": "train station", "category": "Travel", "example": "Der Bahnhof ist wichtig.", "example_en": "The train station is important."}, {"article": "der", "word": "Zug", "plural": "die Züge", "meaning": "train", "category": "Transport", "example": "Der Zug ist wichtig.", "example_en": "The train is important."}, {"article": "das", "word": "Auto", "plural": "die Autos", "meaning": "car", "category": "Transport", "example": "Das Auto ist wichtig.", "example_en": "The car is important."}, {"article": "das", "word": "Fahrrad", "plural": "die Fahrräder", "meaning": "bicycle", "category": "Transport", "example": "Das Fahrrad ist wichtig.", "example_en": "The bicycle is important."}, {"article": "das", "word": "Ticket", "plural": "die Tickets", "meaning": "ticket", "category": "Travel", "example": "Das Ticket ist wichtig.", "example_en": "The ticket is important."}, {"article": "das", "word": "Geld", "plural": "-", "meaning": "money", "category": "Shopping", "example": "Das Geld ist wichtig.", "example_en": "The money is important."}, {"article": "der", "word": "Preis", "plural": "die Preise", "meaning": "price", "category": "Shopping", "example": "Der Preis ist wichtig.", "example_en": "The price is important."}, {"article": "der", "word": "Kaffee", "plural": "die Kaffees", "meaning": "coffee", "category": "Food", "example": "Der Kaffee ist wichtig.", "example_en": "The coffee is important."}, {"article": "das", "word": "Brot", "plural": "die Brote", "meaning": "bread", "category": "Food", "example": "Das Brot ist wichtig.", "example_en": "The bread is important."}, {"article": "das", "word": "Essen", "plural": "-", "meaning": "food, meal", "category": "Food", "example": "Das Essen ist wichtig.", "example_en": "The food is important."}, {"article": "die", "word": "Suppe", "plural": "die Suppen", "meaning": "soup", "category": "Food", "example": "Die Suppe ist wichtig.", "example_en": "The soup is important."}, {"article": "der", "word": "Supermarkt", "plural": "die Supermärkte", "meaning": "supermarket", "category": "Shopping", "example": "Der Supermarkt ist wichtig.", "example_en": "The supermarket is important."}, {"article": "die", "word": "Uhr", "plural": "die Uhren", "meaning": "clock, watch", "category": "Time", "example": "Die Uhr ist wichtig.", "example_en": "The clock is important."}, {"article": "der", "word": "Tag", "plural": "die Tage", "meaning": "day", "category": "Time", "example": "Der Tag ist wichtig.", "example_en": "The day is important."}, {"article": "die", "word": "Woche", "plural": "die Wochen", "meaning": "week", "category": "Time", "example": "Die Woche ist wichtig.", "example_en": "The week is important."}, {"article": "der", "word": "Monat", "plural": "die Monate", "meaning": "month", "category": "Time", "example": "Der Monat ist wichtig.", "example_en": "The month is important."}, {"article": "das", "word": "Jahr", "plural": "die Jahre", "meaning": "year", "category": "Time", "example": "Das Jahr ist wichtig.", "example_en": "The year is important."}, {"article": "der", "word": "Morgen", "plural": "die Morgen", "meaning": "morning", "category": "Time", "example": "Der Morgen ist wichtig.", "example_en": "The morning is important."}, {"article": "der", "word": "Abend", "plural": "die Abende", "meaning": "evening", "category": "Time", "example": "Der Abend ist wichtig.", "example_en": "The evening is important."}, {"article": "die", "word": "Nacht", "plural": "die Nächte", "meaning": "night", "category": "Time", "example": "Die Nacht ist wichtig.", "example_en": "The night is important."}, {"article": "die", "word": "Mutter", "plural": "die Mütter", "meaning": "mother", "category": "People", "example": "Die Mutter ist wichtig.", "example_en": "The mother is important."}, {"article": "der", "word": "Vater", "plural": "die Väter", "meaning": "father", "category": "People", "example": "Der Vater ist wichtig.", "example_en": "The father is important."}, {"article": "der", "word": "Bruder", "plural": "die Brüder", "meaning": "brother", "category": "People", "example": "Der Bruder ist wichtig.", "example_en": "The brother is important."}, {"article": "der", "word": "Freund", "plural": "die Freunde", "meaning": "friend, boyfriend", "category": "People", "example": "Der Freund ist wichtig.", "example_en": "The friend is important."}, {"article": "der", "word": "Lehrer", "plural": "die Lehrer", "meaning": "teacher", "category": "Education", "example": "Der Lehrer ist wichtig.", "example_en": "The teacher is important."}, {"article": "die", "word": "Lehrerin", "plural": "die Lehrerinnen", "meaning": "female teacher", "category": "Education", "example": "Die Lehrerin ist wichtig.", "example_en": "The female teacher is important."}, {"article": "die", "word": "Sprache", "plural": "die Sprachen", "meaning": "language", "category": "Language", "example": "Die Sprache ist wichtig.", "example_en": "The language is important."}, {"article": "das", "word": "Wort", "plural": "die Wörter", "meaning": "word", "category": "Language", "example": "Das Wort ist wichtig.", "example_en": "The word is important."}, {"article": "die", "word": "Frage", "plural": "die Fragen", "meaning": "question", "category": "Communication", "example": "Die Frage ist wichtig.", "example_en": "The question is important."}, {"article": "die", "word": "Information", "plural": "die Informationen", "meaning": "information", "category": "Communication", "example": "Die Information ist wichtig.", "example_en": "The information is important."}, {"article": "die", "word": "Adresse", "plural": "die Adressen", "meaning": "address", "category": "Personal info", "example": "Die Adresse ist wichtig.", "example_en": "The address is important."}, {"article": "die", "word": "Telefonnummer", "plural": "die Telefonnummern", "meaning": "phone number", "category": "Personal info", "example": "Die Telefonnummer ist wichtig.", "example_en": "The phone number is important."}, {"article": "der", "word": "Name", "plural": "die Namen", "meaning": "name", "category": "Personal info", "example": "Der Name ist wichtig.", "example_en": "The name is important."}, {"article": "die", "word": "Geburt", "plural": "die Geburten", "meaning": "birth", "category": "Personal info", "example": "Die Geburt ist wichtig.", "example_en": "The birth is important."}, {"article": "der", "word": "Geburtstag", "plural": "die Geburtstage", "meaning": "birthday", "category": "Personal info", "example": "Der Geburtstag ist wichtig.", "example_en": "The birthday is important."}, {"article": "der", "word": "Ort", "plural": "die Orte", "meaning": "place", "category": "Place", "example": "Der Ort ist wichtig.", "example_en": "The place is important."}, {"article": "das", "word": "Hotel", "plural": "die Hotels", "meaning": "hotel", "category": "Travel", "example": "Das Hotel ist wichtig.", "example_en": "The hotel is important."}, {"article": "das", "word": "Einzelzimmer", "plural": "die Einzelzimmer", "meaning": "single room", "category": "Travel", "example": "Das Einzelzimmer ist wichtig.", "example_en": "The single room is important."}, {"article": "die", "word": "Haltestelle", "plural": "die Haltestellen", "meaning": "bus stop, stop", "category": "Transport", "example": "Die Haltestelle ist wichtig.", "example_en": "The bus stop is important."}, {"article": "die", "word": "Bushaltestelle", "plural": "die Bushaltestellen", "meaning": "bus stop", "category": "Transport", "example": "Die Bushaltestelle ist wichtig.", "example_en": "The bus stop is important."}, {"article": "der", "word": "Plan", "plural": "die Pläne", "meaning": "plan", "category": "Abstract", "example": "Der Plan ist wichtig.", "example_en": "The plan is important."}, {"article": "der", "word": "Stadtplan", "plural": "die Stadtpläne", "meaning": "city map", "category": "Travel", "example": "Der Stadtplan ist wichtig.", "example_en": "The city map is important."}, {"article": "die", "word": "Karte", "plural": "die Karten", "meaning": "card, map, ticket", "category": "Services", "example": "Die Karte ist wichtig.", "example_en": "The card is important."}, {"article": "die", "word": "Kreditkarte", "plural": "die Kreditkarten", "meaning": "credit card", "category": "Shopping", "example": "Die Kreditkarte ist wichtig.", "example_en": "The credit card is important."}, {"article": "die", "word": "Bank", "plural": "die Banken", "meaning": "bank", "category": "Services", "example": "Die Bank ist wichtig.", "example_en": "The bank is important."}, {"article": "der", "word": "Briefkasten", "plural": "die Briefkästen", "meaning": "mailbox", "category": "Communication", "example": "Der Briefkasten ist wichtig.", "example_en": "The mailbox is important."}, {"article": "die", "word": "Post", "plural": "-", "meaning": "post office, mail", "category": "Services", "example": "Die Post ist wichtig.", "example_en": "The post office is important."}, {"article": "das", "word": "Paket", "plural": "die Pakete", "meaning": "package", "category": "Shopping", "example": "Das Paket ist wichtig.", "example_en": "The package is important."}, {"article": "die", "word": "Rechnung", "plural": "die Rechnungen", "meaning": "bill, invoice", "category": "Shopping", "example": "Die Rechnung ist wichtig.", "example_en": "The bill is important."}, {"article": "das", "word": "Geschäft", "plural": "die Geschäfte", "meaning": "shop, business", "category": "Shopping", "example": "Das Geschäft ist wichtig.", "example_en": "The shop is important."}, {"article": "der", "word": "Markt", "plural": "die Märkte", "meaning": "market", "category": "Shopping", "example": "Der Markt ist wichtig.", "example_en": "The market is important."}, {"article": "der", "word": "Bäcker", "plural": "die Bäcker", "meaning": "baker", "category": "Shopping", "example": "Der Bäcker ist wichtig.", "example_en": "The baker is important."}, {"article": "die", "word": "Bäckerei", "plural": "die Bäckereien", "meaning": "bakery", "category": "Shopping", "example": "Die Bäckerei ist wichtig.", "example_en": "The bakery is important."}, {"article": "die", "word": "Metzgerei", "plural": "die Metzgereien", "meaning": "butcher shop", "category": "Shopping", "example": "Die Metzgerei ist wichtig.", "example_en": "The butcher shop is important."}, {"article": "die", "word": "Apotheke", "plural": "die Apotheken", "meaning": "pharmacy", "category": "Health", "example": "Die Apotheke ist wichtig.", "example_en": "The pharmacy is important."}, {"article": "das", "word": "Krankenhaus", "plural": "die Krankenhäuser", "meaning": "hospital", "category": "Health", "example": "Das Krankenhaus ist wichtig.", "example_en": "The hospital is important."}, {"article": "die", "word": "Praxis", "plural": "die Praxen", "meaning": "doctor's office, practice", "category": "Health", "example": "Die Praxis ist wichtig.", "example_en": "The doctor's office is important."}, {"article": "der", "word": "Termin", "plural": "die Termine", "meaning": "appointment", "category": "Time", "example": "Der Termin ist wichtig.", "example_en": "The appointment is important."}, {"article": "die", "word": "Krankheit", "plural": "die Krankheiten", "meaning": "illness", "category": "Health", "example": "Die Krankheit ist wichtig.", "example_en": "The illness is important."}, {"article": "der", "word": "Schmerz", "plural": "die Schmerzen", "meaning": "pain", "category": "Health", "example": "Der Schmerz ist wichtig.", "example_en": "The pain is important."}, {"article": "die", "word": "Tablette", "plural": "die Tabletten", "meaning": "tablet, pill", "category": "Health", "example": "Die Tablette ist wichtig.", "example_en": "The tablet is important."}, {"article": "die", "word": "Medizin", "plural": "die Medizinen", "meaning": "medicine", "category": "Health", "example": "Die Medizin ist wichtig.", "example_en": "The medicine is important."}, {"article": "der", "word": "Arzt", "plural": "die Ärzte", "meaning": "doctor", "category": "Health", "example": "Der Arzt ist wichtig.", "example_en": "The doctor is important."}, {"article": "die", "word": "Ärztin", "plural": "die Ärztinnen", "meaning": "female doctor", "category": "Health", "example": "Die Ärztin ist wichtig.", "example_en": "The female doctor is important."}, {"article": "das", "word": "Auge", "plural": "die Augen", "meaning": "eye", "category": "Body", "example": "Das Auge ist wichtig.", "example_en": "The eye is important."}, {"article": "das", "word": "Ohr", "plural": "die Ohren", "meaning": "ear", "category": "Body", "example": "Das Ohr ist wichtig.", "example_en": "The ear is important."}, {"article": "die", "word": "Nase", "plural": "die Nasen", "meaning": "nose", "category": "Body", "example": "Die Nase ist wichtig.", "example_en": "The nose is important."}, {"article": "der", "word": "Hals", "plural": "die Hälse", "meaning": "throat, neck", "category": "Body", "example": "Der Hals ist wichtig.", "example_en": "The throat is important."}, {"article": "der", "word": "Arm", "plural": "die Arme", "meaning": "arm", "category": "Body", "example": "Der Arm ist wichtig.", "example_en": "The arm is important."}, {"article": "die", "word": "Hand", "plural": "die Hände", "meaning": "hand", "category": "Body", "example": "Die Hand ist wichtig.", "example_en": "The hand is important."}, {"article": "der", "word": "Finger", "plural": "die Finger", "meaning": "finger", "category": "Body", "example": "Der Finger ist wichtig.", "example_en": "The finger is important."}, {"article": "das", "word": "Bein", "plural": "die Beine", "meaning": "leg", "category": "Body", "example": "Das Bein ist wichtig.", "example_en": "The leg is important."}, {"article": "der", "word": "Fuß", "plural": "die Füße", "meaning": "foot", "category": "Body", "example": "Der Fuß ist wichtig.", "example_en": "The foot is important."}, {"article": "der", "word": "Rücken", "plural": "die Rücken", "meaning": "back", "category": "Body", "example": "Der Rücken ist wichtig.", "example_en": "The back is important."}, {"article": "das", "word": "Herz", "plural": "die Herzen", "meaning": "heart", "category": "Body", "example": "Das Herz ist wichtig.", "example_en": "The heart is important."}, {"article": "die", "word": "Kleidung", "plural": "-", "meaning": "clothing", "category": "Clothing", "example": "Die Kleidung ist wichtig.", "example_en": "The clothing is important."}, {"article": "die", "word": "Hose", "plural": "die Hosen", "meaning": "trousers, pants", "category": "Clothing", "example": "Die Hose ist wichtig.", "example_en": "The trousers is important."}, {"article": "das", "word": "Hemd", "plural": "die Hemden", "meaning": "shirt", "category": "Clothing", "example": "Das Hemd ist wichtig.", "example_en": "The shirt is important."}, {"article": "das", "word": "T-Shirt", "plural": "die T-Shirts", "meaning": "T-shirt", "category": "Clothing", "example": "Das T-Shirt ist wichtig.", "example_en": "The T-shirt is important."}, {"article": "der", "word": "Pullover", "plural": "die Pullover", "meaning": "sweater", "category": "Clothing", "example": "Der Pullover ist wichtig.", "example_en": "The sweater is important."}, {"article": "die", "word": "Jacke", "plural": "die Jacken", "meaning": "jacket", "category": "Clothing", "example": "Die Jacke ist wichtig.", "example_en": "The jacket is important."}, {"article": "der", "word": "Mantel", "plural": "die Mäntel", "meaning": "coat", "category": "Clothing", "example": "Der Mantel ist wichtig.", "example_en": "The coat is important."}, {"article": "das", "word": "Kleid", "plural": "die Kleider", "meaning": "dress", "category": "Clothing", "example": "Das Kleid ist wichtig.", "example_en": "The dress is important."}, {"article": "der", "word": "Rock", "plural": "die Röcke", "meaning": "skirt", "category": "Clothing", "example": "Der Rock ist wichtig.", "example_en": "The skirt is important."}, {"article": "die", "word": "Socke", "plural": "die Socken", "meaning": "sock", "category": "Clothing", "example": "Die Socke ist wichtig.", "example_en": "The sock is important."}, {"article": "der", "word": "Hut", "plural": "die Hüte", "meaning": "hat", "category": "Clothing", "example": "Der Hut ist wichtig.", "example_en": "The hat is important."}, {"article": "die", "word": "Mütze", "plural": "die Mützen", "meaning": "cap", "category": "Clothing", "example": "Die Mütze ist wichtig.", "example_en": "The cap is important."}, {"article": "die", "word": "Brille", "plural": "die Brillen", "meaning": "glasses", "category": "Clothing", "example": "Die Brille ist wichtig.", "example_en": "The glasses is important."}, {"article": "die", "word": "Fahrkarte", "plural": "die Fahrkarten", "meaning": "ticket", "category": "Travel", "example": "Die Fahrkarte ist wichtig.", "example_en": "The ticket is important."}, {"article": "der", "word": "Flug", "plural": "die Flüge", "meaning": "flight", "category": "Travel", "example": "Der Flug ist wichtig.", "example_en": "The flight is important."}, {"article": "das", "word": "Flugzeug", "plural": "die Flugzeuge", "meaning": "airplane", "category": "Transport", "example": "Das Flugzeug ist wichtig.", "example_en": "The airplane is important."}, {"article": "der", "word": "Koffer", "plural": "die Koffer", "meaning": "suitcase", "category": "Travel", "example": "Der Koffer ist wichtig.", "example_en": "The suitcase is important."}, {"article": "das", "word": "Gepäck", "plural": "-", "meaning": "luggage", "category": "Travel", "example": "Das Gepäck ist wichtig.", "example_en": "The luggage is important."}, {"article": "die", "word": "Rezeption", "plural": "die Rezeptionen", "meaning": "reception", "category": "Travel", "example": "Die Rezeption ist wichtig.", "example_en": "The reception is important."}, {"article": "der", "word": "Strand", "plural": "die Strände", "meaning": "beach", "category": "Travel", "example": "Der Strand ist wichtig.", "example_en": "The beach is important."}, {"article": "das", "word": "Meer", "plural": "die Meere", "meaning": "sea", "category": "Nature", "example": "Das Meer ist wichtig.", "example_en": "The sea is important."}, {"article": "der", "word": "Fluss", "plural": "die Flüsse", "meaning": "river", "category": "Nature", "example": "Der Fluss ist wichtig.", "example_en": "The river is important."}, {"article": "der", "word": "Berg", "plural": "die Berge", "meaning": "mountain", "category": "Nature", "example": "Der Berg ist wichtig.", "example_en": "The mountain is important."}, {"article": "der", "word": "Wald", "plural": "die Wälder", "meaning": "forest", "category": "Nature", "example": "Der Wald ist wichtig.", "example_en": "The forest is important."}, {"article": "der", "word": "Park", "plural": "die Parks", "meaning": "park", "category": "Nature", "example": "Der Park ist wichtig.", "example_en": "The park is important."}, {"article": "das", "word": "Wetter", "plural": "-", "meaning": "weather", "category": "Nature", "example": "Das Wetter ist wichtig.", "example_en": "The weather is important."}, {"article": "der", "word": "Regen", "plural": "-", "meaning": "rain", "category": "Nature", "example": "Der Regen ist wichtig.", "example_en": "The rain is important."}, {"article": "der", "word": "Schnee", "plural": "-", "meaning": "snow", "category": "Nature", "example": "Der Schnee ist wichtig.", "example_en": "The snow is important."}, {"article": "der", "word": "Wind", "plural": "die Winde", "meaning": "wind", "category": "Nature", "example": "Der Wind ist wichtig.", "example_en": "The wind is important."}, {"article": "die", "word": "Wolke", "plural": "die Wolken", "meaning": "cloud", "category": "Nature", "example": "Die Wolke ist wichtig.", "example_en": "The cloud is important."}, {"article": "der", "word": "Himmel", "plural": "die Himmel", "meaning": "sky", "category": "Nature", "example": "Der Himmel ist wichtig.", "example_en": "The sky is important."}, {"article": "das", "word": "Tier", "plural": "die Tiere", "meaning": "animal", "category": "Animals", "example": "Das Tier ist wichtig.", "example_en": "The animal is important."}, {"article": "die", "word": "Katze", "plural": "die Katzen", "meaning": "cat", "category": "Animals", "example": "Die Katze ist wichtig.", "example_en": "The cat is important."}, {"article": "der", "word": "Vogel", "plural": "die Vögel", "meaning": "bird", "category": "Animals", "example": "Der Vogel ist wichtig.", "example_en": "The bird is important."}, {"article": "das", "word": "Pferd", "plural": "die Pferde", "meaning": "horse", "category": "Animals", "example": "Das Pferd ist wichtig.", "example_en": "The horse is important."}, {"article": "die", "word": "Kuh", "plural": "die Kühe", "meaning": "cow", "category": "Animals", "example": "Die Kuh ist wichtig.", "example_en": "The cow is important."}, {"article": "das", "word": "Schwein", "plural": "die Schweine", "meaning": "pig", "category": "Animals", "example": "Das Schwein ist wichtig.", "example_en": "The pig is important."}, {"article": "die", "word": "Maus", "plural": "die Mäuse", "meaning": "mouse", "category": "Animals", "example": "Die Maus ist wichtig.", "example_en": "The mouse is important."}, {"article": "die", "word": "Milch", "plural": "-", "meaning": "milk", "category": "Food", "example": "Die Milch ist wichtig.", "example_en": "The milk is important."}, {"article": "der", "word": "Tee", "plural": "die Tees", "meaning": "tea", "category": "Food", "example": "Der Tee ist wichtig.", "example_en": "The tea is important."}, {"article": "der", "word": "Saft", "plural": "die Säfte", "meaning": "juice", "category": "Food", "example": "Der Saft ist wichtig.", "example_en": "The juice is important."}, {"article": "der", "word": "Wein", "plural": "die Weine", "meaning": "wine", "category": "Food", "example": "Der Wein ist wichtig.", "example_en": "The wine is important."}, {"article": "das", "word": "Ei", "plural": "die Eier", "meaning": "egg", "category": "Food", "example": "Das Ei ist wichtig.", "example_en": "The egg is important."}, {"article": "der", "word": "Käse", "plural": "die Käse", "meaning": "cheese", "category": "Food", "example": "Der Käse ist wichtig.", "example_en": "The cheese is important."}, {"article": "die", "word": "Butter", "plural": "-", "meaning": "butter", "category": "Food", "example": "Die Butter ist wichtig.", "example_en": "The butter is important."}, {"article": "der", "word": "Zucker", "plural": "-", "meaning": "sugar", "category": "Food", "example": "Der Zucker ist wichtig.", "example_en": "The sugar is important."}, {"article": "der", "word": "Reis", "plural": "-", "meaning": "rice", "category": "Food", "example": "Der Reis ist wichtig.", "example_en": "The rice is important."}, {"article": "die", "word": "Nudel", "plural": "die Nudeln", "meaning": "noodle, pasta", "category": "Food", "example": "Die Nudel ist wichtig.", "example_en": "The noodle is important."}, {"article": "das", "word": "Gemüse", "plural": "-", "meaning": "vegetables", "category": "Food", "example": "Das Gemüse ist wichtig.", "example_en": "The vegetables is important."}, {"article": "die", "word": "Tomate", "plural": "die Tomaten", "meaning": "tomato", "category": "Food", "example": "Die Tomate ist wichtig.", "example_en": "The tomato is important."}, {"article": "die", "word": "Gurke", "plural": "die Gurken", "meaning": "cucumber", "category": "Food", "example": "Die Gurke ist wichtig.", "example_en": "The cucumber is important."}, {"article": "die", "word": "Karotte", "plural": "die Karotten", "meaning": "carrot", "category": "Food", "example": "Die Karotte ist wichtig.", "example_en": "The carrot is important."}, {"article": "die", "word": "Zwiebel", "plural": "die Zwiebeln", "meaning": "onion", "category": "Food", "example": "Die Zwiebel ist wichtig.", "example_en": "The onion is important."}, {"article": "das", "word": "Obst", "plural": "-", "meaning": "fruit", "category": "Food", "example": "Das Obst ist wichtig.", "example_en": "The fruit is important."}, {"article": "die", "word": "Orange", "plural": "die Orangen", "meaning": "orange", "category": "Food", "example": "Die Orange ist wichtig.", "example_en": "The orange is important."}, {"article": "die", "word": "Erdbeere", "plural": "die Erdbeeren", "meaning": "strawberry", "category": "Food", "example": "Die Erdbeere ist wichtig.", "example_en": "The strawberry is important."}, {"article": "die", "word": "Traube", "plural": "die Trauben", "meaning": "grape", "category": "Food", "example": "Die Traube ist wichtig.", "example_en": "The grape is important."}, {"article": "das", "word": "Mittagessen", "plural": "die Mittagessen", "meaning": "lunch", "category": "Food", "example": "Das Mittagessen ist wichtig.", "example_en": "The lunch is important."}, {"article": "das", "word": "Abendessen", "plural": "die Abendessen", "meaning": "dinner", "category": "Food", "example": "Das Abendessen ist wichtig.", "example_en": "The dinner is important."}, {"article": "der", "word": "Hunger", "plural": "-", "meaning": "hunger", "category": "Health", "example": "Der Hunger ist wichtig.", "example_en": "The hunger is important."}, {"article": "der", "word": "Teller", "plural": "die Teller", "meaning": "plate", "category": "Food", "example": "Der Teller ist wichtig.", "example_en": "The plate is important."}, {"article": "die", "word": "Gabel", "plural": "die Gabeln", "meaning": "fork", "category": "Food", "example": "Die Gabel ist wichtig.", "example_en": "The fork is important."}, {"article": "das", "word": "Messer", "plural": "die Messer", "meaning": "knife", "category": "Food", "example": "Das Messer ist wichtig.", "example_en": "The knife is important."}, {"article": "der", "word": "Löffel", "plural": "die Löffel", "meaning": "spoon", "category": "Food", "example": "Der Löffel ist wichtig.", "example_en": "The spoon is important."}, {"article": "die", "word": "Tasse", "plural": "die Tassen", "meaning": "cup", "category": "Food", "example": "Die Tasse ist wichtig.", "example_en": "The cup is important."}, {"article": "der", "word": "Becher", "plural": "die Becher", "meaning": "cup, mug", "category": "Food", "example": "Der Becher ist wichtig.", "example_en": "The cup is important."}, {"article": "der", "word": "Topf", "plural": "die Töpfe", "meaning": "pot", "category": "Home", "example": "Der Topf ist wichtig.", "example_en": "The pot is important."}, {"article": "die", "word": "Pfanne", "plural": "die Pfannen", "meaning": "pan", "category": "Home", "example": "Die Pfanne ist wichtig.", "example_en": "The pan is important."}, {"article": "der", "word": "Kühlschrank", "plural": "die Kühlschränke", "meaning": "refrigerator", "category": "Home", "example": "Der Kühlschrank ist wichtig.", "example_en": "The refrigerator is important."}, {"article": "der", "word": "Herd", "plural": "die Herde", "meaning": "stove", "category": "Home", "example": "Der Herd ist wichtig.", "example_en": "The stove is important."}, {"article": "die", "word": "Lampe", "plural": "die Lampen", "meaning": "lamp", "category": "Home", "example": "Die Lampe ist wichtig.", "example_en": "The lamp is important."}, {"article": "das", "word": "Licht", "plural": "die Lichter", "meaning": "light", "category": "Home", "example": "Das Licht ist wichtig.", "example_en": "The light is important."}, {"article": "die", "word": "Wand", "plural": "die Wände", "meaning": "wall", "category": "Home", "example": "Die Wand ist wichtig.", "example_en": "The wall is important."}, {"article": "der", "word": "Boden", "plural": "die Böden", "meaning": "floor", "category": "Home", "example": "Der Boden ist wichtig.", "example_en": "The floor is important."}, {"article": "die", "word": "Decke", "plural": "die Decken", "meaning": "ceiling, blanket", "category": "Home", "example": "Die Decke ist wichtig.", "example_en": "The ceiling is important."}, {"article": "das", "word": "Bild", "plural": "die Bilder", "meaning": "picture", "category": "Home", "example": "Das Bild ist wichtig.", "example_en": "The picture is important."}, {"article": "der", "word": "Spiegel", "plural": "die Spiegel", "meaning": "mirror", "category": "Home", "example": "Der Spiegel ist wichtig.", "example_en": "The mirror is important."}, {"article": "das", "word": "Radio", "plural": "die Radios", "meaning": "radio", "category": "Media", "example": "Das Radio ist wichtig.", "example_en": "The radio is important."}, {"article": "der", "word": "Fernseher", "plural": "die Fernseher", "meaning": "television", "category": "Media", "example": "Der Fernseher ist wichtig.", "example_en": "The television is important."}, {"article": "die", "word": "Musik", "plural": "-", "meaning": "music", "category": "Leisure", "example": "Die Musik ist wichtig.", "example_en": "The music is important."}, {"article": "das", "word": "Spiel", "plural": "die Spiele", "meaning": "game", "category": "Leisure", "example": "Das Spiel ist wichtig.", "example_en": "The game is important."}, {"article": "der", "word": "Sport", "plural": "die Sportarten", "meaning": "sport", "category": "Leisure", "example": "Der Sport ist wichtig.", "example_en": "The sport is important."}];
+let state = {mode:'article', current:null, score:0, total:0, correct:0, streak:0, answered:false};
+let mistakes = JSON.parse(localStorage.getItem('goetheA1NounOnlyMistakes') || '{}');
+
+const $ = id => document.getElementById(id);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+const norm = s => (s||'').trim().toLowerCase().replace(/[.,;:!?]/g,'').replace(/ß/g,'ss').replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/\s+/g,' ');
+
+function saveMistakes(){localStorage.setItem('goetheA1NounOnlyMistakes', JSON.stringify(mistakes));}
+function addMistake(label){mistakes[label]=(mistakes[label]||0)+1; saveMistakes();}
+function statsHtml(){
+    return `<div class="stats">
+    <div class="stat"><span class="small">Score</span><b>${state.score}</b></div>
+    <div class="stat"><span class="small">Streak</span><b>${state.streak}</b></div>
+    <div class="stat"><span class="small">Accuracy</span><b>${state.total?Math.round(state.correct/state.total*100):0}%</b></div>
+    <div class="stat"><span class="small">Mistakes</span><b>${Object.keys(mistakes).length}</b></div>
+    </div>`;
+}
+function shell(){
+    $('content').innerHTML = `<div class="grid">
+    <div class="card">
+        <div class="kicker" id="modeLabel"></div>
+        <div class="big" id="word"></div>
+        <div class="meaning" id="hint"></div>
+        <div class="prompt" id="prompt"></div>
+        <div id="answers" class="options"></div>
+        <div id="feedback" class="feedback"></div>
+        <div class="controls"><button class="btn primary" onclick="render()">Next question</button></div>
+    </div>
+    <aside class="card">
+        <div id="statsBox">${statsHtml()}</div>
+        <div class="rule"><b>Golden rule</b><br>Do not memorize only <b>Buch</b>. Memorize <b>das Buch</b>. Article + noun is one unit.</div>
+        <div class="rule"><b>Plural rule</b><br>Plural is often not predictable. Learn it with the noun: <b>das Buch, die Bücher</b>.</div>
+        <div class="rule"><b>Current list</b><br><b>${NOUNS.length}</b> nouns loaded in this file.</div>
+    </aside>
+    </div>`;
+}
+function updateStats(){let b=$('statsBox'); if(b)b.innerHTML=statsHtml();}
+function setBase(label, word, hint, prompt){
+    $('modeLabel').textContent = label;
+    $('word').textContent = word;
+    $('hint').textContent = hint;
+    $('prompt').innerHTML = prompt;
+    $('answers').innerHTML = '';
+    $('feedback').style.display = 'none';
+    state.answered = false;
+    updateStats();
+}
+function feedback(ok, html){
+    let f=$('feedback');
+    f.className='feedback '+(ok?'good':'bad');
+    f.innerHTML=(ok?'<b>Correct.</b><br>':'<b>Not quite.</b><br>')+html;
+    f.style.display='block';
+    updateStats();
+}
+function answer(btn, ok, fb, label){
+    if(state.answered)return;
+    state.answered=true;
+    state.total++;
+    if(ok){state.correct++;state.score+=10;state.streak++;btn.classList.add('correct');}
+    else{
+        state.streak=0;
+        btn.classList.add('wrong');
+        addMistake(label);
+        document.querySelectorAll('.option').forEach(x=>{if(x.dataset.ok==='1')x.classList.add('correct');});
+    }
+    document.querySelectorAll('.option').forEach(x=>x.disabled=true);
+    feedback(ok, fb);
+}
+function opt(text, ok, fb, label){
+    let b=document.createElement('button');
+    b.className='option';
+    b.innerHTML=text;
+    b.dataset.ok=ok?'1':'0';
+    b.onclick=()=>answer(b, ok, fb, label);
+    $('answers').appendChild(b);
+}
+function cleanMeaning(s){return norm(s).replace(/^to /,'').trim();}
+function meaningOk(val, correct){
+    let a=cleanMeaning(val);
+    let parts=correct.split(',').map(x=>cleanMeaning(x)).filter(Boolean);
+    parts.push(cleanMeaning(correct));
+    return parts.some(x=>a===x || x.includes(a) || a.includes(x));
+}
+function checkTyped(ok, label, fb, extra=''){
+    state.answered=true;
+    state.total++;
+    if(ok){state.correct++;state.score+=10;state.streak++;}
+    else{state.streak=0;addMistake(label);}
+    feedback(ok, fb + extra);
+}
+function articleQ(){
+    shell();
+    let n=pick(NOUNS); state.current=n;
+    setBase('Der Die Das', n.word, `Meaning: ${n.meaning} | Plural: ${n.plural} | ${n.category}`, 'Choose the correct article.');
+    let correctArticle = n.article;
+    let choices = correctArticle === 'der/die' ? ['der','die','das','der/die'] : ['der','die','das'];
+    let fb = `Correct answer: <b>${n.article} ${n.word}</b>.<div class="example">${n.example}<br>${n.example_en}</div>`;
+    choices.forEach(a=>opt(a, a===correctArticle, fb, `${n.article} ${n.word}`));
+}
+function meaningQ(typed=false){
+    shell();
+    let n=pick(NOUNS); state.current=n;
+    setBase(typed?'Typed meaning':'Meaning choices', `${n.article} ${n.word}`, `Plural: ${n.plural} | ${n.category}`, 'What does this noun mean?');
+    let fb = `<b>${n.article} ${n.word}</b> means <b>${n.meaning}</b>.<div class="example">${n.example}<br>${n.example_en}</div>`;
+    if(typed){
+        $('answers').innerHTML = `<div class="inputRow"><input id="typedInput" placeholder="Type English meaning"><button class="btn primary" id="checkBtn">Check</button></div>`;
+        $('typedInput').focus();
+        let check=()=>{
+            if(state.answered)return;
+            let val=$('typedInput').value;
+            checkTyped(meaningOk(val,n.meaning), `${n.article} ${n.word}`, fb, `<br>Your answer: <b>${val||'(empty)'}</b>`);
+        };
+        $('checkBtn').onclick=check;
+        $('typedInput').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+    } else {
+        let opts=shuffle([n.meaning,...shuffle(NOUNS.filter(x=>x.word!==n.word)).slice(0,3).map(x=>x.meaning)]);
+        opts.forEach(o=>opt(o, o===n.meaning, fb, `${n.article} ${n.word}`));
+    }
+}
+function pluralQ(){
+    shell();
+    let pool=NOUNS.filter(x=>x.plural && x.plural !== '-');
+    let n=pick(pool); state.current=n;
+    setBase('Plural choices', `${n.article} ${n.word}`, `Meaning: ${n.meaning} | ${n.category}`, 'Choose the plural form.');
+    let opts=shuffle([n.plural,...shuffle(pool.filter(x=>x.word!==n.word)).slice(0,3).map(x=>x.plural)]);
+    let fb = `Plural of <b>${n.article} ${n.word}</b> is <b>${n.plural}</b>.`;
+    opts.forEach(o=>opt(o, o===n.plural, fb, `${n.article} ${n.word}`));
+}
+function typedGermanQ(){
+    shell();
+    let n=pick(NOUNS); state.current=n;
+    setBase('English to German', n.meaning, `Category: ${n.category}`, 'Type the German noun with article.');
+    $('answers').innerHTML = `<div class="inputRow"><input id="typedInput" placeholder="Example: das Buch"><button class="btn primary" id="checkBtn">Check</button></div><div class="small">Include the article. For der/die Bekannte, type der Bekannte or die Bekannte.</div>`;
+    $('typedInput').focus();
+    let check=()=>{
+        if(state.answered)return;
+        let val=$('typedInput').value;
+        let accepted = [`${n.article} ${n.word}`];
+        if(n.article==='der/die') accepted = [`der ${n.word}`, `die ${n.word}`, `der/die ${n.word}`];
+        let ok = accepted.some(a=>norm(a)===norm(val));
+        let fb = `Correct answer: <b>${n.article} ${n.word}</b>.<br>Plural: <b>${n.plural}</b><div class="example">${n.example}<br>${n.example_en}</div>`;
+        checkTyped(ok, `${n.article} ${n.word}`, fb, `<br>Your answer: <b>${val||'(empty)'}</b>`);
+    };
+    $('checkBtn').onclick=check;
+    $('typedInput').addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+}
+function trueFalseQ(){
+    shell();
+    let n=pick(NOUNS); state.current=n;
+    let makeFalse = Math.random() < .5;
+    let shown = n.article;
+    let correctText = `${n.article} ${n.word}`;
+    if(makeFalse){
+        let arts=['der','die','das'].filter(a=>a!==n.article && n.article!=='der/die');
+        if(n.article==='der/die') arts=['das'];
+        shown = pick(arts);
+    }
+    let statement = `${shown} ${n.word}`;
+    setBase('True or False', statement, `Meaning: ${n.meaning} | Plural: ${n.plural}`, 'Is this article correct?');
+    let okTrue = !makeFalse;
+    let fb = `Correct form: <b>${correctText}</b>.`;
+    opt('True', okTrue, fb, correctText);
+    opt('False', !okTrue, fb, correctText);
+}
+function listView(){
+    $('content').innerHTML = `<div class="card">
+    <div class="kicker">Full noun list</div>
+    <div class="big" style="font-size:42px">320 nouns</div>
+    <div class="meaning">Search by German, English, article, plural, or category.</div>
+    <input id="search" class="search" placeholder="Search nouns">
+    <select id="category">
+        <option value="all">All categories</option>
+        ${[...new Set(NOUNS.map(n=>n.category))].sort().map(c=>`<option value="${c}">${c}</option>`).join('')}
+    </select>
+    <div class="tablewrap"><table id="nounTable"></table></div>
+    </div>`;
+    function renderTable(){
+        let q=norm($('search').value);
+        let cat=$('category').value;
+        let rows=NOUNS.filter(n=>(cat==='all'||n.category===cat) && norm(`${n.article} ${n.word} ${n.plural} ${n.meaning} ${n.category}`).includes(q));
+        $('nounTable').innerHTML='<thead><tr><th>#</th><th>Article</th><th>Noun</th><th>Plural</th><th>English</th><th>Category</th></tr></thead><tbody>'+
+        rows.map((n,i)=>`<tr><td>${i+1}</td><td><b>${n.article}</b></td><td><b>${n.word}</b></td><td>${n.plural}</td><td>${n.meaning}</td><td>${n.category}</td></tr>`).join('')+'</tbody>';
+    }
+    $('search').oninput=renderTable;
+    $('category').onchange=renderTable;
+    renderTable();
+}
+function rulesView(){
+    $('content').innerHTML = `<div class="card">
+    <div class="kicker">Noun rules</div>
+    <div class="tilegrid">
+        <div class="tile"><b>1. Learn article + noun together</b><br>Say <b>das Buch</b>, not only Buch. German nouns are married to their articles. Divorce is not allowed.</div>
+        <div class="tile"><b>2. Basic article idea</b><br><span class="badge">der masculine</span><span class="badge">die feminine</span><span class="badge">das neuter</span><br>But many nouns must simply be memorized.</div>
+        <div class="tile"><b>3. Useful endings</b><br><b>die</b>: -ung, -heit, -keit, -schaft, -ion, -e often feminine.<br><b>das</b>: -chen, -lein, -ment often neuter.</div>
+        <div class="tile"><b>4. Plural is important</b><br>der Apfel → die Äpfel<br>das Buch → die Bücher<br>die Frau → die Frauen</div>
+        <div class="tile"><b>5. Always plural article is die</b><br>Singular can be der, die, das. Plural article is normally <b>die</b>.</div>
+        <div class="tile"><b>6. A1 practice order</b><br>First article, then English meaning, then plural, then English to German typing.</div>
+    </div>
+    </div>`;
+}
+function mistakesView(){
+    let entries=Object.entries(mistakes).sort((a,b)=>b[1]-a[1]);
+    $('content').innerHTML = `<div class="card">
+    <div class="kicker">Mistakes only</div>
+    <div class="big" style="font-size:42px">${entries.length}</div>
+    <div class="meaning">Saved in this browser.</div>
+    <div id="mistakeList">${entries.length?entries.map(([w,n])=>`<div class="rule"><b>${w}</b><span class="pill">${n}</span></div>`).join(''):'<p>No mistakes saved yet.</p>'}</div>
+    <div class="controls"><button class="btn primary" onclick="mistakes={};saveMistakes();mistakesView()">Clear mistakes</button><button class="btn" onclick="state.mode='article';setActive('article');render()">Practice again</button></div>
+    </div>`;
+}
+function setActive(mode){
+    document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+}
+function render(){
+    setActive(state.mode);
+    if(state.mode==='article') return articleQ();
+    if(state.mode==='meaning') return meaningQ(false);
+    if(state.mode==='typed_meaning') return meaningQ(true);
+    if(state.mode==='plural') return pluralQ();
+    if(state.mode==='typed_german') return typedGermanQ();
+    if(state.mode==='truefalse') return trueFalseQ();
+    if(state.mode==='list') return listView();
+    if(state.mode==='rules') return rulesView();
+    if(state.mode==='mistakes') return mistakesView();
+}
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{state.mode=b.dataset.mode;render();});
+render();
+</script>
+</body>
+</html>
