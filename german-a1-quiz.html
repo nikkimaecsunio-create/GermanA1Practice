@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch A1 Quiz</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap');
+  :root {
+    --bg:#F0EDE8; --surface:#FAFAF7; --border:#DDD9D2; --text:#1A1814; --muted:#8A857C;
+    --der:#D94F4F; --die:#2E6FBF; --das:#2A8C5A; --plural:#7B5EA7;
+    --correct:#2A8C5A; --wrong:#D94F4F; --accent:#2E6FBF;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+  header{width:100%;max-width:640px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+  .logo{font-family:'DM Serif Display',serif;font-size:22px;letter-spacing:-.3px}
+  .logo span{color:var(--accent)}
+  .score-pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--muted);display:flex;gap:10px}
+  .score-pill b{color:var(--text)}
+  #topic-screen{width:100%;max-width:640px}
+  .screen-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2;margin-bottom:6px}
+  .screen-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+  .topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .topic-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:16px 14px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:flex-start;gap:10px}
+  .topic-card:hover{border-color:var(--accent)}
+  .topic-card.selected{border-color:var(--accent);background:#EEF4FC}
+  .topic-icon{font-size:22px;line-height:1;flex-shrink:0}
+  .topic-name{font-size:14px;font-weight:600;line-height:1.3}
+  .topic-desc{font-size:12px;color:var(--muted);margin-top:2px}
+  .topic-progress{font-size:11px;color:var(--accent);margin-top:4px;font-weight:600}
+  .start-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+  .btn-primary{background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);padding:12px 28px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+  .btn-primary:hover{opacity:.85}
+  .btn-primary:disabled{opacity:.35;cursor:not-allowed}
+  .q-count-label{font-size:13px;color:var(--muted)}
+  .q-count-label b{color:var(--text)}
+  .reset-link{font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer;margin-top:8px;display:inline-block}
+  #quiz-screen{width:100%;max-width:640px;display:none}
+  .progress-bar{width:100%;height:4px;background:var(--border);border-radius:2px;margin-bottom:28px;overflow:hidden}
+  .progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s ease}
+  .q-meta{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .q-tag{display:inline-block;background:#EEF4FC;color:var(--accent);border-radius:4px;padding:2px 8px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px}
+  .q-text{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.35;margin-bottom:8px}
+  .q-hint{font-size:13px;color:var(--muted);margin-bottom:24px;font-style:italic}
+  .options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+  .option-btn{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;font-size:15px;font-family:inherit;font-weight:500;text-align:left;cursor:pointer;transition:border-color .12s,background .12s;display:flex;align-items:center;gap:12px}
+  .option-btn:hover:not(:disabled){border-color:var(--accent);background:#EEF4FC}
+  .option-btn.correct{border-color:var(--correct);background:#EBF7F1;color:var(--correct)}
+  .option-btn.wrong{border-color:var(--wrong);background:#FDEFEF;color:var(--wrong)}
+  .option-letter{width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:background .12s}
+  .option-btn.correct .option-letter{background:var(--correct);color:#fff}
+  .option-btn.wrong .option-letter{background:var(--wrong);color:#fff}
+  .explanation{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:var(--radius-sm);padding:14px 16px;font-size:14px;line-height:1.6;margin-bottom:20px;display:none}
+  .explanation .ex-title{font-weight:700;margin-bottom:4px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+  .next-btn{display:none;background:var(--text);color:#fff;border:none;border-radius:var(--radius-sm);padding:13px 28px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s}
+  .next-btn:hover{opacity:.85}
+  #results-screen{width:100%;max-width:640px;display:none;text-align:center}
+  .results-emoji{font-size:56px;margin-bottom:16px}
+  .results-score{font-family:'DM Serif Display',serif;font-size:48px;line-height:1;margin-bottom:8px}
+  .results-label{color:var(--muted);font-size:15px;margin-bottom:32px}
+  .results-breakdown{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:28px;text-align:left}
+  .breakdown-title{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+  .breakdown-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:14px}
+  .breakdown-row:last-child{border-bottom:none}
+  .bd-topic{font-weight:500;flex:1;padding-right:12px}
+  .bd-result{font-weight:700;flex-shrink:0}
+  .bd-correct{color:var(--correct)}
+  .bd-wrong{color:var(--wrong)}
+  .results-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn-secondary{background:var(--surface);color:var(--text);border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:border-color .15s}
+  .btn-secondary:hover{border-color:var(--accent)}
+  .gender-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:24px;font-size:12px;color:var(--muted)}
+  .legend-item{display:flex;align-items:center;gap:5px}
+  .gender-dot{display:inline-block;width:8px;height:8px;border-radius:50%}
+  .dot-der{background:var(--der)}.dot-die{background:var(--die)}.dot-das{background:var(--das)}.dot-plural{background:var(--plural)}
+  .bank-badge{display:inline-flex;align-items:center;gap:5px;background:#F0EDE8;border:1px solid var(--border);border-radius:100px;padding:4px 10px;font-size:11px;color:var(--muted);margin-bottom:20px}
+  .bank-badge span{color:var(--accent);font-weight:700}
+  @media(max-width:480px){.topic-grid{grid-template-columns:1fr}.screen-title{font-size:24px}.q-text{font-size:19px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Deutsch <span>A1</span> Quiz</div>
+  <div class="score-pill" id="score-display" style="display:none">✓ <b id="correct-count">0</b> &nbsp;✗ <b id="wrong-count">0</b></div>
+</header>
+
+<div id="topic-screen">
+  <div class="screen-title">Was möchtest du üben?</div>
+  <div class="screen-sub">Pick a topic. Questions shuffle every time — no repeats until you've seen them all.</div>
+  <div class="topic-grid" id="topic-grid"></div>
+  <div class="gender-legend">
+    <div class="legend-item"><span class="gender-dot dot-der"></span>der (masc.)</div>
+    <div class="legend-item"><span class="gender-dot dot-die"></span>die (fem.)</div>
+    <div class="legend-item"><span class="gender-dot dot-das"></span>das (neut.)</div>
+    <div class="legend-item"><span class="gender-dot dot-plural"></span>plural</div>
+  </div>
+  <div class="start-row">
+    <button class="btn-primary" id="start-btn" disabled onclick="startQuiz()">Start Quiz →</button>
+    <div class="q-count-label">10 questions per session · <b>no repeats</b></div>
+  </div>
+  <span class="reset-link" onclick="resetProgress()">↺ Reset seen questions</span>
+</div>
+
+<div id="quiz-screen">
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div id="quiz-content">
+    <div class="q-meta" id="q-meta">Question 1 of 10</div>
+    <div class="q-tag" id="q-tag">Articles</div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-hint" id="q-hint"></div>
+    <div class="options" id="options"></div>
+    <div class="explanation" id="explanation">
+      <div class="ex-title">💡 Erklärung</div>
+      <div id="explanation-text"></div>
+    </div>
+    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Weiter →</button>
+  </div>
+</div>
+
+<div id="results-screen">
+  <div class="results-emoji" id="results-emoji">🎉</div>
+  <div class="results-score" id="results-score">10/10</div>
+  <div class="results-label" id="results-label">Perfect score!</div>
+  <div class="results-breakdown">
+    <div class="breakdown-title">Question Review</div>
+    <div id="breakdown-list"></div>
+  </div>
+  <div class="results-btns">
+    <button class="btn-secondary" onclick="goHome()">← Change Topic</button>
+    <button class="btn-primary" onclick="startQuiz()">Next 10 Questions →</button>
+  </div>
+</div>
+
+<script>
+// ─── QUESTION BANKS ──────────────────────────────────────────────────────────
+// Each topic has 30+ questions. IDs are unique strings per topic.
+
+const BANKS = {
+
+articles: [
+  {id:"art01",question:"Was ist der Artikel für 'Hund'?",hint:"Das Tier bellt.",options:["die","das","der","eine"],correct:2,explanation:"[der] Hund is masculine. Dog is one of the most common der-words to memorize."},
+  {id:"art02",question:"Was ist der Artikel für 'Frau'?",hint:"Sie heißt Anna.",options:["der","das","die","ein"],correct:2,explanation:"[die] Frau is feminine. Words referring to female people are almost always die."},
+  {id:"art03",question:"Was ist der Artikel für 'Kind'?",hint:"Das ___ spielt im Park.",options:["der","die","das","ein"],correct:2,explanation:"[das] Kind is neuter. Diminutives and many nouns ending in -chen/-lein are das."},
+  {id:"art04",question:"Was ist der Artikel für 'Buch'?",hint:"Ich lese gern.",options:["der","die","das","eine"],correct:2,explanation:"[das] Buch is neuter. Many short everyday objects in German are das."},
+  {id:"art05",question:"Was ist der Artikel für 'Schule'?",hint:"Die Kinder gehen zur ___.",options:["der","die","das","ein"],correct:1,explanation:"[die] Schule is feminine. Nouns ending in -e are very often die."},
+  {id:"art06",question:"Was ist der Artikel für 'Mann'?",hint:"Er ist mein Vater.",options:["die","das","der","eine"],correct:2,explanation:"[der] Mann is masculine. Like Frau, words for male people follow natural gender."},
+  {id:"art07",question:"Was ist der Artikel für 'Auto'?",hint:"Er fährt schnell.",options:["der","die","das","ein"],correct:2,explanation:"[das] Auto is neuter. Many loanwords ending in -o are das in German."},
+  {id:"art08",question:"Was ist der Artikel für 'Tisch'?",hint:"Wir essen am ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Tisch is masculine. Furniture words are often der, though not always."},
+  {id:"art09",question:"Was ist der Artikel für 'Stadt'?",hint:"Berlin ist eine große ___.",options:["der","die","das","ein"],correct:1,explanation:"[die] Stadt is feminine. Nouns ending in -dt and -t (referring to places) are often die."},
+  {id:"art10",question:"Was ist der Artikel für 'Haus'?",hint:"Wir wohnen in einem ___.",options:["der","die","das","ein"],correct:2,explanation:"[das] Haus is neuter. This is a core vocabulary word to memorize."},
+  {id:"art11",question:"Was ist der Artikel für 'Wasser'?",hint:"Ich trinke gern ___.",options:["der","die","das","ein"],correct:2,explanation:"[das] Wasser is neuter. Most liquids in German are das."},
+  {id:"art12",question:"Was ist der Artikel für 'Zug'?",hint:"Der ___ fährt nach München.",options:["der","die","das","ein"],correct:0,explanation:"[der] Zug is masculine. Many modes of transport are der."},
+  {id:"art13",question:"Was ist der Artikel für 'Straße'?",hint:"Die ___ ist lang.",options:["der","die","das","ein"],correct:1,explanation:"[die] Straße is feminine. Nouns ending in -e are often die."},
+  {id:"art14",question:"Was ist der Artikel für 'Apfel'?",hint:"Ich esse einen ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Apfel is masculine. Many fruit nouns in German are der."},
+  {id:"art15",question:"Was ist der Artikel für 'Milch'?",hint:"Ich kaufe ___ im Supermarkt.",options:["der","die","das","ein"],correct:1,explanation:"[die] Milch is feminine. Many food/drink nouns ending in a consonant cluster are die."},
+  {id:"art16",question:"Was ist der Artikel für 'Computer'?",hint:"Ich arbeite am ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Computer is masculine. Most nouns ending in -er are der."},
+  {id:"art17",question:"Was ist der Artikel für 'Mädchen'?",hint:"___ spielt Fußball.",options:["der","die","das","ein"],correct:2,explanation:"[das] Mädchen is neuter. All nouns ending in -chen are das, even if they refer to females."},
+  {id:"art18",question:"Was ist der Artikel für 'Küche'?",hint:"Mama kocht in der ___.",options:["der","die","das","ein"],correct:1,explanation:"[die] Küche is feminine. Nouns ending in -e are very frequently die."},
+  {id:"art19",question:"Was ist der Artikel für 'Bahnhof'?",hint:"Wir treffen uns am ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Bahnhof is masculine. Compound nouns take the gender of their last element — Hof is der."},
+  {id:"art20",question:"Was ist der Artikel für 'Fenster'?",hint:"Bitte öffne das ___.",options:["der","die","das","ein"],correct:2,explanation:"[das] Fenster is neuter. Nouns ending in -er can be any gender; Fenster happens to be das."},
+  {id:"art21",question:"Was ist der Artikel für 'Telefon'?",hint:"___ klingelt.",options:["der","die","das","ein"],correct:2,explanation:"[das] Telefon is neuter. Most nouns ending in -on are das (loanwords from Greek/Latin)."},
+  {id:"art22",question:"Was ist der Artikel für 'Lehrer'?",hint:"___ erklärt die Grammatik.",options:["der","die","das","ein"],correct:0,explanation:"[der] Lehrer is masculine. The female form is die Lehrerin."},
+  {id:"art23",question:"Was ist der Artikel für 'Lehrerin'?",hint:"___ ist sehr nett.",options:["der","die","das","ein"],correct:1,explanation:"[die] Lehrerin is feminine. Nouns ending in -in referring to female people are always die."},
+  {id:"art24",question:"Was ist der Artikel für 'Stuhl'?",hint:"Sitz auf dem ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Stuhl is masculine. Another common furniture word to learn."},
+  {id:"art25",question:"Was ist der Artikel für 'Bett'?",hint:"Ich schlafe im ___.",options:["der","die","das","ein"],correct:2,explanation:"[das] Bett is neuter. Many furniture/household items are das."},
+  {id:"art26",question:"Was ist der Artikel für 'Schrank'?",hint:"Die Kleider sind im ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Schrank is masculine."},
+  {id:"art27",question:"Was ist der Artikel für 'Lampe'?",hint:"___ leuchtet hell.",options:["der","die","das","ein"],correct:1,explanation:"[die] Lampe is feminine. Ending in -e → very likely die."},
+  {id:"art28",question:"Was ist der Artikel für 'Supermarkt'?",hint:"Ich kaufe im ___ ein.",options:["der","die","das","ein"],correct:0,explanation:"[der] Supermarkt is masculine. The last element is Markt, which is der."},
+  {id:"art29",question:"Was ist der Artikel für 'Zimmer'?",hint:"Mein ___ ist klein.",options:["der","die","das","ein"],correct:2,explanation:"[das] Zimmer is neuter. Room/space words are often das."},
+  {id:"art30",question:"Was ist der Artikel für 'Uhr'?",hint:"Die ___ zeigt 3 Uhr.",options:["der","die","das","ein"],correct:1,explanation:"[die] Uhr is feminine. Clock/watch is always die Uhr."},
+  {id:"art31",question:"Was ist der Artikel für 'Stift'?",hint:"Schreib mit dem ___.",options:["der","die","das","ein"],correct:0,explanation:"[der] Stift is masculine. Writing instruments (Stift, Bleistift, Kugelschreiber) are der."},
+  {id:"art32",question:"Was ist der Artikel für 'Tasche'?",hint:"Meine ___ ist schwer.",options:["der","die","das","ein"],correct:1,explanation:"[die] Tasche is feminine. Nouns ending in -e are mostly die."},
+],
+
+cases: [
+  {id:"cas01",question:"Ich kaufe ___ Apfel. (indefinite, accusative)",hint:"der Apfel → masculine",options:["ein","eine","einen","einem"],correct:2,explanation:"Masculine nouns change from ein → einen in the accusative (direct object)."},
+  {id:"cas02",question:"Das ist ___ Frau. (indefinite, nominative)",hint:"die Frau → feminine",options:["ein","eine","einen","einem"],correct:1,explanation:"Feminine nouns use 'eine' in the nominative indefinite. No change in accusative either."},
+  {id:"cas03",question:"Ich sehe ___ Kind. (indefinite, accusative)",hint:"das Kind → neuter",options:["ein","eine","einen","einem"],correct:0,explanation:"Neuter nouns don't change in the accusative: ein Kind stays ein Kind."},
+  {id:"cas04",question:"___ Mann wartet. (definite, nominative)",hint:"Subject of the sentence.",options:["Den","Dem","Der","Die"],correct:2,explanation:"Masculine nominative definite article is 'der'. Subject case."},
+  {id:"cas05",question:"Ich kenne ___ Mann. (definite, accusative)",hint:"Direct object, masculine.",options:["der","dem","den","die"],correct:2,explanation:"Masculine accusative definite article is 'den'. Der → den in accusative."},
+  {id:"cas06",question:"___ Frau lacht. (definite, nominative)",hint:"Subject of the sentence.",options:["Den","Die","Der","Das"],correct:1,explanation:"Feminine nominative definite article is 'die'. No change in accusative either."},
+  {id:"cas07",question:"Ich sehe ___ Hund. (definite, accusative)",hint:"der Hund → masculine",options:["der","die","den","das"],correct:2,explanation:"Masculine accusative: der → den. The direct object marker for masculine nouns."},
+  {id:"cas08",question:"Er trinkt ___ Kaffee. (indefinite, accusative)",hint:"der Kaffee → masculine",options:["ein","eine","einen","kein"],correct:2,explanation:"Masculine accusative indefinite: ein → einen."},
+  {id:"cas09",question:"Sie hat ___ Katze. (indefinite, accusative)",hint:"die Katze → feminine",options:["ein","eine","einen","einer"],correct:1,explanation:"Feminine indefinite article stays 'eine' in both nominative and accusative."},
+  {id:"cas10",question:"Wir kaufen ___ Auto. (indefinite, accusative)",hint:"das Auto → neuter",options:["einen","eine","ein","einem"],correct:2,explanation:"Neuter nouns don't change in the accusative: ein Auto → ein Auto."},
+  {id:"cas11",question:"___ Buch ist interessant. (definite, nominative)",hint:"das Buch → neuter",options:["Der","Die","Das","Den"],correct:2,explanation:"Neuter nominative definite article is 'das'."},
+  {id:"cas12",question:"Ich lese ___ Buch. (definite, accusative)",hint:"das Buch → neuter",options:["den","die","das","dem"],correct:2,explanation:"Neuter nouns don't change in the accusative: das Buch stays das Buch."},
+  {id:"cas13",question:"Er braucht ___ Stift. (indefinite, accusative)",hint:"der Stift → masculine",options:["ein","eine","einen","kein"],correct:2,explanation:"Masculine accusative indefinite: einen."},
+  {id:"cas14",question:"Hast du ___ Bruder? (indefinite, accusative)",hint:"der Bruder → masculine",options:["ein","eine","einen","einem"],correct:2,explanation:"Masculine accusative: einen Bruder."},
+  {id:"cas15",question:"Ich esse ___ Brot. (indefinite, accusative)",hint:"das Brot → neuter",options:["einen","eine","ein","einen"],correct:2,explanation:"Neuter indefinite accusative: ein (no change from nominative)."},
+  {id:"cas16",question:"Sie kauft ___ Tasche. (definite, accusative)",hint:"die Tasche → feminine",options:["den","der","die","das"],correct:2,explanation:"Feminine definite article stays 'die' in accusative (no change)."},
+  {id:"cas17",question:"Ich nehme ___ Bus. (definite, accusative)",hint:"der Bus → masculine",options:["der","die","das","den"],correct:3,explanation:"Masculine definite accusative: den Bus."},
+  {id:"cas18",question:"___ Zug kommt. (definite, nominative)",hint:"der Zug → masculine",options:["Den","Die","Das","Der"],correct:3,explanation:"Masculine nominative definite article: der."},
+  {id:"cas19",question:"Ich sehe ___ Schule. (definite, accusative)",hint:"die Schule → feminine",options:["den","die","das","der"],correct:1,explanation:"Feminine accusative definite: die (no change)."},
+  {id:"cas20",question:"Hast du ___ Hunger? (no article needed — but which fits?)",hint:"Hunger is uncountable here.",options:["einen","eine","ein","kein"],correct:0,explanation:"'Hunger' is masculine (der Hunger), so accusative indefinite = einen. 'Ich habe keinen Hunger' also uses this pattern."},
+  {id:"cas21",question:"Er kauft ___ Bier. (indefinite, accusative)",hint:"das Bier → neuter",options:["einen","eine","ein","einem"],correct:2,explanation:"Neuter indefinite accusative: ein (same as nominative)."},
+  {id:"cas22",question:"___ Mädchen singt. (definite, nominative)",hint:"das Mädchen → neuter",options:["Der","Die","Das","Den"],correct:2,explanation:"Neuter nominative: das."},
+  {id:"cas23",question:"Ich suche ___ Schlüssel. (indefinite, accusative)",hint:"der Schlüssel → masculine",options:["ein","eine","einen","einem"],correct:2,explanation:"Masculine accusative indefinite: einen."},
+  {id:"cas24",question:"Er hat ___ Schwester. (indefinite, accusative)",hint:"die Schwester → feminine",options:["ein","eine","einen","einer"],correct:1,explanation:"Feminine indefinite: eine (same in nominative and accusative)."},
+  {id:"cas25",question:"Ich brauche ___ Wasser. (indefinite, accusative)",hint:"das Wasser → neuter",options:["einen","eine","ein","einem"],correct:2,explanation:"Neuter: ein Wasser (no change in accusative)."},
+  {id:"cas26",question:"Sie liest ___ Zeitung. (definite, accusative)",hint:"die Zeitung → feminine",options:["den","die","das","der"],correct:1,explanation:"Feminine definite accusative: die (same as nominative)."},
+  {id:"cas27",question:"Ich sehe ___ Lehrer. (definite, accusative)",hint:"der Lehrer → masculine",options:["der","die","das","den"],correct:3,explanation:"Masculine definite accusative: den."},
+  {id:"cas28",question:"___ Kind schläft. (definite, nominative)",hint:"das Kind → neuter",options:["Der","Die","Das","Den"],correct:2,explanation:"Neuter nominative: das."},
+  {id:"cas29",question:"Wir kaufen ___ Milch. (indefinite, accusative)",hint:"die Milch → feminine",options:["ein","eine","einen","einer"],correct:1,explanation:"Feminine indefinite: eine Milch (no accusative change)."},
+  {id:"cas30",question:"Er öffnet ___ Tür. (definite, accusative)",hint:"die Tür → feminine",options:["den","die","das","der"],correct:1,explanation:"Feminine definite accusative: die (same as nominative)."},
+  {id:"cas31",question:"Ich suche ___ Zimmer. (indefinite, accusative)",hint:"das Zimmer → neuter",options:["einen","eine","ein","einem"],correct:2,explanation:"Neuter indefinite accusative: ein (same as nominative)."},
+  {id:"cas32",question:"Sie nimmt ___ Zug. (indefinite, accusative)",hint:"der Zug → masculine",options:["ein","eine","einen","einer"],correct:2,explanation:"Masculine indefinite accusative: einen."},
+],
+
+verbs: [
+  {id:"vb01",question:"Ich ___ Student. (sein)",hint:"First person singular.",options:["bist","bin","ist","sind"],correct:1,explanation:"'sein' (to be): ich bin, du bist, er/sie/es ist, wir sind, ihr seid, sie/Sie sind."},
+  {id:"vb02",question:"Du ___ sehr nett. (sein)",hint:"Second person informal.",options:["bin","bist","ist","seid"],correct:1,explanation:"Du bist — the du-form of sein."},
+  {id:"vb03",question:"Er ___ Lehrer. (sein)",hint:"Third person singular masculine.",options:["bin","bist","ist","sind"],correct:2,explanation:"Er/sie/es ist — third person singular of sein."},
+  {id:"vb04",question:"Wir ___ Freunde. (sein)",hint:"First person plural.",options:["bin","bist","seid","sind"],correct:3,explanation:"Wir sind — first person plural of sein."},
+  {id:"vb05",question:"Ihr ___ aus Deutschland. (sein)",hint:"Second person plural.",options:["seid","sind","bin","ist"],correct:0,explanation:"Ihr seid — second person plural of sein."},
+  {id:"vb06",question:"Sie ___ Ärzte. (sein — plural they)",hint:"Third person plural.",options:["ist","bin","bist","sind"],correct:3,explanation:"Sie (they) sind — third person plural of sein."},
+  {id:"vb07",question:"Ich ___ ein Buch. (haben)",hint:"First person singular.",options:["hast","hat","haben","habe"],correct:3,explanation:"'haben' (to have): ich habe, du hast, er/sie hat, wir haben."},
+  {id:"vb08",question:"Du ___ einen Hund. (haben)",hint:"Second person informal.",options:["habe","hat","hast","haben"],correct:2,explanation:"Du hast — the du-form of haben."},
+  {id:"vb09",question:"Sie ___ eine Katze. (haben — she)",hint:"Third person singular feminine.",options:["habe","hast","haben","hat"],correct:3,explanation:"Er/sie/es hat — third person singular of haben."},
+  {id:"vb10",question:"Wir ___ Hunger. (haben)",hint:"First person plural.",options:["habe","hast","haben","hat"],correct:2,explanation:"Wir haben — first person plural of haben."},
+  {id:"vb11",question:"Ich ___ Deutsch. (lernen — regular)",hint:"Regular -en verb.",options:["lernst","lernt","lerne","lernen"],correct:2,explanation:"Regular verbs: stem + -e for ich. lernen → ich lerne."},
+  {id:"vb12",question:"Du ___ Fußball. (spielen)",hint:"Regular verb, du-form.",options:["spiele","spielt","spielen","spielst"],correct:3,explanation:"Regular verbs: stem + -st for du. spielen → du spielst."},
+  {id:"vb13",question:"Er ___ in Berlin. (wohnen)",hint:"Regular verb, er-form.",options:["wohne","wohnst","wohnt","wohnen"],correct:2,explanation:"Regular verbs: stem + -t for er/sie/es. wohnen → er wohnt."},
+  {id:"vb14",question:"Wir ___ Kaffee. (trinken)",hint:"Regular verb, wir-form.",options:["trinke","trinkst","trinkt","trinken"],correct:3,explanation:"Regular verbs: stem + -en for wir. trinken → wir trinken."},
+  {id:"vb15",question:"Ihr ___ sehr gut. (kochen)",hint:"Regular verb, ihr-form.",options:["koche","kochst","kochen","kocht"],correct:3,explanation:"Regular verbs: stem + -t for ihr. kochen → ihr kocht."},
+  {id:"vb16",question:"Sie ___ in der Schule. (arbeiten — they)",hint:"Verb with -t- stem.",options:["arbeite","arbeitest","arbeitet","arbeiten"],correct:3,explanation:"Sie (they) arbeiten — same as infinitive for sie plural."},
+  {id:"vb17",question:"Ich ___ gern Musik. (hören)",hint:"Regular -en verb.",options:["hörst","höre","hört","hören"],correct:1,explanation:"Regular verb ich-form: stem + -e → ich höre."},
+  {id:"vb18",question:"Du ___ sehr schnell. (laufen)",hint:"Irregular verb, du-form: e→ä change",options:["laufe","lauft","läufst","laufen"],correct:2,explanation:"laufen is irregular: du läufst (vowel change a→ä in du and er/sie/es forms)."},
+  {id:"vb19",question:"Er ___ ein Buch. (lesen)",hint:"Irregular verb, er-form: e→ie change",options:["lese","liest","lesst","lesen"],correct:1,explanation:"lesen is irregular: er liest (e→ie vowel change)."},
+  {id:"vb20",question:"Sie ___ Deutsch. (sprechen — she)",hint:"Irregular verb: e→i change",options:["spreche","spricht","sprechst","sprechen"],correct:1,explanation:"sprechen is irregular: sie spricht (e→i vowel change in er/sie/es form)."},
+  {id:"vb21",question:"Ich ___ um 7 Uhr auf. (aufstehen)",hint:"Separable verb: prefix goes to end.",options:["aufstehe","stehe auf","stehst auf","aufstehst"],correct:1,explanation:"Separable verbs split: 'auf-' goes to the end. Ich stehe um 7 Uhr auf."},
+  {id:"vb22",question:"Du ___ heute früh ___. (aufstehen)",hint:"Fill in both parts.",options:["aufstehst / —","stehst / auf","stehst auf / —","— / aufstehst"],correct:1,explanation:"Du stehst … auf. The prefix 'auf' moves to the end of the clause."},
+  {id:"vb23",question:"Wir ___ Musik. (hören)",hint:"Regular verb, wir-form.",options:["höre","hörst","hört","hören"],correct:3,explanation:"Wir hören — same as infinitive."},
+  {id:"vb24",question:"Er ___ gern. (schlafen)",hint:"Irregular: a→ä",options:["schlafe","schlafen","schläft","schlafst"],correct:2,explanation:"schlafen is irregular: er schläft (a→ä vowel change)."},
+  {id:"vb25",question:"Ich ___ Pizza. (essen)",hint:"Irregular: e→i, double-s",options:["esse","isst","esst","essen"],correct:0,explanation:"essen: ich esse (regular for ich). But er/sie isst (e→i change)."},
+  {id:"vb26",question:"Er ___ Pizza. (essen)",hint:"Irregular: e→i change",options:["esse","esst","isst","essen"],correct:2,explanation:"essen: er isst (e→i vowel change in er/sie/es)."},
+  {id:"vb27",question:"Du ___ Wasser. (nehmen)",hint:"Irregular verb.",options:["nimmst","nimmest","nehmst","nehme"],correct:0,explanation:"nehmen is irregular: du nimmst (e→i + doubled m)."},
+  {id:"vb28",question:"Ihr ___ sehr laut. (sprechen)",hint:"Regular ihr-form (no vowel change for ihr).",options:["sprecht","sprecht","sprichst","sprechen"],correct:0,explanation:"ihr sprecht — no vowel change for ihr form."},
+  {id:"vb29",question:"Sie ___ viel. (arbeiten — she)",hint:"Stem ends in -t, needs extra -e.",options:["arbeite","arbeitest","arbeitet","arbeiten"],correct:2,explanation:"arbeiten: er/sie arbeitet (extra -e- inserted before -t ending for pronunciation)."},
+  {id:"vb30",question:"Wir ___ zusammen. (tanzen)",hint:"Regular -en verb.",options:["tanze","tanzt","tanzen","tanzst"],correct:2,explanation:"Wir tanzen — wir form matches the infinitive."},
+  {id:"vb31",question:"Du ___ sehr gut Gitarre. (spielen)",hint:"Regular du-form.",options:["spiele","spielt","spielen","spielst"],correct:3,explanation:"Du spielst — regular du-form: stem + -st."},
+  {id:"vb32",question:"Sie ___ in München. (wohnen — they)",hint:"Third person plural.",options:["wohne","wohnst","wohnt","wohnen"],correct:3,explanation:"sie (they) wohnen — same form as the infinitive."},
+],
+
+negation: [
+  {id:"neg01",question:"Ich trinke ___ Kaffee. (I don't drink any coffee — no article before)",hint:"No article used with Kaffee here.",options:["nicht","kein","keine","keinen"],correct:1,explanation:"Use 'kein' to negate nouns without a definite article. Kaffee (der) → kein Kaffee."},
+  {id:"neg02",question:"Das ist ___ Hund. (That is not a dog.)",hint:"Negating 'ein Hund'.",options:["nicht","kein","keine","keinen"],correct:1,explanation:"Negate indefinite articles with kein/keine. 'Das ist kein Hund.'"},
+  {id:"neg03",question:"Ich habe ___ Schwester. (I have no sister.)",hint:"Negating 'eine Schwester' — feminine.",options:["kein","keinen","keine","nicht"],correct:2,explanation:"eine Schwester (feminine) → keine Schwester. kein follows article gender."},
+  {id:"neg04",question:"Er kommt ___ heute. (He is not coming today.)",hint:"Negating an adverb/verb, no noun.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates verbs, adjectives, and adverbs. No noun is being negated here."},
+  {id:"neg05",question:"Sie ist ___ müde. (She is not tired.)",hint:"Negating an adjective.",options:["kein","keine","nicht","keinen"],correct:2,explanation:"'nicht' negates adjectives and predicate adjectives."},
+  {id:"neg06",question:"Ich kaufe ___ Auto. (I'm not buying a car.)",hint:"das Auto — neuter, indefinite",options:["nicht","kein","keine","keinen"],correct:1,explanation:"Neuter indefinite noun → kein. Das Auto → kein Auto."},
+  {id:"neg07",question:"Wir haben ___ Kinder. (We have no children.)",hint:"Plural noun — no article.",options:["nicht","kein","keine","keinen"],correct:2,explanation:"Plural nouns without article: use keine. 'Wir haben keine Kinder.'"},
+  {id:"neg08",question:"Er arbeitet ___ heute. (He's not working today.)",hint:"Verb negation.",options:["kein","keine","nicht","keinen"],correct:2,explanation:"'nicht' negates the verb/time adverb here, not a noun."},
+  {id:"neg09",question:"Das ist ___ mein Buch. (That is not my book.)",hint:"The possessive already replaces the article.",options:["kein","keine","nicht","keinen"],correct:2,explanation:"'nicht' is used when a definite article or possessive is already present. 'Das ist nicht mein Buch.'"},
+  {id:"neg10",question:"Ich esse ___ Fleisch. (I don't eat meat.)",hint:"Uncountable noun, no article.",options:["nicht","kein","keine","keinen"],correct:1,explanation:"Uncountable nouns without article take kein. Fleisch (das) → kein Fleisch."},
+  {id:"neg11",question:"Du hast ___ Hunger. (You're not hungry.)",hint:"der Hunger — masculine",options:["kein","keine","keinen","nicht"],correct:2,explanation:"Hunger (der) in accusative → keinen Hunger. Masculine accusative: keinen."},
+  {id:"neg12",question:"Er schläft ___ gut. (He doesn't sleep well.)",hint:"Adverb negation.",options:["kein","nicht","keine","keinen"],correct:1,explanation:"'nicht' negates adverbs like gut, schnell, oft."},
+  {id:"neg13",question:"Ich habe ___ Zeit. (I have no time.)",hint:"die Zeit — feminine",options:["kein","keinen","nicht","keine"],correct:3,explanation:"Zeit (die) → keine Zeit. Feminine: keine."},
+  {id:"neg14",question:"Sie kauft ___ Brot. (She doesn't buy any bread.)",hint:"das Brot — neuter, uncountable",options:["keinen","keine","kein","nicht"],correct:2,explanation:"Brot (das) → kein Brot. Neuter: kein."},
+  {id:"neg15",question:"Er ist ___ hier. (He is not here.)",hint:"Adverb of place.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates adverbs of place and time."},
+  {id:"neg16",question:"Ich habe ___ Bruder. (I have no brother.)",hint:"der Bruder — masculine, accusative",options:["keine","kein","keinen","nicht"],correct:2,explanation:"Bruder (der) in accusative → keinen Bruder."},
+  {id:"neg17",question:"Das Wetter ist ___ schön. (The weather is not nice.)",hint:"Adjective negation.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates predicate adjectives."},
+  {id:"neg18",question:"Wir haben ___ Geld. (We have no money.)",hint:"das Geld — neuter, uncountable",options:["keinen","keine","nicht","kein"],correct:3,explanation:"Geld (das) → kein Geld. Neuter: kein."},
+  {id:"neg19",question:"Ich fahre ___ Auto. (I don't drive a car.)",hint:"Auto is in accusative here.",options:["kein","keine","keinen","nicht"],correct:0,explanation:"Auto (das) in accusative → kein Auto. Neuter accusative: kein (no change)."},
+  {id:"neg20",question:"Er mag ___ Sport. (He doesn't like sport.)",hint:"der Sport — masculine",options:["keinen","keine","kein","nicht"],correct:0,explanation:"Sport (der) in accusative → keinen Sport. Masculine accusative: keinen."},
+  {id:"neg21",question:"Sie ist ___ meine Freundin. (She's not my girlfriend.)",hint:"Possessive already present.",options:["kein","nicht","keine","keinen"],correct:1,explanation:"Possessive 'meine' is already there, so use 'nicht'."},
+  {id:"neg22",question:"Ich trinke ___ Alkohol. (I don't drink alcohol.)",hint:"der Alkohol — uncountable",options:["keinen","keine","kein","nicht"],correct:0,explanation:"Alkohol (der) in accusative → keinen Alkohol."},
+  {id:"neg23",question:"Er hat ___ Arbeit. (He has no work/job.)",hint:"die Arbeit — feminine",options:["kein","keinen","nicht","keine"],correct:3,explanation:"Arbeit (die) → keine Arbeit. Feminine: keine."},
+  {id:"neg24",question:"Wir gehen ___ ins Kino. (We're not going to the cinema.)",hint:"Verb negation with destination.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates the verb/action, not a noun."},
+  {id:"neg25",question:"Das ist ___ Problem. (That's not a problem.)",hint:"das Problem — neuter",options:["kein","keinen","keine","nicht"],correct:0,explanation:"Problem (das) → kein Problem. Neuter: kein."},
+  {id:"neg26",question:"Ich habe ___ Ahnung. (I have no idea.)",hint:"die Ahnung — feminine",options:["kein","keinen","nicht","keine"],correct:3,explanation:"Ahnung (die) → keine Ahnung. Feminine: keine."},
+  {id:"neg27",question:"Er kommt ___ aus Berlin. (He's not from Berlin.)",hint:"Adverb of origin.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates adverbial phrases (origin, time, place)."},
+  {id:"neg28",question:"Sie hat ___ Kinder. (She has no children.)",hint:"Plural, no article.",options:["kein","nicht","keinen","keine"],correct:3,explanation:"Plural without article → keine Kinder."},
+  {id:"neg29",question:"Ich spreche ___ gut Deutsch. (I don't speak German well.)",hint:"Adverb negation.",options:["kein","keine","nicht","keinen"],correct:2,explanation:"'nicht' negates the adverb 'gut'."},
+  {id:"neg30",question:"Das Essen ist ___ gut. (The food is not good.)",hint:"Predicate adjective.",options:["kein","keine","keinen","nicht"],correct:3,explanation:"'nicht' negates predicate adjectives."},
+],
+
+pronouns: [
+  {id:"pro01",question:"___ bin Student.",hint:"First person singular.",options:["Du","Er","Ich","Wir"],correct:2,explanation:"'ich' = I. First person singular personal pronoun."},
+  {id:"pro02",question:"___ bist sehr nett.",hint:"Addressing a friend informally.",options:["Ich","Du","Er","Sie"],correct:1,explanation:"'du' = you (informal singular). Used with friends, family, children."},
+  {id:"pro03",question:"___ ist Lehrer.",hint:"Talking about a male person.",options:["Sie","Es","Er","Wir"],correct:2,explanation:"'er' = he. Third person singular masculine."},
+  {id:"pro04",question:"___ ist meine Mutter.",hint:"Talking about a female person.",options:["Er","Es","Wir","Sie"],correct:3,explanation:"'sie' (lowercase) = she. Third person singular feminine."},
+  {id:"pro05",question:"___ ist kalt heute.",hint:"Talking about the weather.",options:["Er","Sie","Es","Wir"],correct:2,explanation:"'es' = it. Used for neuter nouns and impersonal expressions like weather."},
+  {id:"pro06",question:"___ wohnen in Berlin.",hint:"First person plural.",options:["Ich","Du","Wir","Ihr"],correct:2,explanation:"'wir' = we. First person plural."},
+  {id:"pro07",question:"___ seid meine Freunde.",hint:"Addressing a group informally.",options:["Wir","Sie","Ihr","Er"],correct:2,explanation:"'ihr' = you all (informal plural). Like the plural of 'du'."},
+  {id:"pro08",question:"___ sind Ärzte.",hint:"Talking about multiple people (they).",options:["Er","Wir","Ihr","Sie"],correct:3,explanation:"'sie' (capitalized at start of sentence, but lowercase mid-sentence) = they. Also: Sie (formal you)."},
+  {id:"pro09",question:"Woher kommen ___?",hint:"Formal 'you' — e.g. to a stranger.",options:["du","ihr","wir","Sie"],correct:3,explanation:"'Sie' (capital S) = formal 'you'. Used with strangers, bosses, older people."},
+  {id:"pro10",question:"Das Buch — ___ ist interessant.",hint:"Replace 'das Buch' with a pronoun.",options:["er","sie","es","wir"],correct:2,explanation:"Buch is neuter (das) → replace with 'es'."},
+  {id:"pro11",question:"Der Hund — ___ schläft.",hint:"Replace 'der Hund' with a pronoun.",options:["sie","es","er","wir"],correct:2,explanation:"Hund is masculine (der) → replace with 'er'."},
+  {id:"pro12",question:"Die Frau — ___ lacht.",hint:"Replace 'die Frau' with a pronoun.",options:["er","sie","es","ihr"],correct:1,explanation:"Frau is feminine (die) → replace with 'sie'."},
+  {id:"pro13",question:"Ich kenne ___. (him — accusative)",hint:"Accusative of 'er'.",options:["er","ihm","ihn","er"],correct:2,explanation:"'ihn' is the accusative form of 'er' (he → him). Er → ihn in accusative."},
+  {id:"pro14",question:"Ich kenne ___. (her — accusative)",hint:"Accusative of 'sie' (she).",options:["ihr","sie","sie","ihn"],correct:1,explanation:"'sie' stays 'sie' in the accusative — feminine pronoun doesn't change."},
+  {id:"pro15",question:"Ich kenne ___. (it — accusative)",hint:"Accusative of 'es'.",options:["ihm","ihn","es","sie"],correct:2,explanation:"'es' stays 'es' in the accusative."},
+  {id:"pro16",question:"Ich sehe ___. (you, informal — accusative)",hint:"Accusative of 'du'.",options:["dich","dir","du","deinen"],correct:0,explanation:"'dich' is the accusative form of 'du'. du → dich."},
+  {id:"pro17",question:"Er sieht ___. (me — accusative)",hint:"Accusative of 'ich'.",options:["mich","mir","ich","meinen"],correct:0,explanation:"'mich' is the accusative form of 'ich'. ich → mich."},
+  {id:"pro18",question:"Sie kennen ___. (us — accusative)",hint:"Accusative of 'wir'.",options:["wir","uns","euch","sich"],correct:1,explanation:"'uns' is the accusative (and dative) form of 'wir'."},
+  {id:"pro19",question:"Ich sehe ___. (you all, informal — accusative)",hint:"Accusative of 'ihr'.",options:["euch","euer","ihr","sie"],correct:0,explanation:"'euch' is the accusative form of 'ihr'."},
+  {id:"pro20",question:"Wir kennen ___. (them — accusative)",hint:"Accusative of 'sie' (they).",options:["ihr","sie","ihnen","sich"],correct:1,explanation:"'sie' (they) stays 'sie' in the accusative."},
+  {id:"pro21",question:"Die Kinder — ___ spielen im Garten.",hint:"Plural subject pronoun.",options:["er","sie","es","wir"],correct:1,explanation:"Plural nouns → 'sie' (they). Note: same form as 'she' but context makes it clear."},
+  {id:"pro22",question:"Das Auto — ___ ist rot.",hint:"Neuter noun pronoun.",options:["er","sie","es","wir"],correct:2,explanation:"Auto is neuter → 'es'."},
+  {id:"pro23",question:"___ heißt Maria und kommt aus Wien.",hint:"Third person singular female.",options:["Er","Es","Sie","Wir"],correct:2,explanation:"'sie' = she. Third person singular feminine."},
+  {id:"pro24",question:"___ kommen morgen.",hint:"They are coming tomorrow.",options:["Er","Es","Wir","Sie"],correct:3,explanation:"'sie' (they) or at start of sentence could also be Sie (formal you). Context → sie (they)."},
+  {id:"pro25",question:"Entschuldigung, woher kommen ___, Herr Müller?",hint:"Formal address.",options:["du","ihr","Sie","wir"],correct:2,explanation:"With titles/surnames, always use the formal 'Sie'."},
+  {id:"pro26",question:"Ich mag ___. (you formal — accusative)",hint:"Accusative of 'Sie' (formal).",options:["Sie","Ihnen","Sich","sich"],correct:0,explanation:"Formal 'Sie' stays 'Sie' in the accusative. (Dative is 'Ihnen'.)"},
+  {id:"pro27",question:"Der Lehrer — ___ erklärt die Aufgabe.",hint:"Masculine noun pronoun.",options:["sie","es","er","wir"],correct:2,explanation:"Lehrer is masculine (der) → 'er'."},
+  {id:"pro28",question:"Die Bücher — ___ sind auf dem Tisch.",hint:"Plural noun pronoun.",options:["es","er","sie","wir"],correct:2,explanation:"Plural nouns → 'sie' (they)."},
+  {id:"pro29",question:"Ich rufe ___ an. (her — accusative of sie)",hint:"She is being called.",options:["ihr","sie","ihn","ihm"],correct:1,explanation:"'sie' (she) stays 'sie' in accusative."},
+  {id:"pro30",question:"Er fragt ___. (me — accusative)",hint:"Accusative of ich.",options:["mir","mich","ich","mein"],correct:1,explanation:"ich → mich in accusative."},
+],
+
+plurals: [
+  {id:"pl01",question:"Was ist der Plural von 'Hund'?",hint:"die ___ bellen",options:["Hundes","Hunden","Hünde","Hunde"],correct:3,explanation:"Hund → Hunde. Many masculine/neuter nouns add -e in the plural."},
+  {id:"pl02",question:"Was ist der Plural von 'Frau'?",hint:"die ___",options:["Fraues","Frauen","Fraus","Fräue"],correct:1,explanation:"Frau → Frauen. Nouns ending in -au or -e often add -en or -n."},
+  {id:"pl03",question:"Was ist der Plural von 'Kind'?",hint:"die ___ spielen",options:["Kinds","Kinde","Kinder","Kindes"],correct:2,explanation:"Kind → Kinder. Many neuter nouns add -er (often with umlaut)."},
+  {id:"pl04",question:"Was ist der Plural von 'Buch'?",hint:"die ___ sind interessant",options:["Buchs","Buche","Büche","Bücher"],correct:3,explanation:"Buch → Bücher. Neuter nouns often add -er with umlaut."},
+  {id:"pl05",question:"Was ist der Plural von 'Auto'?",hint:"die ___ fahren schnell",options:["Autos","Autoes","Autoen","Aute"],correct:0,explanation:"Auto → Autos. Loanwords ending in a vowel usually add -s."},
+  {id:"pl06",question:"Was ist der Plural von 'Apfel'?",hint:"die ___ sind rot",options:["Apfels","Apfele","Äpfel","Apfeln"],correct:2,explanation:"Apfel → Äpfel. Many masculine nouns change the vowel (umlaut) in the plural, no ending."},
+  {id:"pl07",question:"Was ist der Plural von 'Mutter'?",hint:"die ___ kommen",options:["Mutters","Mutteren","Mütter","Muttern"],correct:2,explanation:"Mutter → Mütter. Umlaut only, no new ending."},
+  {id:"pl08",question:"Was ist der Plural von 'Vater'?",hint:"die ___ arbeiten",options:["Vaters","Vatern","Vatere","Väter"],correct:3,explanation:"Vater → Väter. Umlaut only, no new ending (same pattern as Mutter)."},
+  {id:"pl09",question:"Was ist der Plural von 'Haus'?",hint:"die ___ sind groß",options:["Hauses","Haus","Häuser","Hauser"],correct:2,explanation:"Haus → Häuser. Neuter nouns often add -er with umlaut."},
+  {id:"pl10",question:"Was ist der Plural von 'Stadt'?",hint:"die ___ Deutschlands",options:["Stadts","Städt","Städte","Stadte"],correct:2,explanation:"Stadt → Städte. Feminine nouns often add -e with umlaut."},
+  {id:"pl11",question:"Was ist der Plural von 'Schule'?",hint:"die ___ in Berlin",options:["Schules","Schulen","Schuler","Schules"],correct:1,explanation:"Schule → Schulen. Nouns ending in -e just add -n."},
+  {id:"pl12",question:"Was ist der Plural von 'Stuhl'?",hint:"die ___ im Klassenzimmer",options:["Stuhls","Stuhle","Stühle","Stuhlene"],correct:2,explanation:"Stuhl → Stühle. Masculine nouns often add -e with umlaut."},
+  {id:"pl13",question:"Was ist der Plural von 'Mann'?",hint:"die ___ arbeiten",options:["Manns","Manne","Männe","Männer"],correct:3,explanation:"Mann → Männer. Add -er plus umlaut."},
+  {id:"pl14",question:"Was ist der Plural von 'Frau'?",hint:"Already covered — can you recall?",options:["Fraus","Fraues","Frauen","Fräue"],correct:2,explanation:"Frau → Frauen (add -en)."},
+  {id:"pl15",question:"Was ist der Plural von 'Lehrer'?",hint:"die ___ erklären viel",options:["Lehrers","Lehrere","Lehrern","Lehrer"],correct:3,explanation:"Lehrer → Lehrer. Nouns ending in -er, -el, -en usually don't change in the plural (but may add umlaut)."},
+  {id:"pl16",question:"Was ist der Plural von 'Computer'?",hint:"die ___ sind neu",options:["Computers","Computer","Computern","Computere"],correct:1,explanation:"Computer → Computer. Like Lehrer, -er ending nouns usually have no plural change."},
+  {id:"pl17",question:"Was ist der Plural von 'Straße'?",hint:"die ___ sind lang",options:["Straßes","Straßen","Straße","Straßer"],correct:1,explanation:"Straße → Straßen. Nouns ending in -e add -n."},
+  {id:"pl18",question:"Was ist der Plural von 'Tisch'?",hint:"die ___ im Restaurant",options:["Tischs","Tische","Tischen","Tischer"],correct:1,explanation:"Tisch → Tische. Many masculine nouns add -e with no umlaut."},
+  {id:"pl19",question:"Was ist der Plural von 'Zimmer'?",hint:"die ___ sind klein",options:["Zimmerе","Zimmern","Zimmer","Zimmers"],correct:2,explanation:"Zimmer → Zimmer. No change (like all -er/-el nouns)."},
+  {id:"pl20",question:"Was ist der Plural von 'Foto'?",hint:"die ___ sind schön",options:["Fotoen","Fotos","Foton","Fotoes"],correct:1,explanation:"Foto → Fotos. Loanwords ending in a vowel usually add -s."},
+  {id:"pl21",question:"Was ist der Plural von 'Café'?",hint:"die ___ in der Stadt",options:["Café","Cafées","Cafés","Cafens"],correct:2,explanation:"Café → Cafés. Loanwords ending in accented vowels add -s."},
+  {id:"pl22",question:"Was ist der Plural von 'Bett'?",hint:"die ___ im Hotel",options:["Bettes","Bette","Betten","Betts"],correct:2,explanation:"Bett → Betten. Many neuter nouns ending in a consonant double add -en."},
+  {id:"pl23",question:"Was ist der Plural von 'Küche'?",hint:"die ___ in den Häusern",options:["Küches","Küchen","Küchn","Küchs"],correct:1,explanation:"Küche → Küchen. Ending in -e → add -n."},
+  {id:"pl24",question:"Was ist der Plural von 'Name'?",hint:"die ___ der Schüler",options:["Namen","Namens","Name","Namer"],correct:0,explanation:"Name → Namen. Weak masculine nouns add -n/-en in all forms."},
+  {id:"pl25",question:"Was ist der Plural von 'Zug'?",hint:"die ___ fahren pünktlich",options:["Zuges","Züge","Zuge","Zugs"],correct:1,explanation:"Zug → Züge. Masculine noun: add -e with umlaut."},
+  {id:"pl26",question:"Was ist der Plural von 'Baum'?",hint:"die ___ im Park",options:["Baume","Baums","Bäume","Bäumes"],correct:2,explanation:"Baum → Bäume. Add -e with umlaut."},
+  {id:"pl27",question:"Was ist der Plural von 'Uhr'?",hint:"die ___ zeigen verschiedene Zeiten",options:["Uhren","Uhrе","Uhrs","Uhre"],correct:0,explanation:"Uhr → Uhren. Feminine nouns often add -en."},
+  {id:"pl28",question:"Was ist der Plural von 'Ei'?",hint:"die ___ sind frisch",options:["Eis","Eies","Eier","Eie"],correct:2,explanation:"Ei → Eier. Neuter: add -er (with no umlaut possible here)."},
+  {id:"pl29",question:"Was ist der Plural von 'Land'?",hint:"die ___ Europas",options:["Lands","Lande","Länder","Lander"],correct:2,explanation:"Land → Länder. Add -er with umlaut."},
+  {id:"pl30",question:"Was ist der Plural von 'Wort'?",hint:"die ___ im Wörterbuch",options:["Worte","Wörter","Worts","Worden"],correct:1,explanation:"Wort → Wörter (for individual words). Worte is also used but refers to meaningful phrases/speech."},
+],
+
+wortstellung: [
+  {id:"ws01",question:"Which is correct? (subject–verb–object basic order)",hint:"Standard statement.",options:["Ich esse Pizza.","Esse ich Pizza.","Pizza ich esse.","Esse Pizza ich."],correct:0,explanation:"Standard German word order: Subject – Verb – Object (SVO). 'Ich esse Pizza.'"},
+  {id:"ws02",question:"Which is correct? (verb stays 2nd in a statement)",hint:"Heute is moved to position 1.",options:["Heute ich gehe ins Kino.","Heute gehe ich ins Kino.","Ich heute gehe ins Kino.","Ins Kino ich heute gehe."],correct:1,explanation:"When a time adverb (Heute) moves to position 1, the verb (gehe) must stay in position 2, pushing ich to position 3."},
+  {id:"ws03",question:"Yes/No question: correct form?",hint:"Verb moves to position 1.",options:["Du kommst morgen?","Kommst du morgen?","Morgen du kommst?","Du morgen kommst?"],correct:1,explanation:"Yes/no questions: verb comes first. 'Kommst du morgen?' (Verb – Subject – rest)."},
+  {id:"ws04",question:"W-question: correct form?",hint:"W-word → verb → subject.",options:["Wo du wohnst?","Du wohnst wo?","Wo wohnst du?","Wohnst wo du?"],correct:2,explanation:"W-questions: W-word + verb + subject. 'Wo wohnst du?'"},
+  {id:"ws05",question:"Separable verb: correct position of prefix?",hint:"'anrufen' — to call.",options:["Ich anrufe dich heute.","Ich rufe heute dich an.","Ich rufe dich heute an.","Anich rufe dich heute."],correct:2,explanation:"Separable verbs: conjugated verb in position 2, prefix goes to the END of the clause."},
+  {id:"ws06",question:"Negation with 'nicht': correct position?",hint:"'not coming today'",options:["Er kommt nicht heute.","Er nicht kommt heute.","Er kommt heute nicht.","Nicht er kommt heute."],correct:2,explanation:"'nicht' usually comes at the end or just before the element it negates. 'Er kommt heute nicht.' is more natural."},
+  {id:"ws07",question:"Which is correct?",hint:"Time before Place rule: TeKaMoLo",options:["Er fährt morgen nach Berlin.","Er fährt nach Berlin morgen.","Morgen Berlin fährt er.","Er Berlin fährt morgen."],correct:0,explanation:"German order for adverbs: Time (morgen) before Place (nach Berlin). TeKaMoLo: Temporal – Causal – Modal – Local."},
+  {id:"ws08",question:"Modal verb + infinitive: correct?",hint:"'want to eat' — wollen",options:["Ich will essen Pizza.","Ich will Pizza essen.","Ich Pizza will essen.","Essen will Pizza ich."],correct:1,explanation:"Modal verbs: modal in position 2 (conjugated), infinitive at the END. 'Ich will Pizza essen.'"},
+  {id:"ws09",question:"Correct question form?",hint:"'What is your name?'",options:["Wie heißt du?","Wie du heißt?","Du wie heißt?","Heißt wie du?"],correct:0,explanation:"W-question: W-word + verb + subject. 'Wie heißt du?'"},
+  {id:"ws10",question:"Correct statement?",hint:"Subject verb agreement + order.",options:["Meine Mutter kocht gut.","Meine Mutter gut kocht.","Kocht gut meine Mutter.","Gut meine Mutter kocht."],correct:0,explanation:"SVO order: Subject (Meine Mutter) + Verb (kocht) + Adverb (gut)."},
+  {id:"ws11",question:"Which is correct? (adverb in front position)",hint:"'Often I drink coffee.'",options:["Oft trinke ich Kaffee.","Oft ich trinke Kaffee.","Ich oft trinke Kaffee.","Kaffee ich oft trinke."],correct:0,explanation:"When 'oft' goes to position 1, the verb (trinke) stays in position 2 and subject (ich) moves back."},
+  {id:"ws12",question:"Correct yes/no question?",hint:"'Do you speak German?'",options:["Du sprichst Deutsch?","Sprichst Deutsch du?","Sprichst du Deutsch?","Deutsch sprichst du?"],correct:2,explanation:"Yes/no questions: verb first. 'Sprichst du Deutsch?'"},
+  {id:"ws13",question:"Correct sentence with modal?",hint:"'She must go home.' — müssen",options:["Sie muss gehen nach Hause.","Sie muss nach Hause gehen.","Nach Hause muss sie gehen.","Sie nach Hause muss gehen."],correct:1,explanation:"Modal verb in position 2, infinitive at the end. 'Sie muss nach Hause gehen.' Also option C is grammatically possible (fronted phrase) but option B is the standard form asked here."},
+  {id:"ws14",question:"Correct order with object?",hint:"'He gives her a book.'",options:["Er gibt ihr ein Buch.","Er gibt ein Buch ihr.","Ihr er gibt ein Buch.","Er ihr ein Buch gibt."],correct:0,explanation:"Standard dative-before-accusative: 'Er gibt ihr (dative) ein Buch (accusative).'"},
+  {id:"ws15",question:"Which sentence is correct?",hint:"'We work every day.'",options:["Wir arbeiten jeden Tag.","Jeden Tag wir arbeiten.","Wir jeden Tag arbeiten.","Arbeiten jeden Tag wir."],correct:0,explanation:"SVO: Wir (S) + arbeiten (V) + jeden Tag (time). Also 'Jeden Tag arbeiten wir.' is valid (fronted time), but the straightforward SVO is option A."},
+  {id:"ws16",question:"'I am going to the cinema on Friday.' — correct order?",hint:"Time before place.",options:["Ich gehe Freitag ins Kino.","Ich gehe ins Kino Freitag.","Freitag ins Kino ich gehe.","Ins Kino gehe Freitag ich."],correct:0,explanation:"Time (Freitag) before Place (ins Kino). 'Ich gehe Freitag ins Kino.'"},
+  {id:"ws17",question:"Correct yes/no question?",hint:"'Is she here?'",options:["Sie ist hier?","Ist hier sie?","Ist sie hier?","Hier ist sie?"],correct:2,explanation:"Yes/no: verb first. 'Ist sie hier?'"},
+  {id:"ws18",question:"'Because' clause — correct?",hint:"'weil' sends verb to the end.",options:["Ich bin müde, weil ich arbeite viel.","Ich bin müde, weil ich viel arbeite.","Ich bin müde, weil viel ich arbeite.","Ich bin viel müde, weil arbeite ich."],correct:1,explanation:"Subordinating conjunctions like 'weil' send the verb to the END of the subordinate clause."},
+  {id:"ws19",question:"W-question: correct?",hint:"'When does the train come?'",options:["Wann kommt der Zug?","Wann der Zug kommt?","Kommt wann der Zug?","Der Zug kommt wann?"],correct:0,explanation:"W-word + verb + subject: 'Wann kommt der Zug?'"},
+  {id:"ws20",question:"Correct sentence?",hint:"'She drinks tea in the evening.'",options:["Sie trinkt abends Tee.","Sie abends trinkt Tee.","Abends sie trinkt Tee.","Tee sie trinkt abends."],correct:0,explanation:"'Abends' is a time expression — can go to position 1 or after the verb. 'Sie trinkt abends Tee.' is natural SVO."},
+  {id:"ws21",question:"Separable verb correct use?",hint:"'aufmachen' — to open",options:["Er macht das Fenster auf.","Er aufmacht das Fenster.","Er macht auf das Fenster.","Auf er macht das Fenster."],correct:0,explanation:"Separable: 'macht' in position 2, prefix 'auf' goes to the end."},
+  {id:"ws22",question:"Correct sentence?",hint:"'Do you have a question?'",options:["Du hast eine Frage?","Hast eine Frage du?","Hast du eine Frage?","Eine Frage du hast?"],correct:2,explanation:"Yes/no question: verb first. 'Hast du eine Frage?'"},
+  {id:"ws23",question:"Correct fronting?",hint:"'Tomorrow we go to school.'",options:["Morgen wir gehen zur Schule.","Wir gehen morgen zur Schule.","Morgen gehen wir zur Schule.","Morgen zur Schule gehen wir."],correct:2,explanation:"When 'Morgen' is at position 1, verb (gehen) stays at position 2: 'Morgen gehen wir zur Schule.'"},
+  {id:"ws24",question:"Correct sentence?",hint:"'She can speak German well.'",options:["Sie kann gut Deutsch sprechen.","Sie kann Deutsch gut sprechen.","Sie gut kann Deutsch sprechen.","Sie kann Deutsch sprechen gut."],correct:0,explanation:"Modal + adverb + object + infinitive: 'Sie kann gut Deutsch sprechen.'"},
+  {id:"ws25",question:"Correct 'weil' clause?",hint:"'Because he is tired.'",options:["…weil er ist müde.","…weil er müde ist.","…weil müde er ist.","…weil ist er müde."],correct:1,explanation:"In weil-clauses, the verb goes to the end: '…weil er müde ist.'"},
+  {id:"ws26",question:"Correct word order?",hint:"'I don't understand that.'",options:["Ich das verstehe nicht.","Ich verstehe das nicht.","Nicht ich verstehe das.","Ich verstehe nicht das."],correct:1,explanation:"Standard SVO: 'Ich (S) verstehe (V) das (O) nicht.' 'nicht' goes at the end."},
+  {id:"ws27",question:"Correct yes/no question?",hint:"'Do you live in Berlin?'",options:["Du wohnst in Berlin?","In Berlin wohnst du?","Wohnst du in Berlin?","Wohnst in Berlin du?"],correct:2,explanation:"Yes/no question: verb first. 'Wohnst du in Berlin?'"},
+  {id:"ws28",question:"Correct sentence?",hint:"'We want to eat pizza.'",options:["Wir wollen essen Pizza.","Wir wollen Pizza essen.","Pizza wir wollen essen.","Wir Pizza wollen essen."],correct:1,explanation:"Modal: conjugated verb position 2, infinitive at end: 'Wir wollen Pizza essen.'"},
+  {id:"ws29",question:"Correct fronting?",hint:"'In Berlin he works.'",options:["In Berlin er arbeitet.","In Berlin arbeitet er.","Er in Berlin arbeitet.","Arbeitet er in Berlin?"],correct:1,explanation:"Fronted place phrase: 'In Berlin (pos.1) + arbeitet (verb pos.2) + er (subject pos.3).'"},
+  {id:"ws30",question:"Correct?",hint:"'She is not going home.'",options:["Sie geht nach Hause nicht.","Sie geht nicht nach Hause.","Nicht sie geht nach Hause.","Sie nicht geht nach Hause."],correct:1,explanation:"'nicht' goes before the phrase it negates (nach Hause) when negating directional phrases."},
+],
+
+modals: [
+  {id:"mod01",question:"Ich ___ Deutsch sprechen. (can)",hint:"ability",options:["will","muss","kann","darf"],correct:2,explanation:"'können' = can/to be able to. ich kann."},
+  {id:"mod02",question:"Du ___ mehr Wasser trinken. (should/ought to)",hint:"advice",options:["kannst","willst","darfst","sollst"],correct:3,explanation:"'sollen' = should/supposed to. du sollst."},
+  {id:"mod03",question:"Er ___ morgen arbeiten. (must)",hint:"obligation",options:["kann","will","muss","darf"],correct:2,explanation:"'müssen' = must/have to. er muss."},
+  {id:"mod04",question:"Wir ___ ins Kino gehen. (want to)",hint:"desire/wish",options:["müssen","dürfen","können","wollen"],correct:3,explanation:"'wollen' = to want to. wir wollen."},
+  {id:"mod05",question:"Ihr ___ hier nicht rauchen. (are not allowed to)",hint:"permission denied",options:["müsst","sollt","dürft","könnt"],correct:2,explanation:"'dürfen' = to be allowed to. Negative: dürft nicht = are not allowed."},
+  {id:"mod06",question:"Sie ___ früh aufstehen. (have to — she)",hint:"necessity",options:["kann","will","muss","darf"],correct:2,explanation:"'müssen' = must. sie muss."},
+  {id:"mod07",question:"Ich ___ ein Eis haben! (want — expressing desire)",hint:"I want…",options:["muss","soll","darf","will"],correct:3,explanation:"'wollen' = to want. ich will. (Strong desire — not as polite as möchten.)"},
+  {id:"mod08",question:"Darf ich ___? (May I …?)",hint:"Asking permission.",options:["gehen","gehst","gegangen","gehe"],correct:0,explanation:"After modal verbs, the infinitive is used without 'zu'. 'Darf ich gehen?' = May I go?"},
+  {id:"mod09",question:"Ich ___ ein Glas Wasser, bitte. (would like — polite)",hint:"Polite desire — not wollen!",options:["will","muss","möchte","darf"],correct:2,explanation:"'möchten' = would like. Politer than 'wollen'. ich möchte. Very important for ordering food, shopping, etc."},
+  {id:"mod10",question:"Du ___ das nicht machen! (must not)",hint:"Prohibition.",options:["kannst","darfst","willst","musst"],correct:1,explanation:"'dürfen nicht' = must not / not allowed to. 'Du darfst das nicht machen!'"},
+  {id:"mod11",question:"Er ___ sehr gut singen. (can)",hint:"ability",options:["muss","soll","kann","will"],correct:2,explanation:"'können' = can. er kann."},
+  {id:"mod12",question:"Wir ___ morgen früh da sein. (have to)",hint:"necessity",options:["wollen","dürfen","können","müssen"],correct:3,explanation:"'müssen' = must/have to. wir müssen."},
+  {id:"mod13",question:"Ich ___ jetzt gehen. (need to / must)",hint:"Necessity — leaving now.",options:["will","muss","darf","soll"],correct:1,explanation:"'müssen' = have to. ich muss."},
+  {id:"mod14",question:"___ du Deutsch sprechen? (Can you…?)",hint:"Yes/no question with modal.",options:["Musst","Sollst","Kannst","Willst"],correct:2,explanation:"'Kannst du…?' = Can you…? Verb-first question with können."},
+  {id:"mod15",question:"Sie ___ bitte leiser sein. (should — polite request)",hint:"Polite — not wollen.",options:["wollen","können","sollen","müssen"],correct:2,explanation:"'sollen' = should / are supposed to. sie sollen."},
+  {id:"mod16",question:"Ich ___ ein Taxi nehmen. (want to / plan to)",hint:"Personal desire/plan.",options:["muss","darf","soll","will"],correct:3,explanation:"'wollen' = want to. ich will. Expresses intention."},
+  {id:"mod17",question:"Du ___ das lernen. (are supposed to — told by someone else)",hint:"Told to do it by someone.",options:["willst","kannst","sollst","darfst"],correct:2,explanation:"'sollen' = supposed to (because someone told you). du sollst."},
+  {id:"mod18",question:"Hier ___ man nicht parken. (one must not)",hint:"General rule / sign.",options:["kann","darf","muss","soll"],correct:1,explanation:"'dürfen nicht' = must not. 'Hier darf man nicht parken.' — No parking."},
+  {id:"mod19",question:"Er ___ besser schlafen. (should)",hint:"Health advice.",options:["kann","will","soll","darf"],correct:2,explanation:"'sollen' = should. er soll."},
+  {id:"mod20",question:"Wir ___ Deutsch üben. (want to)",hint:"Expressing group desire.",options:["müssen","sollen","dürfen","wollen"],correct:3,explanation:"'wollen' = want to. wir wollen."},
+  {id:"mod21",question:"___ ich das Fenster öffnen? (May I…?)",hint:"Asking permission politely.",options:["Muss","Soll","Darf","Kann"],correct:2,explanation:"'Darf ich…?' = May I…? Asking permission uses dürfen."},
+  {id:"mod22",question:"Ich ___ heute nicht arbeiten. (don't have to)",hint:"No obligation today.",options:["darf nicht","muss nicht","soll nicht","will nicht"],correct:1,explanation:"'müssen nicht' = don't have to (no obligation). Different from 'dürfen nicht' (not allowed)."},
+  {id:"mod23",question:"Du ___ das nicht tun! (must not / not allowed)",hint:"Prohibition — not just advice.",options:["musst nicht","sollst nicht","darfst nicht","kannst nicht"],correct:2,explanation:"'darfst nicht' = must not / not allowed to. Stronger than 'sollst nicht' (advice)."},
+  {id:"mod24",question:"Er ___ gut Gitarre spielen. (can)",hint:"Talent/ability.",options:["will","muss","soll","kann"],correct:3,explanation:"'können' = can. er kann."},
+  {id:"mod25",question:"Möchtest du ___? (What comes after möchten?)",hint:"Infinitive rule.",options:["Kaffee trinken","Kaffee trinkst","Kaffee getrunken","Kaffee trink"],correct:0,explanation:"After modal verbs, always use the infinitive. 'Möchtest du Kaffee trinken?'"},
+  {id:"mod26",question:"Sie ___ jetzt nach Hause. (must — she)",hint:"Necessary departure.",options:["will","darf","soll","muss"],correct:3,explanation:"'müssen' = must. sie muss. (The infinitive 'gehen' is often dropped colloquially after directional phrases.)"},
+  {id:"mod27",question:"Ich ___ ein Zimmer reservieren, bitte. (would like)",hint:"Polite request at hotel.",options:["will","muss","möchte","darf"],correct:2,explanation:"'möchten' = would like. ich möchte. The polite form for requests."},
+  {id:"mod28",question:"Wir ___ hier warten. (must)",hint:"Obligation to wait.",options:["wollen","dürfen","können","müssen"],correct:3,explanation:"'müssen' = must. wir müssen."},
+  {id:"mod29",question:"___ du mitkommen? (Do you want to come along?)",hint:"Invitation using wollen.",options:["Musst","Sollst","Willst","Darfst"],correct:2,explanation:"'Willst du…?' = Do you want to…? Yes/no question with wollen."},
+  {id:"mod30",question:"Hier ___ man Deutsch sprechen. (should/is expected to)",hint:"General expectation.",options:["kann","darf","soll","will"],correct:2,explanation:"'sollen' = should/is expected to. 'Hier soll man Deutsch sprechen.'"},
+],
+
+prepositions: [
+  {id:"prep01",question:"Ich wohne ___ Berlin.",hint:"Location in a city.",options:["an","auf","in","zu"],correct:2,explanation:"'in' + city/country name for location. 'Ich wohne in Berlin.'"},
+  {id:"prep02",question:"Der Stift ist ___ dem Tisch.",hint:"On top of the table.",options:["in","an","auf","zu"],correct:2,explanation:"'auf' = on (horizontal surface). 'Der Stift ist auf dem Tisch.'"},
+  {id:"prep03",question:"Ich gehe ___ Schule.",hint:"Going to school — no article needed.",options:["in die","zu der","in der","zur"],correct:3,explanation:"'zur Schule' (zu + der = zur). Going to school uses 'zur Schule gehen' as a fixed phrase."},
+  {id:"prep04",question:"Das Buch ist ___ Regal.",hint:"In the bookshelf.",options:["auf dem","in dem","an dem","zu dem"],correct:1,explanation:"'im Regal' (in + dem) = in the shelf. 'in' for enclosed/interior location."},
+  {id:"prep05",question:"Er kommt ___ Deutschland.",hint:"Origin — where from?",options:["nach","in","aus","von"],correct:2,explanation:"'aus' = from (for countries and cities — origin). 'Er kommt aus Deutschland.'"},
+  {id:"prep06",question:"Ich fahre ___ München.",hint:"Going to a city.",options:["zu","in","aus","nach"],correct:3,explanation:"'nach' + city/country (without article) = going to. 'Ich fahre nach München.'"},
+  {id:"prep07",question:"Das Bild hängt ___ der Wand.",hint:"On the wall (vertical surface).",options:["auf","in","an","zu"],correct:2,explanation:"'an' = on (vertical surfaces like walls). 'Das Bild hängt an der Wand.'"},
+  {id:"prep08",question:"Ich gehe ___ dem Bus zur Arbeit.",hint:"By/using the bus — method of transport.",options:["mit","von","aus","nach"],correct:0,explanation:"'mit' + dative = by/with (transport). 'Ich fahre mit dem Bus.'"},
+  {id:"prep09",question:"Sie sitzt ___ dem Stuhl.",hint:"Sitting in front of — wait, or on?",options:["auf","an","in","vor"],correct:0,explanation:"'auf dem Stuhl sitzen' = sitting on the chair. 'auf' for sitting on objects."},
+  {id:"prep10",question:"Das Café ist ___ der Bank.",hint:"Next to the bank.",options:["in","an","neben","auf"],correct:2,explanation:"'neben' = next to, beside. 'Das Café ist neben der Bank.'"},
+  {id:"prep11",question:"Ich gehe ___ Arzt.",hint:"Going to the doctor — zum/zur?",options:["nach dem","zum","zur","in den"],correct:1,explanation:"'zum Arzt' (zu + dem = zum). Der Arzt is masculine: zu + dem = zum."},
+  {id:"prep12",question:"Sie kommt ___ der Arbeit.",hint:"Coming from work.",options:["nach","aus","von","mit"],correct:2,explanation:"'von' = from (a place/person, not a country). 'Sie kommt von der Arbeit.'"},
+  {id:"prep13",question:"Ich stehe ___ der Tür.",hint:"In front of the door.",options:["hinter","neben","vor","an"],correct:2,explanation:"'vor' = in front of. 'Ich stehe vor der Tür.'"},
+  {id:"prep14",question:"Das Café ist ___ der Ecke.",hint:"On the corner.",options:["in","an","auf","über"],correct:1,explanation:"'an der Ecke' = at the corner. 'an' for specific points/edges."},
+  {id:"prep15",question:"Wir essen ___ dem Restaurant.",hint:"In the restaurant.",options:["auf","an","in","zu"],correct:2,explanation:"'in' = inside (buildings). 'Wir essen im Restaurant.' (in + dem = im)"},
+  {id:"prep16",question:"Das Buch ist ___ dem Tisch. (under)",hint:"Underneath.",options:["auf","vor","unter","hinter"],correct:2,explanation:"'unter' = under, beneath."},
+  {id:"prep17",question:"Er wartet ___ mir.",hint:"Waiting for me — person.",options:["für","auf","an","zu"],correct:1,explanation:"'warten auf' (+ accusative) = to wait for. 'Er wartet auf mich.' (auf + accusative)."},
+  {id:"prep18",question:"Ich lerne ___ meiner Freundin.",hint:"Studying together with.",options:["von","aus","mit","bei"],correct:2,explanation:"'mit' = with (someone). 'Ich lerne mit meiner Freundin.'"},
+  {id:"prep19",question:"Sie wohnt ___ ihren Eltern.",hint:"Living at parents' house.",options:["zu","mit","bei","von"],correct:2,explanation:"'bei' + dative = at someone's place / with someone (living situation). 'bei ihren Eltern.'"},
+  {id:"prep20",question:"Das Kino ist ___ dem Bahnhof.",hint:"Behind the station.",options:["vor","neben","unter","hinter"],correct:3,explanation:"'hinter' = behind. 'Das Kino ist hinter dem Bahnhof.'"},
+  {id:"prep21",question:"Ich komme ___ 8 Uhr. (at 8 o'clock — time)",hint:"Specific time.",options:["in","an","um","zu"],correct:2,explanation:"'um' = at (specific time). 'Ich komme um 8 Uhr.'"},
+  {id:"prep22",question:"Wir treffen uns ___ Montag.",hint:"Day of the week.",options:["um","in","am","zu"],correct:2,explanation:"'am' (an + dem) = on (days of the week). 'am Montag' = on Monday."},
+  {id:"prep23",question:"Das Buch liegt ___ dem Stuhl. (between the chair and the table)",hint:"Between two things.",options:["neben","zwischen","vor","hinter"],correct:1,explanation:"'zwischen' = between. 'Das Buch liegt zwischen dem Stuhl und dem Tisch.'"},
+  {id:"prep24",question:"Ich fahre ___ dem Fahrrad.",hint:"By bicycle.",options:["in","auf","mit","zu"],correct:2,explanation:"'mit dem Fahrrad fahren' = to ride a bike. 'mit' + dative for transport."},
+  {id:"prep25",question:"Das Flugzeug fliegt ___ den Wolken.",hint:"Above the clouds.",options:["unter","neben","über","vor"],correct:2,explanation:"'über' = over, above. 'Das Flugzeug fliegt über den Wolken.'"},
+  {id:"prep26",question:"Ich lerne Deutsch ___ zwei Monaten.",hint:"For two months (duration up to now).",options:["in","nach","seit","vor"],correct:2,explanation:"'seit' + dative = for/since (ongoing duration). 'Ich lerne Deutsch seit zwei Monaten.'"},
+  {id:"prep27",question:"Wir fahren ___ einer Stunde. (in one hour from now)",hint:"Future time reference.",options:["seit","nach","in","vor"],correct:2,explanation:"'in' + dative = in (future time). 'Wir fahren in einer Stunde.'"},
+  {id:"prep28",question:"Er arbeitet ___ einer Bank.",hint:"Place of work — 'at' a company.",options:["an","auf","zu","bei"],correct:3,explanation:"'bei' + dative = at (employer/company). 'Er arbeitet bei einer Bank.'"},
+  {id:"prep29",question:"Die Lampe hängt ___ dem Tisch.",hint:"Hanging above the table.",options:["unter","neben","vor","über"],correct:3,explanation:"'über' = over/above. 'Die Lampe hängt über dem Tisch.'"},
+  {id:"prep30",question:"Ich gehe ___ dem Unterricht nach Hause.",hint:"After class.",options:["vor","während","nach","seit"],correct:2,explanation:"'nach' = after (time). 'nach dem Unterricht' = after class."},
+],
+
+questions: [
+  {id:"qw01",question:"___ heißt du?",hint:"Asking someone's name.",options:["Was","Wer","Wie","Wo"],correct:2,explanation:"'Wie heißt du?' = What is your name? 'wie' = how/what (used for names)."},
+  {id:"qw02",question:"___ kommt sie?",hint:"Asking where she's from.",options:["Woher","Wo","Wohin","Wann"],correct:0,explanation:"'Woher' = from where. 'Woher kommt sie?' = Where is she from?"},
+  {id:"qw03",question:"___ wohnst du?",hint:"Asking location.",options:["Woher","Wohin","Wo","Wann"],correct:2,explanation:"'Wo' = where (location). 'Wo wohnst du?' = Where do you live?"},
+  {id:"qw04",question:"___ fährst du?",hint:"Asking destination.",options:["Wo","Woher","Wohin","Was"],correct:2,explanation:"'Wohin' = where to (direction/destination). 'Wohin fährst du?' = Where are you going?"},
+  {id:"qw05",question:"___ kommt der Zug?",hint:"Asking about time.",options:["Wo","Wer","Wann","Was"],correct:2,explanation:"'Wann' = when. 'Wann kommt der Zug?' = When does the train come?"},
+  {id:"qw06",question:"___ ist das?",hint:"Asking about a person.",options:["Was","Wie","Wer","Wo"],correct:2,explanation:"'Wer' = who. 'Wer ist das?' = Who is that?"},
+  {id:"qw07",question:"___ kostet das?",hint:"Asking about price.",options:["Wann","Wie viel","Wer","Wohin"],correct:1,explanation:"'Wie viel' = how much. 'Wie viel kostet das?' = How much does that cost?"},
+  {id:"qw08",question:"___ ist das? (asking about a thing)",hint:"Identifying an object.",options:["Wer","Wie","Was","Wo"],correct:2,explanation:"'Was' = what. 'Was ist das?' = What is that?"},
+  {id:"qw09",question:"___ alt bist du?",hint:"Asking age.",options:["Was","Wann","Wie","Wer"],correct:2,explanation:"'Wie alt' = how old. 'Wie alt bist du?' = How old are you?"},
+  {id:"qw10",question:"___ gehst du ins Kino?",hint:"Asking about frequency.",options:["Wann","Wie oft","Wohin","Was"],correct:1,explanation:"'Wie oft' = how often. 'Wie oft gehst du ins Kino?' = How often do you go to the cinema?"},
+  {id:"qw11",question:"___ sprechen Sie? (which language?)",hint:"Asking what language.",options:["Wann","Woher","Welche Sprache","Wie"],correct:2,explanation:"'Welche' = which. 'Welche Sprache sprechen Sie?' = Which language do you speak?"},
+  {id:"qw12",question:"___ ist deine Telefonnummer?",hint:"Asking for a number.",options:["Wer","Was","Wo","Wann"],correct:1,explanation:"'Was ist…?' = What is…? Used for numbers, addresses. 'Was ist deine Telefonnummer?'"},
+  {id:"qw13",question:"___ kommst du aus?",hint:"Shortened way to ask origin.",options:["Wo","Woher","Wann","Was"],correct:1,explanation:"'Woher' = from where. Both 'Woher kommst du?' and 'Wo kommst du her?' are used."},
+  {id:"qw14",question:"___ Uhr ist es?",hint:"Asking the time.",options:["Was","Wie viel","Wann","Wo"],correct:1,explanation:"'Wie viel Uhr ist es?' = What time is it? 'Wie viel' for quantity/time."},
+  {id:"qw15",question:"___ machst du das?",hint:"Asking how something is done.",options:["Wie","Was","Wann","Wer"],correct:0,explanation:"'Wie' = how. 'Wie machst du das?' = How do you do that?"},
+  {id:"qw16",question:"___ ist dein Lieblingsessen?",hint:"Asking about favourite food.",options:["Wer","Wann","Wie","Was"],correct:3,explanation:"'Was' = what. 'Was ist dein Lieblingsessen?' = What is your favourite food?"},
+  {id:"qw17",question:"___ weit ist es zum Bahnhof?",hint:"Asking about distance.",options:["Wie","Was","Wann","Wer"],correct:0,explanation:"'Wie weit' = how far. 'Wie weit ist es zum Bahnhof?' = How far is it to the station?"},
+  {id:"qw18",question:"___ ist das Wetter heute?",hint:"Asking about weather.",options:["Was","Wer","Wie","Wann"],correct:2,explanation:"'Wie' = how. 'Wie ist das Wetter heute?' = How is the weather today?"},
+  {id:"qw19",question:"___ lernst du Deutsch?",hint:"Asking why.",options:["Wo","Wie","Warum","Wann"],correct:2,explanation:"'Warum' = why. 'Warum lernst du Deutsch?' = Why are you learning German?"},
+  {id:"qw20",question:"___ Bus fährt nach Zentrum?",hint:"Asking which specific bus.",options:["Was","Wer","Welcher","Wie"],correct:2,explanation:"'Welcher' = which (masculine, nominative). 'Welcher Bus fährt ins Zentrum?'"},
+  {id:"qw21",question:"___ lange lernst du Deutsch?",hint:"Asking about duration.",options:["Wie","Was","Wann","Wer"],correct:0,explanation:"'Wie lange' = how long. 'Wie lange lernst du Deutsch?' = How long have you been learning German?"},
+  {id:"qw22",question:"___ ist das Konzert?",hint:"Asking where the concert is.",options:["Wann","Wer","Wo","Was"],correct:2,explanation:"'Wo' = where. 'Wo ist das Konzert?' = Where is the concert?"},
+  {id:"qw23",question:"___ ist dein Name?",hint:"Another way to ask for a name.",options:["Wie","Was","Wo","Wer"],correct:1,explanation:"'Was ist dein Name?' = What is your name? Also common: 'Wie heißt du?'"},
+  {id:"qw24",question:"___ Leute kommen zur Party?",hint:"Asking how many.",options:["Wann","Wie viele","Welche","Was"],correct:1,explanation:"'Wie viele' = how many (plural). 'Wie viele Leute kommen?' = How many people are coming?"},
+  {id:"qw25",question:"___ fängt der Film an?",hint:"Asking when the film starts.",options:["Wo","Wie","Wann","Wer"],correct:2,explanation:"'Wann' = when. 'Wann fängt der Film an?' = When does the film start?"},
+  {id:"qw26",question:"___ Farbe hat das Auto?",hint:"Asking about colour.",options:["Was für eine","Welche","Wie","Wann"],correct:1,explanation:"'Welche Farbe' = which colour. 'Welche Farbe hat das Auto?' = What colour is the car?"},
+  {id:"qw27",question:"___ kommt er nicht?",hint:"Asking the reason.",options:["Wie","Warum","Wann","Wo"],correct:1,explanation:"'Warum' = why. 'Warum kommt er nicht?' = Why isn't he coming?"},
+  {id:"qw28",question:"___ bist du?",hint:"Asking how someone is doing.",options:["Wer","Was","Wie","Wo"],correct:2,explanation:"'Wie bist du?' or 'Wie geht es dir?' = How are you?"},
+  {id:"qw29",question:"___ ist die nächste Station?",hint:"Next station — what's it called?",options:["Wo","Wie","Was","Wann"],correct:1,explanation:"'Wie heißt die nächste Station?' or 'Wie ist die nächste Station?' = What is the next station called?"},
+  {id:"qw30",question:"___ Zimmer möchtest du?",hint:"Asking which room type.",options:["Was","Welches","Wie","Wann"],correct:1,explanation:"'Welches' = which (neuter, accusative). das Zimmer → welches Zimmer."},
+],
+
+};
+
+// ─── TOPIC CONFIG ─────────────────────────────────────────────────────────────
+const TOPICS = [
+  { id:"articles",    icon:"🏷️", name:"Articles (der/die/das)", desc:"Nominative articles & gender" },
+  { id:"cases",       icon:"🔄", name:"Nominative & Akkusativ", desc:"Case endings for articles" },
+  { id:"verbs",       icon:"⚡", name:"Verb Conjugation",        desc:"sein, haben & regular verbs" },
+  { id:"negation",    icon:"🚫", name:"Negation (nicht/kein)",   desc:"Negating sentences correctly" },
+  { id:"pronouns",    icon:"👤", name:"Personal Pronouns",       desc:"ich, du, er, sie, es…" },
+  { id:"plurals",     icon:"📚", name:"Noun Plurals",            desc:"Common plural forms" },
+  { id:"wortstellung",icon:"🔀", name:"Word Order",              desc:"Sentence & verb position" },
+  { id:"modals",      icon:"🎯", name:"Modal Verbs",             desc:"können, wollen, müssen…" },
+  { id:"prepositions",icon:"📍", name:"Prepositions",            desc:"in, an, auf, mit, zu…" },
+  { id:"questions",   icon:"❓", name:"Question Words",          desc:"wer, was, wo, wann, wie…" },
+];
+
+const STORAGE_KEY = 'dequiz_seen_v2';
+const Q_PER_SESSION = 10;
+
+let selectedTopic = null;
+let sessionQuestions = [];
+let currentQ = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+let reviewData = [];
+
+// ─── SEEN TRACKING ────────────────────────────────────────────────────────────
+function getSeenIds() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+function saveSeenIds(obj) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch {}
+}
+function getTopicSeen(tid) { return getSeenIds()[tid] || []; }
+function markSeen(tid, ids) {
+  const all = getSeenIds();
+  const existing = new Set(all[tid] || []);
+  ids.forEach(id => existing.add(id));
+  all[tid] = [...existing];
+  saveSeenIds(all);
+}
+function clearTopicSeen(tid) {
+  const all = getSeenIds();
+  delete all[tid];
+  saveSeenIds(all);
+}
+function resetProgress() {
+  if (confirm('Reset all seen questions across all topics?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    buildTopicGrid();
+    alert('Done! All questions reset.');
+  }
+}
+
+function getUnseen(tid) {
+  const bank = BANKS[tid] || [];
+  const seen = new Set(getTopicSeen(tid));
+  return bank.filter(q => !seen.has(q.id));
+}
+
+// ─── SHUFFLE ──────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+// ─── BUILD TOPIC GRID ─────────────────────────────────────────────────────────
+function buildTopicGrid() {
+  const grid = document.getElementById('topic-grid');
+  grid.innerHTML = '';
+  TOPICS.forEach(t => {
+    const bank = BANKS[t.id] || [];
+    const unseen = getUnseen(t.id);
+    const pct = bank.length > 0 ? Math.round(((bank.length - unseen.length) / bank.length) * 100) : 0;
+    const card = document.createElement('div');
+    card.className = 'topic-card' + (selectedTopic?.id === t.id ? ' selected' : '');
+    card.innerHTML = `
+      <div class="topic-icon">${t.icon}</div>
+      <div>
+        <div class="topic-name">${t.name}</div>
+        <div class="topic-desc">${t.desc}</div>
+        <div class="topic-progress">${unseen.length} unseen · ${pct}% done</div>
+      </div>`;
+    card.onclick = () => { selectedTopic = t; buildTopicGrid(); document.getElementById('start-btn').disabled = false; };
+    grid.appendChild(card);
+  });
+}
+
+buildTopicGrid();
+
+// ─── START QUIZ ───────────────────────────────────────────────────────────────
+function startQuiz() {
+  if (!selectedTopic) return;
+  correctCount = 0; wrongCount = 0; currentQ = 0; reviewData = [];
+  updateScoreDisplay();
+
+  let unseen = getUnseen(selectedTopic.id);
+
+  // If fewer than Q_PER_SESSION unseen, reset this topic's seen list and start fresh
+  if (unseen.length < Q_PER_SESSION) {
+    clearTopicSeen(selectedTopic.id);
+    unseen = [...(BANKS[selectedTopic.id] || [])];
+  }
+
+  sessionQuestions = shuffle(unseen).slice(0, Q_PER_SESSION);
+
+  document.getElementById('topic-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('score-display').style.display = 'flex';
+  showQuestion();
+}
+
+// ─── SHOW QUESTION ────────────────────────────────────────────────────────────
+function showQuestion() {
+  const q = sessionQuestions[currentQ];
+  const total = sessionQuestions.length;
+
+  document.getElementById('progress-fill').style.width = `${(currentQ / total) * 100}%`;
+  document.getElementById('q-meta').textContent = `Question ${currentQ + 1} of ${total}`;
+  document.getElementById('q-tag').textContent = selectedTopic.name;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-hint').textContent = q.hint || '';
+  document.getElementById('explanation').style.display = 'none';
+  document.getElementById('next-btn').style.display = 'none';
+  answered = false;
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span>${opt}`;
+    btn.onclick = () => selectAnswer(i);
+    opts.appendChild(btn);
+  });
+}
+
+// ─── SELECT ANSWER ────────────────────────────────────────────────────────────
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = sessionQuestions[currentQ];
+  const isCorrect = idx === q.correct;
+
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    if (i === idx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  if (isCorrect) correctCount++; else wrongCount++;
+  updateScoreDisplay();
+
+  document.getElementById('explanation-text').innerHTML = formatExplanation(q.explanation);
+  document.getElementById('explanation').style.display = 'block';
+  document.getElementById('explanation').style.borderLeftColor = isCorrect ? 'var(--correct)' : 'var(--wrong)';
+
+  reviewData.push({ question: q.question, correct: isCorrect });
+
+  document.getElementById('next-btn').textContent = currentQ < sessionQuestions.length - 1 ? 'Weiter →' : 'See Results';
+  document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function formatExplanation(text) {
+  return (text || '')
+    .replace(/\[der\]/g, '<span style="color:var(--der);font-weight:700">[der]</span>')
+    .replace(/\[die\]/g, '<span style="color:var(--die);font-weight:700">[die]</span>')
+    .replace(/\[das\]/g, '<span style="color:var(--das);font-weight:700">[das]</span>');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ < sessionQuestions.length) {
+    showQuestion();
+  } else {
+    // Mark all session questions as seen
+    markSeen(selectedTopic.id, sessionQuestions.map(q => q.id));
+    buildTopicGrid(); // refresh progress badges
+    showResults();
+  }
+}
+
+// ─── RESULTS ──────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'block';
+
+  const total = sessionQuestions.length;
+  const pct = Math.round((correctCount / total) * 100);
+  document.getElementById('results-score').textContent = `${correctCount}/${total}`;
+
+  let emoji, label;
+  if (pct === 100)      { emoji = '🏆'; label = 'Perfect! Ausgezeichnet!'; }
+  else if (pct >= 80)   { emoji = '🎉'; label = 'Sehr gut! Keep it up!'; }
+  else if (pct >= 60)   { emoji = '👍'; label = 'Gut gemacht! A bit more practice!'; }
+  else                   { emoji = '📖'; label = 'Weiter üben! Keep studying!'; }
+
+  document.getElementById('results-emoji').textContent = emoji;
+  document.getElementById('results-label').textContent = label;
+
+  const unseen = getUnseen(selectedTopic.id);
+  const nextBtn = document.querySelector('#results-screen .btn-primary');
+  nextBtn.textContent = unseen.length >= Q_PER_SESSION ? 'Next 10 Questions →' : '↺ Start Over (All seen!)';
+
+  const list = document.getElementById('breakdown-list');
+  list.innerHTML = '';
+  reviewData.forEach((r, i) => {
+    const row = document.createElement('div');
+    row.className = 'breakdown-row';
+    row.innerHTML = `<div class="bd-topic">Q${i+1}: ${r.question.substring(0,50)}${r.question.length > 50 ? '…' : ''}</div>
+      <div class="bd-result ${r.correct ? 'bd-correct' : 'bd-wrong'}">${r.correct ? '✓' : '✗'}</div>`;
+    list.appendChild(row);
+  });
+}
+
+function updateScoreDisplay() {
+  document.getElementById('correct-count').textContent = correctCount;
+  document.getElementById('wrong-count').textContent = wrongCount;
+}
+
+function goHome() {
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('results-screen').style.display = 'none';
+  document.getElementById('topic-screen').style.display = 'block';
+  document.getElementById('score-display').style.display = 'none';
+  buildTopicGrid();
+}
+</script>
+</body>
+</html>
