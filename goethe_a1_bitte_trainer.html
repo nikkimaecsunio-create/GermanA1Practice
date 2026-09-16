@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Goethe A1 Sprechen Teil 3 trainer for polite requests and responses.">
+    <meta name="theme-color" content="#596752">
+    <title>Bitte! | Goethe A1 Speaking Trainer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --cream: #f8f5ed;
+            --paper: #fffdf8;
+            --sage: #71806a;
+            --sage-dark: #4f5d49;
+            --sage-deep: #34402f;
+            --sage-soft: #dce4d8;
+            --sage-pale: #edf1e9;
+            --sand: #d8c9b7;
+            --blush: #eadbd2;
+            --terracotta: #b8795f;
+            --ink: #293127;
+            --muted: #72786e;
+            --line: rgba(79, 93, 73, 0.15);
+            --shadow: 0 22px 60px rgba(58, 66, 52, 0.13);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --radius-md: 15px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 8% 9%, rgba(216, 201, 183, 0.48), transparent 26rem),
+                radial-gradient(circle at 93% 18%, rgba(220, 228, 216, 0.92), transparent 28rem),
+                var(--cream);
+            font-family: "DM Sans", Arial, sans-serif;
+        }
+
+        button,
+        select {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .shell {
+            width: min(1080px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 24px 0 54px;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--sage-dark);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .back-icon {
+            display: grid;
+            place-items: center;
+            width: 38px;
+            height: 38px;
+            background: rgba(255, 253, 248, 0.78);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+
+        .level-pill {
+            padding: 9px 13px;
+            color: var(--sage-dark);
+            background: rgba(255, 253, 248, 0.75);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .intro {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+            align-items: center;
+            padding: clamp(28px, 5vw, 52px);
+            color: var(--paper);
+            background: linear-gradient(140deg, var(--sage-deep), #74816d);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+        }
+
+        .intro::after {
+            content: "BITTE";
+            position: absolute;
+            right: -22px;
+            bottom: -30px;
+            color: rgba(255, 255, 255, 0.055);
+            font-size: clamp(80px, 15vw, 180px);
+            font-weight: 700;
+            letter-spacing: -0.08em;
+        }
+
+        .intro-copy,
+        .tip-box {
+            position: relative;
+            z-index: 1;
+        }
+
+        .kicker {
+            margin: 0 0 13px;
+            color: #dce7d8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(42px, 7vw, 74px);
+            line-height: 0.98;
+            letter-spacing: -0.06em;
+        }
+
+        .intro-copy > p:last-child {
+            max-width: 570px;
+            margin: 20px 0 0;
+            color: rgba(255, 253, 248, 0.78);
+            line-height: 1.65;
+        }
+
+        .tip-box {
+            padding: 21px;
+            background: rgba(255, 253, 248, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .tip-box span {
+            display: block;
+            margin-bottom: 9px;
+            color: #dce7d8;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .tip-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .tip-box p {
+            margin: 0;
+            color: rgba(255, 253, 248, 0.72);
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 12px;
+            align-items: center;
+            margin: 28px 0 18px;
+            padding: 14px;
+            background: rgba(255, 253, 248, 0.72);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-area {
+            min-width: 0;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 7px;
+            overflow: hidden;
+            background: var(--sage-pale);
+            border-radius: 999px;
+        }
+
+        .progress-fill {
+            width: 0;
+            height: 100%;
+            background: var(--sage);
+            border-radius: inherit;
+            transition: width 300ms ease;
+        }
+
+        .select-wrap {
+            position: relative;
+        }
+
+        select {
+            padding: 11px 36px 11px 14px;
+            color: var(--ink);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .small-button {
+            padding: 11px 15px;
+            color: var(--sage-dark);
+            background: var(--sage-pale);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .small-button:hover {
+            border-color: var(--sage);
+        }
+
+        .trainer-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 260px;
+            gap: 18px;
+            align-items: start;
+        }
+
+        .trainer-main {
+            min-width: 0;
+        }
+
+        .scene-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin: 0 3px 12px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .flip-card {
+            height: 570px;
+            perspective: 1200px;
+        }
+
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 600ms cubic-bezier(.2,.72,.25,1);
+            transform-style: preserve-3d;
+        }
+
+        .flip-card.revealed .flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(24px, 5vw, 48px);
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .card-front::before,
+        .card-front::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .card-front::before {
+            top: -90px;
+            right: -70px;
+            width: 240px;
+            height: 240px;
+            background: var(--sage-pale);
+        }
+
+        .card-front::after {
+            bottom: -115px;
+            left: -85px;
+            width: 270px;
+            height: 270px;
+            background: #f3e9dc;
+        }
+
+        .noun-title {
+            position: relative;
+            z-index: 2;
+            margin: 0 0 18px;
+            color: var(--sage-deep);
+            font-size: clamp(27px, 5vw, 42px);
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            text-align: center;
+        }
+
+        .picture-frame {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            place-items: center;
+            width: clamp(190px, 34vw, 270px);
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #f1f4ee, #e1e8dc);
+            border: 1px solid rgba(79, 93, 73, 0.12);
+            border-radius: 50%;
+            box-shadow: inset 0 0 0 14px rgba(255, 253, 248, 0.52);
+        }
+
+        .picture {
+            font-size: clamp(90px, 17vw, 142px);
+            line-height: 1;
+            filter: drop-shadow(0 12px 12px rgba(47, 55, 43, 0.12));
+            transform: translateY(-2px);
+        }
+
+        .front-prompt {
+            position: relative;
+            z-index: 1;
+            margin-top: 26px;
+            text-align: center;
+        }
+
+        .front-prompt strong {
+            display: block;
+            font-size: 21px;
+            letter-spacing: -0.025em;
+        }
+
+        .front-prompt span {
+            display: block;
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .card-back {
+            align-items: stretch;
+            justify-content: flex-start;
+            transform: rotateY(180deg);
+            color: var(--paper);
+            background: linear-gradient(145deg, #465441, #687861);
+            border-color: rgba(255, 255, 255, 0.13);
+            pointer-events: none;
+        }
+
+        .flip-card.revealed .card-front {
+            pointer-events: none;
+        }
+
+        .flip-card.revealed .card-back {
+            pointer-events: auto;
+        }
+
+        .answer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 25px;
+        }
+
+        .version-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 7px;
+            margin-bottom: 18px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.09);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 13px;
+        }
+
+        .version-tab {
+            padding: 9px 8px;
+            color: rgba(255, 253, 248, 0.7);
+            background: transparent;
+            border: 0;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: background 160ms ease, color 160ms ease;
+        }
+
+        .version-tab:hover,
+        .version-tab.active {
+            color: var(--sage-deep);
+            background: #e9dfd2;
+        }
+
+        .answer-head span:first-child {
+            color: #dce7d8;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .mini-picture {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 15px;
+            font-size: 28px;
+        }
+
+        .dialogue {
+            display: grid;
+            gap: 15px;
+        }
+
+        .speech {
+            padding: 18px 20px;
+            border-radius: 18px;
+        }
+
+        .speech.you {
+            margin-right: 50px;
+            background: rgba(255, 253, 248, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom-left-radius: 5px;
+        }
+
+        .speech.partner {
+            margin-left: 50px;
+            color: var(--ink);
+            background: #e9dfd2;
+            border-bottom-right-radius: 5px;
+        }
+
+        .speaker {
+            display: block;
+            margin-bottom: 7px;
+            color: inherit;
+            opacity: 0.67;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .german {
+            font-size: clamp(18px, 3vw, 24px);
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.025em;
+        }
+
+        .translation-box {
+            margin-top: auto;
+            padding-top: 21px;
+            border-top: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .translation-box span {
+            display: block;
+            margin-bottom: 7px;
+            color: #cbd7c7;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+        }
+
+        .translation-box p {
+            margin: 0;
+            color: rgba(255, 253, 248, 0.78);
+            line-height: 1.55;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .control-button {
+            min-height: 52px;
+            padding: 12px 16px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .control-button.secondary {
+            color: var(--sage-dark);
+            background: rgba(255, 253, 248, 0.78);
+        }
+
+        .control-button.primary {
+            color: var(--paper);
+            background: var(--sage-dark);
+            border-color: var(--sage-dark);
+            box-shadow: 0 10px 24px rgba(79, 93, 73, 0.2);
+        }
+
+        .side-panel {
+            padding: 20px;
+            background: rgba(255, 253, 248, 0.77);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            backdrop-filter: blur(10px);
+        }
+
+        .side-panel h2 {
+            margin: 0 0 16px;
+            font-size: 17px;
+            letter-spacing: -0.02em;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .stat {
+            padding: 14px 12px;
+            background: var(--sage-pale);
+            border-radius: 13px;
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            color: var(--sage-dark);
+            font-size: 23px;
+        }
+
+        .stat span {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .pattern-list {
+            display: grid;
+            gap: 9px;
+            margin-top: 20px;
+        }
+
+        .pattern {
+            padding: 12px;
+            background: var(--paper);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+        }
+
+        .pattern strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--sage-dark);
+            font-size: 12px;
+        }
+
+        .pattern span {
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .remember {
+            margin: 20px 0 0;
+            padding: 14px;
+            color: #75503f;
+            background: #f3e8df;
+            border-radius: 13px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: 36px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 820px) {
+            .intro {
+                grid-template-columns: 1fr;
+            }
+
+            .tip-box {
+                max-width: 520px;
+            }
+
+            .trainer-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .side-panel {
+                display: grid;
+                grid-template-columns: 180px 1fr;
+                gap: 18px;
+            }
+
+            .side-panel h2 {
+                grid-column: 1 / -1;
+                margin-bottom: 0;
+            }
+
+            .pattern-list {
+                margin-top: 0;
+            }
+
+            .remember {
+                grid-column: 1 / -1;
+                margin-top: 0;
+            }
+        }
+
+        @media (max-width: 620px) {
+            .shell {
+                width: min(100% - 22px, 1080px);
+                padding-top: 14px;
+            }
+
+            .back-link > span:last-child {
+                display: none;
+            }
+
+            .intro {
+                padding: 28px 22px;
+                border-radius: 24px;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr auto;
+            }
+
+            .progress-area {
+                grid-column: 1 / -1;
+            }
+
+            select {
+                width: 100%;
+            }
+
+            .flip-card {
+                height: 590px;
+            }
+
+            .card-face {
+                padding: 25px 20px;
+                border-radius: 24px;
+            }
+
+            .speech.you {
+                margin-right: 18px;
+            }
+
+            .speech.partner {
+                margin-left: 18px;
+            }
+
+            .controls {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .control-button.primary {
+                grid-column: 1 / -1;
+                grid-row: 1;
+            }
+
+            .side-panel {
+                display: block;
+            }
+
+            .pattern-list,
+            .remember {
+                margin-top: 18px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="shell">
+        <nav class="topbar">
+            <a class="back-link" href="index.html">
+                <span class="back-icon">←</span>
+                <span>Back to German Hub</span>
+            </a>
+            <span class="level-pill">Goethe A1 · Sprechen Teil 3</span>
+        </nav>
+
+        <header class="intro">
+            <div class="intro-copy">
+                <p class="kicker">Bitten formulieren und reagieren</p>
+                <h1>Bitte, bitte!</h1>
+                <p>Look at the picture and say your polite request aloud. Reveal the back only after you have answered. Short and clear is perfect for A1.</p>
+            </div>
+
+            <aside class="tip-box">
+                <span>Exam reminder</span>
+                <strong>You receive two action cards.</strong>
+                <p>Make one request for each card and react when another candidate asks you. Remember to use <b>bitte</b>.</p>
+            </aside>
+        </header>
+
+        <section class="toolbar" aria-label="Trainer controls">
+            <div class="progress-area">
+                <div class="progress-meta">
+                    <span id="progress-text">Card 1 of 300</span>
+                    <span id="progress-percent">1%</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+            </div>
+
+            <div class="select-wrap">
+                <label for="category" hidden>Choose category</label>
+                <select id="category">
+                    <option value="all">All nouns</option>
+                </select>
+            </div>
+
+            <button class="small-button" id="shuffle-button" type="button">↻ Shuffle</button>
+        </section>
+
+        <div class="trainer-layout">
+            <section class="trainer-main" aria-live="polite">
+                <div class="scene-label">
+                    <span id="category-label">At the table</span>
+                    <span>Say it aloud first</span>
+                </div>
+
+                <div class="flip-card" id="flip-card">
+                    <div class="flip-inner">
+                        <article class="card-face card-front">
+                            <h2 class="noun-title" id="noun-title">das Wasser</h2>
+                            <div class="picture-frame">
+                                <span class="picture" id="picture" role="img" aria-label="Picture card">💧</span>
+                            </div>
+                            <div class="front-prompt">
+                                <strong>Formulieren Sie eine Bitte.</strong>
+                                <span>Make a polite request.</span>
+                            </div>
+                        </article>
+
+                        <article class="card-face card-back">
+                            <div class="answer-head">
+                                <span>Model answer</span>
+                                <span class="mini-picture" id="mini-picture">💧</span>
+                            </div>
+
+                            <div class="version-tabs" aria-label="Choose an answer version">
+                                <button class="version-tab active" type="button" data-version="0">Version 1</button>
+                                <button class="version-tab" type="button" data-version="1">Version 2</button>
+                                <button class="version-tab" type="button" data-version="2">Version 3</button>
+                            </div>
+
+                            <div class="dialogue">
+                                <div class="speech you">
+                                    <span class="speaker">Sie</span>
+                                    <div class="german" id="request">Können Sie mir bitte ein Glas Wasser geben?</div>
+                                </div>
+                                <div class="speech partner">
+                                    <span class="speaker">Partner</span>
+                                    <div class="german" id="response">Ja, natürlich. Bitte schön.</div>
+                                </div>
+                            </div>
+
+                            <div class="translation-box">
+                                <span>English</span>
+                                <p id="translation">Could you please give me a glass of water? · Yes, of course. Here you are.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="control-button secondary" id="previous-button" type="button">← Previous</button>
+                    <button class="control-button primary" id="reveal-button" type="button">Antwort zeigen</button>
+                    <button class="control-button secondary" id="next-button" type="button">Next →</button>
+                </div>
+            </section>
+
+            <aside class="side-panel">
+                <h2>Your practice</h2>
+
+                <div class="stats">
+                    <div class="stat"><strong id="seen-count">0</strong><span>Seen</span></div>
+                    <div class="stat"><strong id="total-count">300</strong><span>Cards</span></div>
+                </div>
+
+                <div class="pattern-list">
+                    <div class="pattern">
+                        <strong>Können Sie bitte …?</strong>
+                        <span>Could you please …?</span>
+                    </div>
+                    <div class="pattern">
+                        <strong>Geben Sie mir bitte …</strong>
+                        <span>Please give me …</span>
+                    </div>
+                    <div class="pattern">
+                        <strong>Bitte + verb + Sie …</strong>
+                        <span>Short polite instruction</span>
+                    </div>
+                </div>
+
+                <p class="remember"><b>Remember:</b> <i>bitte</i> can sit in different places. Speak clearly. Your request does not have to match the model word for word.</p>
+            </aside>
+        </div>
+
+        <footer>
+            Based on the Goethe A1 task format: “Bitten formulieren und darauf reagieren.”<br>
+            This independent practice tool is not an official Goethe Institut product.
+        </footer>
+    </main>
+
+    <script>
+        let cards = [
+            { category: "table", categoryLabel: "At the table", picture: "💧", label: "water", request: "Können Sie mir bitte ein Glas Wasser geben?", response: "Ja, natürlich. Bitte schön.", translation: "Could you please give me a glass of water? · Yes, of course. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "🍞", label: "bread", request: "Geben Sie mir bitte das Brot.", response: "Ja, gern. Hier, bitte.", translation: "Please give me the bread. · Yes, gladly. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "🧂", label: "salt", request: "Können Sie mir bitte das Salz geben?", response: "Natürlich. Bitte schön.", translation: "Could you please give me the salt? · Of course. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "☕", label: "coffee", request: "Bringen Sie mir bitte eine Tasse Kaffee.", response: "Ja, gern. Einen Moment, bitte.", translation: "Please bring me a cup of coffee. · Yes, gladly. One moment, please." },
+            { category: "table", categoryLabel: "At the table", picture: "🥄", label: "spoon", request: "Geben Sie mir bitte einen Löffel.", response: "Ja, natürlich. Hier, bitte.", translation: "Please give me a spoon. · Yes, of course. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "🍽️", label: "plate", request: "Können Sie mir bitte einen Teller geben?", response: "Ja, gern. Bitte schön.", translation: "Could you please give me a plate? · Yes, gladly. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "📋", label: "menu", request: "Bringen Sie mir bitte die Speisekarte.", response: "Ja, sofort. Bitte schön.", translation: "Please bring me the menu. · Yes, right away. Here you are." },
+            { category: "table", categoryLabel: "At the table", picture: "🧾", label: "bill", request: "Bringen Sie mir bitte die Rechnung.", response: "Ja, natürlich. Einen Moment, bitte.", translation: "Please bring me the bill. · Yes, of course. One moment, please." },
+
+            { category: "room", categoryLabel: "In a room", picture: "🪟", label: "window", request: "Machen Sie bitte das Fenster auf.", response: "Ja, natürlich.", translation: "Please open the window. · Yes, of course." },
+            { category: "room", categoryLabel: "In a room", picture: "🚪", label: "door", request: "Machen Sie bitte die Tür zu.", response: "Ja, gern.", translation: "Please close the door. · Yes, gladly." },
+            { category: "room", categoryLabel: "In a room", picture: "💡", label: "light", request: "Schalten Sie bitte das Licht an.", response: "Ja, natürlich.", translation: "Please turn on the light. · Yes, of course." },
+            { category: "room", categoryLabel: "In a room", picture: "🪑", label: "chair", request: "Nehmen Sie bitte Platz.", response: "Danke schön.", translation: "Please take a seat. · Thank you." },
+            { category: "room", categoryLabel: "In a room", picture: "🗝️", label: "key", request: "Geben Sie mir bitte den Schlüssel.", response: "Ja, hier ist er. Bitte schön.", translation: "Please give me the key. · Yes, here it is. Here you are." },
+            { category: "room", categoryLabel: "In a room", picture: "📺", label: "television", request: "Schalten Sie bitte den Fernseher aus.", response: "Ja, natürlich.", translation: "Please turn off the television. · Yes, of course." },
+            { category: "room", categoryLabel: "In a room", picture: "🌡️", label: "heating", request: "Machen Sie bitte die Heizung an.", response: "Ja, gern.", translation: "Please turn on the heating. · Yes, gladly." },
+
+            { category: "travel", categoryLabel: "Travel and city", picture: "🚕", label: "taxi", request: "Rufen Sie mir bitte ein Taxi.", response: "Ja, natürlich. Einen Moment, bitte.", translation: "Please call a taxi for me. · Yes, of course. One moment, please." },
+            { category: "travel", categoryLabel: "Travel and city", picture: "🗺️", label: "map", request: "Zeigen Sie mir bitte den Stadtplan.", response: "Ja, gern. Hier, bitte.", translation: "Please show me the city map. · Yes, gladly. Here you are." },
+            { category: "travel", categoryLabel: "Travel and city", picture: "🧳", label: "suitcase", request: "Können Sie bitte meinen Koffer tragen?", response: "Ja, natürlich.", translation: "Could you please carry my suitcase? · Yes, of course." },
+            { category: "travel", categoryLabel: "Travel and city", picture: "🎫", label: "ticket", request: "Geben Sie mir bitte eine Fahrkarte.", response: "Ja, gern. Wohin möchten Sie fahren?", translation: "Please give me a ticket. · Yes, gladly. Where would you like to go?" },
+            { category: "travel", categoryLabel: "Travel and city", picture: "📍", label: "place", request: "Zeigen Sie mir bitte den Bahnhof auf der Karte.", response: "Ja. Der Bahnhof ist hier.", translation: "Please show me the train station on the map. · Yes. The station is here." },
+            { category: "travel", categoryLabel: "Travel and city", picture: "⏰", label: "time", request: "Sagen Sie mir bitte, wie spät es ist.", response: "Ja. Es ist acht Uhr.", translation: "Please tell me what time it is. · Yes. It is eight o’clock." },
+            { category: "travel", categoryLabel: "Travel and city", picture: "⏳", label: "wait", request: "Warten Sie bitte hier.", response: "Ja, natürlich.", translation: "Please wait here. · Yes, of course." },
+
+            { category: "help", categoryLabel: "Help and communication", picture: "🖊️", label: "pen", request: "Können Sie mir bitte einen Kugelschreiber geben?", response: "Ja, gern. Hier, bitte.", translation: "Could you please give me a pen? · Yes, gladly. Here you are." },
+            { category: "help", categoryLabel: "Help and communication", picture: "📱", label: "phone", request: "Kann ich bitte Ihr Handy benutzen?", response: "Ja, natürlich. Bitte schön.", translation: "May I please use your mobile phone? · Yes, of course. Here you are." },
+            { category: "help", categoryLabel: "Help and communication", picture: "📷", label: "camera", request: "Können Sie bitte ein Foto von mir machen?", response: "Ja, gern.", translation: "Could you please take a photo of me? · Yes, gladly." },
+            { category: "help", categoryLabel: "Help and communication", picture: "🗣️", label: "speak slowly", request: "Sprechen Sie bitte langsamer.", response: "Ja, natürlich.", translation: "Please speak more slowly. · Yes, of course." },
+            { category: "help", categoryLabel: "Help and communication", picture: "🔁", label: "repeat", request: "Wiederholen Sie das bitte.", response: "Ja, gern.", translation: "Please repeat that. · Yes, gladly." },
+            { category: "help", categoryLabel: "Help and communication", picture: "🆘", label: "help", request: "Können Sie mir bitte helfen?", response: "Ja, natürlich. Was brauchen Sie?", translation: "Could you please help me? · Yes, of course. What do you need?" },
+            { category: "help", categoryLabel: "Help and communication", picture: "🩹", label: "plaster", request: "Geben Sie mir bitte ein Pflaster.", response: "Ja, natürlich. Hier, bitte.", translation: "Please give me a plaster. · Yes, of course. Here you are." },
+            { category: "help", categoryLabel: "Help and communication", picture: "👨‍⚕️", label: "doctor", request: "Rufen Sie bitte einen Arzt.", response: "Ja, sofort.", translation: "Please call a doctor. · Yes, right away." },
+
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "🤫", label: "quiet", request: "Seien Sie bitte leise.", response: "Ja, natürlich. Entschuldigung.", translation: "Please be quiet. · Yes, of course. Sorry." },
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "🚭", label: "no smoking", request: "Bitte rauchen Sie hier nicht.", response: "Oh, Entschuldigung.", translation: "Please do not smoke here. · Oh, sorry." },
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "📵", label: "no phone", request: "Machen Sie bitte Ihr Handy aus.", response: "Ja, natürlich.", translation: "Please turn off your mobile phone. · Yes, of course." },
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "✍️", label: "sign", request: "Unterschreiben Sie bitte hier.", response: "Ja, gern.", translation: "Please sign here. · Yes, gladly." },
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "📝", label: "name", request: "Schreiben Sie bitte Ihren Namen hier.", response: "Ja, natürlich.", translation: "Please write your name here. · Yes, of course." },
+            { category: "rules", categoryLabel: "Rules and instructions", picture: "🔤", label: "spell", request: "Buchstabieren Sie das bitte.", response: "Ja, gern.", translation: "Please spell that. · Yes, gladly." }
+        ];
+
+        const extraVersions = {
+            water: [["Ein Glas Wasser, bitte.", "A glass of water, please."], ["Geben Sie mir bitte ein Glas Wasser.", "Please give me a glass of water."]],
+            bread: [["Können Sie mir bitte das Brot geben?", "Could you please give me the bread?"], ["Das Brot, bitte.", "The bread, please."]],
+            salt: [["Geben Sie mir bitte das Salz.", "Please give me the salt."], ["Das Salz, bitte.", "The salt, please."]],
+            coffee: [["Können Sie mir bitte einen Kaffee bringen?", "Could you please bring me a coffee?"], ["Einen Kaffee, bitte.", "A coffee, please."]],
+            spoon: [["Können Sie mir bitte einen Löffel geben?", "Could you please give me a spoon?"], ["Einen Löffel, bitte.", "A spoon, please."]],
+            plate: [["Geben Sie mir bitte einen Teller.", "Please give me a plate."], ["Einen Teller, bitte.", "A plate, please."]],
+            menu: [["Können Sie mir bitte die Speisekarte bringen?", "Could you please bring me the menu?"], ["Die Speisekarte, bitte.", "The menu, please."]],
+            bill: [["Können Sie mir bitte die Rechnung bringen?", "Could you please bring me the bill?"], ["Die Rechnung, bitte.", "The bill, please."]],
+            window: [["Können Sie bitte das Fenster öffnen?", "Could you please open the window?"], ["Öffnen Sie bitte das Fenster.", "Please open the window."]],
+            door: [["Können Sie bitte die Tür schließen?", "Could you please close the door?"], ["Schließen Sie bitte die Tür.", "Please close the door."]],
+            light: [["Können Sie bitte das Licht anmachen?", "Could you please turn on the light?"], ["Machen Sie bitte das Licht an.", "Please turn on the light."]],
+            chair: [["Setzen Sie sich bitte.", "Please sit down."], ["Bitte nehmen Sie Platz.", "Please take a seat."]],
+            key: [["Können Sie mir bitte den Schlüssel geben?", "Could you please give me the key?"], ["Den Schlüssel, bitte.", "The key, please."]],
+            television: [["Können Sie bitte den Fernseher ausmachen?", "Could you please turn off the television?"], ["Machen Sie bitte den Fernseher aus.", "Please turn off the television."]],
+            heating: [["Können Sie bitte die Heizung anmachen?", "Could you please turn on the heating?"], ["Bitte machen Sie die Heizung an.", "Please turn on the heating."]],
+            taxi: [["Können Sie mir bitte ein Taxi rufen?", "Could you please call a taxi for me?"], ["Ein Taxi, bitte.", "A taxi, please."]],
+            map: [["Können Sie mir bitte den Stadtplan zeigen?", "Could you please show me the city map?"], ["Den Stadtplan, bitte.", "The city map, please."]],
+            suitcase: [["Tragen Sie bitte meinen Koffer.", "Please carry my suitcase."], ["Helfen Sie mir bitte mit dem Koffer.", "Please help me with the suitcase."]],
+            ticket: [["Können Sie mir bitte eine Fahrkarte geben?", "Could you please give me a ticket?"], ["Eine Fahrkarte, bitte.", "A ticket, please."]],
+            place: [["Können Sie mir bitte den Bahnhof auf der Karte zeigen?", "Could you please show me the station on the map?"], ["Wo ist der Bahnhof? Zeigen Sie es mir bitte.", "Where is the station? Please show it to me."]],
+            time: [["Können Sie mir bitte sagen, wie spät es ist?", "Could you please tell me what time it is?"], ["Wie spät ist es, bitte?", "What time is it, please?"]],
+            wait: [["Können Sie bitte hier warten?", "Could you please wait here?"], ["Bitte warten Sie hier.", "Please wait here."]],
+            pen: [["Geben Sie mir bitte einen Kugelschreiber.", "Please give me a pen."], ["Einen Kugelschreiber, bitte.", "A pen, please."]],
+            phone: [["Können Sie mir bitte Ihr Handy geben?", "Could you please give me your mobile phone?"], ["Darf ich bitte Ihr Handy benutzen?", "May I please use your mobile phone?"]],
+            camera: [["Machen Sie bitte ein Foto von mir.", "Please take a photo of me."], ["Ein Foto, bitte.", "A photo, please."]],
+            "speak slowly": [["Können Sie bitte langsamer sprechen?", "Could you please speak more slowly?"], ["Bitte sprechen Sie etwas langsamer.", "Please speak a little more slowly."]],
+            repeat: [["Können Sie das bitte wiederholen?", "Could you please repeat that?"], ["Noch einmal, bitte.", "Once again, please."]],
+            help: [["Helfen Sie mir bitte.", "Please help me."], ["Bitte helfen Sie mir.", "Please help me."]],
+            plaster: [["Können Sie mir bitte ein Pflaster geben?", "Could you please give me a plaster?"], ["Ein Pflaster, bitte.", "A plaster, please."]],
+            doctor: [["Können Sie bitte einen Arzt rufen?", "Could you please call a doctor?"], ["Bitte rufen Sie sofort einen Arzt.", "Please call a doctor immediately."]],
+            quiet: [["Können Sie bitte leise sein?", "Could you please be quiet?"], ["Bitte sprechen Sie leiser.", "Please speak more quietly."]],
+            "no smoking": [["Können Sie bitte draußen rauchen?", "Could you please smoke outside?"], ["Rauchen Sie hier bitte nicht.", "Please do not smoke here."]],
+            "no phone": [["Können Sie bitte Ihr Handy ausmachen?", "Could you please turn off your phone?"], ["Bitte schalten Sie Ihr Handy aus.", "Please switch off your phone."]],
+            sign: [["Können Sie bitte hier unterschreiben?", "Could you please sign here?"], ["Bitte unterschreiben Sie hier.", "Please sign here."]],
+            name: [["Können Sie bitte Ihren Namen hier schreiben?", "Could you please write your name here?"], ["Bitte schreiben Sie hier Ihren Namen.", "Please write your name here."]],
+            spell: [["Können Sie das bitte buchstabieren?", "Could you please spell that?"], ["Bitte buchstabieren Sie das.", "Please spell that."]]
+        };
+
+        const handoverLabels = new Set(["water", "bread", "salt", "coffee", "spoon", "plate", "menu", "bill", "key", "ticket", "pen", "phone", "plaster"]);
+
+        function splitTranslation(combined) {
+            const parts = combined.split(" · ");
+            return { request: parts[0], response: parts.slice(1).join(" · ") };
+        }
+
+        function getVersions(card) {
+            const originalEnglish = splitTranslation(card.translation);
+            const extras = extraVersions[card.label] || [];
+            const isHandover = handoverLabels.has(card.label);
+            const responses = isHandover
+                ? [["Ja, gern. Bitte schön.", "Yes, gladly. Here you are."], ["Natürlich. Hier, bitte.", "Of course. Here you are."]]
+                : [["Ja, natürlich.", "Yes, of course."], ["Ja, gern. Einen Moment, bitte.", "Yes, gladly. One moment, please."]];
+
+            if (card.label === "chair") {
+                responses[0] = ["Danke schön.", "Thank you."];
+                responses[1] = ["Ja, gern. Vielen Dank.", "Yes, gladly. Thank you very much."];
+            }
+
+            return [
+                { request: card.request, response: card.response, translation: card.translation },
+                { request: extras[0][0], response: responses[0][0], translation: `${extras[0][1]} · ${responses[0][1]}` },
+                { request: extras[1][0], response: responses[1][0], translation: `${extras[1][1]} · ${responses[1][1]}` }
+            ];
+        }
+
+        const nounGroups = [
+            {
+                key: "food", label: "Food and drink", icon: "🍽️", mode: "food",
+                items: `
+der|Apfel|apple|🍎
+die|Banane|banana|🍌
+die|Birne|pear|🍐
+das|Brot|bread|🍞
+das|Brötchen|bread roll|🥖
+die|Butter|butter|🧈|mass
+das|Ei|egg|🥚
+das|Fleisch|meat|🥩|mass
+der|Fisch|fish|🐟
+das|Gemüse|vegetables|🥕|mass
+die|Kartoffel|potato|🥔
+der|Käse|cheese|🧀|mass
+der|Kuchen|cake|🍰
+die|Milch|milk|🥛|drink
+das|Obst|fruit|🍇|mass
+der|Reis|rice|🍚|mass
+der|Salat|salad|🥗
+das|Salz|salt|🧂|mass
+die|Suppe|soup|🍲
+die|Tomate|tomato|🍅
+die|Wurst|sausage|🌭
+der|Zucker|sugar|🧂|mass
+das|Wasser|water|💧|drink
+der|Kaffee|coffee|☕|drink
+der|Tee|tea|🍵|drink
+der|Saft|juice|🧃|drink
+das|Bier|beer|🍺|drink
+der|Wein|wine|🍷|drink
+die|Flasche|bottle|🍾|object
+das|Glas|glass|🥛|object
+die|Tasse|cup|☕|object
+der|Teller|plate|🍽️|object
+das|Messer|knife|🔪|object
+die|Gabel|fork|🍴|object
+der|Löffel|spoon|🥄|object`
+            },
+            {
+                key: "home", label: "Home", icon: "🏠", mode: "object",
+                items: `
+die|Wohnung|apartment|🏢|place
+das|Haus|house|🏠|place
+das|Zimmer|room|🚪|place
+die|Küche|kitchen|🍳|place
+das|Bad|bathroom|🛁|place
+das|Schlafzimmer|bedroom|🛏️|place
+das|Wohnzimmer|living room|🛋️|place
+der|Balkon|balcony|🏡|place
+der|Garten|garden|🌻|place
+die|Tür|door|🚪|help
+das|Fenster|window|🪟|help
+die|Wand|wall|🧱|help
+der|Boden|floor|🧹|help
+die|Treppe|stairs|🪜|place
+der|Aufzug|elevator|🛗|place
+der|Tisch|table|🪑
+der|Stuhl|chair|🪑
+das|Bett|bed|🛏️
+der|Schrank|cupboard|🚪
+das|Sofa|sofa|🛋️
+die|Lampe|lamp|💡
+das|Licht|light|💡|help
+der|Fernseher|television|📺|help
+das|Radio|radio|📻|help
+das|Telefon|telephone|☎️
+das|Handy|mobile phone|📱
+der|Computer|computer|💻
+der|Schlüssel|key|🗝️
+die|Heizung|heating|🌡️|help
+der|Kühlschrank|refrigerator|🧊|help
+die|Waschmaschine|washing machine|🧺|help
+die|Dusche|shower|🚿|help
+die|Toilette|toilet|🚽|place
+das|Handtuch|towel|🧻
+die|Seife|soap|🧼`
+            },
+            {
+                key: "shopping", label: "Clothes and shopping", icon: "🛍️", mode: "object",
+                items: `
+die|Kleidung|clothing|👚|help
+die|Jacke|jacket|🧥
+die|Hose|trousers|👖
+das|Hemd|shirt|👔
+die|Bluse|blouse|👚
+das|Kleid|dress|👗
+der|Rock|skirt|👗
+der|Pullover|jumper|🧶
+das|T-Shirt|T-shirt|👕
+der|Schuh|shoe|👞
+die|Socke|sock|🧦
+die|Mütze|cap|🧢
+der|Hut|hat|🎩
+der|Mantel|coat|🧥
+die|Tasche|bag|👜
+die|Brille|glasses|👓
+die|Uhr|watch|⌚
+der|Ring|ring|💍
+die|Größe|size|📏|info
+die|Farbe|color|🎨|info
+der|Preis|price|🏷️|info
+das|Geld|money|💶|help
+der|Euro|euro|💶|object
+das|Geschäft|shop|🏬|place
+die|Kasse|checkout|🧾|place`
+            },
+            {
+                key: "study", label: "School and work", icon: "📚", mode: "object",
+                items: `
+die|Schule|school|🏫|place
+der|Kurs|course|📘|activity
+der|Deutschkurs|German course|🇩🇪|activity
+die|Klasse|class|👩‍🏫|activity
+der|Lehrer|male teacher|👨‍🏫|person
+die|Lehrerin|female teacher|👩‍🏫|person
+der|Schüler|male pupil|🧑‍🎓|person
+der|Student|male student|👨‍🎓|person
+die|Universität|university|🎓|place
+das|Buch|book|📖
+das|Heft|notebook|📓
+das|Papier|paper|📄
+der|Kugelschreiber|pen|🖊️
+der|Bleistift|pencil|✏️
+das|Wort|word|🔤|info
+der|Satz|sentence|💬|info
+die|Frage|question|❓|info
+die|Antwort|answer|💡|info
+die|Aufgabe|exercise|📝|help
+die|Prüfung|exam|✅|activity
+die|Sprache|language|🗣️|activity
+die|Arbeit|work|💼|activity
+der|Beruf|profession|🧑‍💼|info
+der|Arbeitsplatz|workplace|🖥️|place
+das|Büro|office|🏢|place
+die|Firma|company|🏭|place
+der|Chef|boss|👨‍💼|person
+die|Kollegin|female colleague|👩‍💼|person
+die|Pause|break|☕|activity
+der|Termin|appointment|📅|info`
+            },
+            {
+                key: "city", label: "City and places", icon: "🏙️", mode: "place",
+                items: `
+die|Stadt|city|🏙️
+die|Straße|street|🛣️
+der|Platz|square|📍
+der|Bahnhof|train station|🚉
+der|Flughafen|airport|✈️
+die|Haltestelle|stop|🚏
+das|Hotel|hotel|🏨
+das|Restaurant|restaurant|🍽️
+das|Café|café|☕
+der|Supermarkt|supermarket|🛒
+die|Bäckerei|bakery|🥐
+die|Apotheke|pharmacy|⚕️
+das|Krankenhaus|hospital|🏥
+die|Bank|bank|🏦
+die|Post|post office|📮
+die|Polizeiwache|police station|👮
+das|Rathaus|town hall|🏛️
+das|Museum|museum|🏛️
+das|Kino|cinema|🎬
+das|Theater|theatre|🎭
+die|Bibliothek|library|📚
+die|Kirche|church|⛪
+der|Park|park|🌳
+das|Schwimmbad|swimming pool|🏊
+der|Markt|market|🧺
+das|Reisebüro|travel agency|🗺️
+der|Eingang|entrance|➡️
+der|Ausgang|exit|⬅️
+die|Information|information desk|ℹ️
+die|Tankstelle|petrol station|⛽`
+            },
+            {
+                key: "travel", label: "Travel and transport", icon: "🚆", mode: "place",
+                items: `
+das|Auto|car|🚗
+der|Bus|bus|🚌
+die|Bahn|railway|🚆
+der|Zug|train|🚄
+die|Straßenbahn|tram|🚋
+das|Taxi|taxi|🚕
+das|Fahrrad|bicycle|🚲
+das|Motorrad|motorcycle|🏍️
+das|Flugzeug|airplane|✈️
+das|Schiff|ship|🚢
+die|Fahrkarte|travel ticket|🎫|object
+das|Ticket|ticket|🎟️|object
+der|Koffer|suitcase|🧳|object
+das|Gepäck|luggage|🧳|help
+der|Pass|passport|🛂|object
+der|Ausweis|identity card|🪪|object
+die|Reise|trip|🗺️|activity
+der|Urlaub|holiday|🏖️|activity
+die|Fahrt|journey|🛣️|activity
+die|Abfahrt|departure|🚉|info
+die|Ankunft|arrival|🛬|info
+der|Bahnsteig|platform|🚉|place
+der|Automat|machine|🎫|place
+der|Stadtplan|city map|🗺️|object
+der|Weg|way|🧭|info`
+            },
+            {
+                key: "people", label: "People and family", icon: "👨‍👩‍👧", mode: "person",
+                items: `
+die|Familie|family|👨‍👩‍👧|activity
+die|Mutter|mother|👩
+der|Vater|father|👨
+die|Eltern|parents|👪|activity
+die|Schwester|sister|👧
+der|Bruder|brother|👦
+das|Kind|child|🧒
+der|Sohn|son|👦
+die|Tochter|daughter|👧
+das|Baby|baby|👶
+der|Mann|man|👨
+die|Frau|woman|👩
+der|Freund|male friend|🧑
+die|Freundin|female friend|👩
+die|Großmutter|grandmother|👵
+der|Großvater|grandfather|👴
+die|Oma|grandma|👵
+der|Opa|grandpa|👴
+der|Onkel|uncle|👨
+die|Tante|aunt|👩
+der|Cousin|male cousin|🧑
+die|Cousine|female cousin|👩
+der|Nachbar|male neighbor|🏘️
+der|Gast|guest|🙋
+der|Name|name|🏷️|info`
+            },
+            {
+                key: "health", label: "Body and health", icon: "🩺", mode: "body",
+                items: `
+der|Kopf|head|🧑
+das|Gesicht|face|🙂
+das|Auge|eye|👁️
+das|Ohr|ear|👂
+die|Nase|nose|👃
+der|Mund|mouth|👄
+der|Zahn|tooth|🦷
+der|Hals|neck|🧣
+der|Arm|arm|💪
+die|Hand|hand|✋
+der|Finger|finger|☝️
+der|Bauch|stomach|🫃
+der|Rücken|back|🔙
+das|Bein|leg|🦵
+der|Fuß|foot|🦶
+das|Herz|heart|❤️
+der|Körper|body|🧍
+der|Arzt|male doctor|👨‍⚕️|person
+die|Ärztin|female doctor|👩‍⚕️|person
+das|Medikament|medicine|💊|object
+die|Tablette|tablet|💊|object
+das|Rezept|prescription|📄|object
+das|Pflaster|plaster|🩹|object
+das|Fieber|fever|🤒|help
+die|Hilfe|help|🆘|info`
+            },
+            {
+                key: "time", label: "Time and weather", icon: "🕒", mode: "info",
+                items: `
+die|Zeit|time|⏰
+die|Stunde|hour|🕐
+die|Minute|minute|⏱️
+der|Tag|day|📆
+die|Woche|week|🗓️
+der|Monat|month|📅
+das|Jahr|year|🎆
+der|Morgen|morning|🌅
+der|Mittag|noon|☀️
+der|Abend|evening|🌆
+die|Nacht|night|🌙
+der|Montag|Monday|📅
+das|Wochenende|weekend|🎉
+das|Wetter|weather|🌦️
+die|Sonne|sun|☀️
+der|Regen|rain|🌧️
+der|Schnee|snow|❄️
+der|Wind|wind|💨
+die|Temperatur|temperature|🌡️
+der|Frühling|spring|🌷`
+            },
+            {
+                key: "communication", label: "Communication and documents", icon: "✉️", mode: "object",
+                items: `
+der|Brief|letter|✉️
+die|E-Mail|email|📧
+die|Nachricht|message|💬
+die|Zeitung|newspaper|📰
+das|Formular|form|📋
+die|Unterschrift|signature|✍️|info
+die|Adresse|address|🏠|info
+die|Telefonnummer|phone number|☎️|info
+die|Nummer|number|🔢|info
+der|Vorname|first name|🏷️|info
+der|Familienname|family name|🏷️|info
+das|Geburtsdatum|date of birth|🎂|info
+die|Postleitzahl|postal code|📮|info
+das|Foto|photo|📷
+das|Bild|picture|🖼️
+der|Kalender|calendar|📅
+das|Internet|internet|🌐|help
+die|Webseite|website|💻|info
+das|Passwort|password|🔐|info
+die|Anzeige|advertisement|📢|info`
+            },
+            {
+                key: "leisure", label: "Leisure and nature", icon: "⚽", mode: "activity",
+                items: `
+der|Sport|sport|⚽
+der|Fußball|football|⚽|object
+der|Ball|ball|⚽|object
+die|Musik|music|🎵
+der|Film|film|🎬
+das|Spiel|game|🎲|object
+das|Hobby|hobby|🎨
+die|Party|party|🎉
+das|Fest|celebration|🎊
+der|Geburtstag|birthday|🎂
+die|Natur|nature|🌿
+der|Baum|tree|🌳|object
+die|Blume|flower|🌸|object
+das|Tier|animal|🐾|object
+der|Hund|dog|🐕|object
+die|Katze|cat|🐈|object
+der|Vogel|bird|🐦|object
+das|Meer|sea|🌊|place
+der|Berg|mountain|⛰️|place
+der|Strand|beach|🏖️|place`
+            },
+            {
+                key: "daily", label: "Daily life and services", icon: "🧾", mode: "object",
+                items: `
+das|Frühstück|breakfast|🥐|food
+das|Mittagessen|lunch|🍱|food
+das|Abendessen|dinner|🍽️|food
+die|Rechnung|bill|🧾
+die|Speisekarte|menu|📋
+die|Bestellung|order|🛎️|info
+die|Feuerwehr|fire brigade|🚒|person
+der|Friseur|hairdresser|💇|person
+die|Werkstatt|workshop|🔧|place
+der|Müll|rubbish|🗑️|help`
+            }
+        ];
+
+        function parseNounGroups(groups) {
+            return groups.flatMap((group) => group.items.trim().split("\n").map((line) => {
+                const [article, noun, english, picture, overrideMode] = line.trim().split("|");
+                return {
+                    article,
+                    noun,
+                    english,
+                    picture: picture || group.icon,
+                    label: noun.toLowerCase(),
+                    category: group.key,
+                    categoryLabel: group.label,
+                    mode: overrideMode || group.mode
+                };
+            }));
+        }
+
+        const grammar = {
+            definiteAccusative: { der: "den", die: "die", das: "das" },
+            indefiniteAccusative: { der: "einen", die: "eine", das: "ein" },
+            dative: { der: "dem", die: "der", das: "dem" },
+            possessiveNominative: { der: "mein", die: "meine", das: "mein" },
+            possessiveAccusative: { der: "meinen", die: "meine", das: "mein" }
+        };
+
+        function englishIndefinite(word) {
+            return /^[aeiou]/i.test(word) ? `an ${word}` : `a ${word}`;
+        }
+
+        function makeNounVersions(card) {
+            const def = `${grammar.definiteAccusative[card.article]} ${card.noun}`;
+            const indef = `${grammar.indefiniteAccusative[card.article]} ${card.noun}`;
+            const dat = `${grammar.dative[card.article]} ${card.noun}`;
+            const aNoun = englishIndefinite(card.english);
+            const handoverResponses = [
+                ["Ja, gern. Bitte schön.", "Yes, gladly. Here you are."],
+                ["Ja, natürlich. Hier, bitte.", "Yes, of course. Here you are."],
+                ["Ja, warum nicht?", "Yes, why not?"]
+            ];
+            const actionResponses = [
+                ["Ja, gern.", "Yes, gladly."],
+                ["Ja, natürlich.", "Yes, of course."],
+                ["Ja, warum nicht?", "Yes, why not?"]
+            ];
+
+            if (card.mode === "food" || card.mode === "drink" || card.mode === "mass") {
+                const need = card.mode === "drink" ? "Durst" : "Hunger";
+                const englishNeed = card.mode === "drink" ? "thirsty" : "hungry";
+                const requestNoun = card.mode === "food" ? indef : `etwas ${card.noun}`;
+                const englishNoun = card.mode === "food" ? aNoun : `some ${card.english}`;
+                return [
+                    { request: `Ich habe ${need}. Können Sie mir bitte ${requestNoun} geben?`, response: handoverResponses[0][0], translation: `I am ${englishNeed}. Could you please give me ${englishNoun}? · ${handoverResponses[0][1]}` },
+                    { request: `Ich habe ${need}. Kann ich bitte ${requestNoun} haben?`, response: handoverResponses[1][0], translation: `I am ${englishNeed}. May I please have ${englishNoun}? · ${handoverResponses[1][1]}` },
+                    { request: `Geben Sie mir bitte ${requestNoun}.`, response: handoverResponses[2][0], translation: `Please give me ${englishNoun}. · ${handoverResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "place") {
+                return [
+                    { request: `Können Sie mir bitte ${def} zeigen?`, response: actionResponses[0][0], translation: `Could you please show me the ${card.english}? · ${actionResponses[0][1]}` },
+                    { request: `Sagen Sie mir bitte, wo ${card.article} ${card.noun} ist.`, response: actionResponses[1][0], translation: `Please tell me where the ${card.english} is. · ${actionResponses[1][1]}` },
+                    { request: `Wo ist ${card.article} ${card.noun}, bitte?`, response: actionResponses[2][0], translation: `Where is the ${card.english}, please? · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "person") {
+                return [
+                    { request: `Können Sie bitte ${indef} rufen?`, response: actionResponses[0][0], translation: `Could you please call ${aNoun}? · ${actionResponses[0][1]}` },
+                    { request: `Rufen Sie bitte ${def}.`, response: actionResponses[1][0], translation: `Please call the ${card.english}. · ${actionResponses[1][1]}` },
+                    { request: `Ich brauche ${indef}. Können Sie bitte helfen?`, response: actionResponses[2][0], translation: `I need ${aNoun}. Could you please help? · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "info") {
+                return [
+                    { request: `Können Sie mir bitte Informationen über ${def} geben?`, response: actionResponses[0][0], translation: `Could you please give me information about the ${card.english}? · ${actionResponses[0][1]}` },
+                    { request: `Erklären Sie mir bitte ${def}.`, response: actionResponses[1][0], translation: `Please explain the ${card.english} to me. · ${actionResponses[1][1]}` },
+                    { request: `Ich habe eine Frage zu ${dat}. Können Sie mir bitte helfen?`, response: actionResponses[2][0], translation: `I have a question about the ${card.english}. Could you please help me? · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "body") {
+                const possNom = `${grammar.possessiveNominative[card.article]} ${card.noun}`;
+                const possAcc = `${grammar.possessiveAccusative[card.article]} ${card.noun}`;
+                return [
+                    { request: `${possNom[0].toUpperCase() + possNom.slice(1)} tut weh. Können Sie mir bitte helfen?`, response: actionResponses[0][0], translation: `My ${card.english} hurts. Could you please help me? · ${actionResponses[0][1]}` },
+                    { request: `Können Sie bitte ${possAcc} ansehen?`, response: actionResponses[1][0], translation: `Could you please look at my ${card.english}? · ${actionResponses[1][1]}` },
+                    { request: `Ich habe Schmerzen. Helfen Sie mir bitte.`, response: actionResponses[2][0], translation: `I am in pain. Please help me. · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "activity") {
+                return [
+                    { request: `Können Sie bitte mit mir über ${def} sprechen?`, response: actionResponses[0][0], translation: `Could you please talk with me about the ${card.english}? · ${actionResponses[0][1]}` },
+                    { request: `Erzählen Sie mir bitte etwas über ${def}.`, response: actionResponses[1][0], translation: `Please tell me something about the ${card.english}. · ${actionResponses[1][1]}` },
+                    { request: `Ich möchte etwas über ${def} wissen. Helfen Sie mir bitte.`, response: actionResponses[2][0], translation: `I would like to know something about the ${card.english}. Please help me. · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            if (card.mode === "help") {
+                return [
+                    { request: `Können Sie mir bitte mit ${dat} helfen?`, response: actionResponses[0][0], translation: `Could you please help me with the ${card.english}? · ${actionResponses[0][1]}` },
+                    { request: `Helfen Sie mir bitte mit ${dat}.`, response: actionResponses[1][0], translation: `Please help me with the ${card.english}. · ${actionResponses[1][1]}` },
+                    { request: `Ich brauche Hilfe mit ${dat}, bitte.`, response: actionResponses[2][0], translation: `I need help with the ${card.english}, please. · ${actionResponses[2][1]}` }
+                ];
+            }
+
+            return [
+                { request: `Können Sie mir bitte ${indef} geben?`, response: handoverResponses[0][0], translation: `Could you please give me ${aNoun}? · ${handoverResponses[0][1]}` },
+                { request: `Kann ich bitte ${indef} haben?`, response: handoverResponses[1][0], translation: `May I please have ${aNoun}? · ${handoverResponses[1][1]}` },
+                { request: `Geben Sie mir bitte ${indef}.`, response: handoverResponses[2][0], translation: `Please give me ${aNoun}. · ${handoverResponses[2][1]}` }
+            ];
+        }
+
+        cards = parseNounGroups(nounGroups);
+        getVersions = makeNounVersions;
+
+        const flipCard = document.getElementById("flip-card");
+        const nounTitle = document.getElementById("noun-title");
+        const picture = document.getElementById("picture");
+        const miniPicture = document.getElementById("mini-picture");
+        const request = document.getElementById("request");
+        const response = document.getElementById("response");
+        const translation = document.getElementById("translation");
+        const categoryLabel = document.getElementById("category-label");
+        const categorySelect = document.getElementById("category");
+        const progressText = document.getElementById("progress-text");
+        const progressPercent = document.getElementById("progress-percent");
+        const progressFill = document.getElementById("progress-fill");
+        const seenCount = document.getElementById("seen-count");
+        const totalCount = document.getElementById("total-count");
+        const revealButton = document.getElementById("reveal-button");
+        const previousButton = document.getElementById("previous-button");
+        const nextButton = document.getElementById("next-button");
+        const shuffleButton = document.getElementById("shuffle-button");
+        const versionTabs = [...document.querySelectorAll(".version-tab")];
+
+        categorySelect.innerHTML = `<option value="all">All 300 nouns</option>${nounGroups
+            .map((group) => `<option value="${group.key}">${group.label}</option>`)
+            .join("")}`;
+
+        let activeCards = [...cards];
+        let currentIndex = 0;
+        let seen = new Set();
+        let activeVersion = 0;
+
+        function renderVersion(index) {
+            const versions = getVersions(activeCards[currentIndex]);
+            const version = versions[index];
+            activeVersion = index;
+            request.textContent = version.request;
+            response.textContent = version.response;
+            translation.textContent = version.translation;
+            versionTabs.forEach((tab, tabIndex) => tab.classList.toggle("active", tabIndex === index));
+        }
+
+        function renderCard() {
+            const card = activeCards[currentIndex];
+            const percent = Math.round(((currentIndex + 1) / activeCards.length) * 100);
+
+            flipCard.classList.remove("revealed");
+            nounTitle.textContent = `${card.article} ${card.noun}`;
+            picture.textContent = card.picture;
+            picture.setAttribute("aria-label", card.label);
+            miniPicture.textContent = card.picture;
+            categoryLabel.textContent = card.categoryLabel;
+            progressText.textContent = `Card ${currentIndex + 1} of ${activeCards.length}`;
+            progressPercent.textContent = `${percent}%`;
+            progressFill.style.width = `${percent}%`;
+            totalCount.textContent = activeCards.length;
+            revealButton.textContent = "Antwort zeigen";
+            previousButton.disabled = activeCards.length < 2;
+            nextButton.disabled = activeCards.length < 2;
+            renderVersion(0);
+        }
+
+        function revealAnswer() {
+            const isRevealed = flipCard.classList.toggle("revealed");
+            revealButton.textContent = isRevealed ? "Bild zeigen" : "Antwort zeigen";
+            if (isRevealed) {
+                seen.add(activeCards[currentIndex]);
+                seenCount.textContent = seen.size;
+            }
+        }
+
+        function changeCard(direction) {
+            currentIndex = (currentIndex + direction + activeCards.length) % activeCards.length;
+            renderCard();
+        }
+
+        function shuffleCards() {
+            for (let i = activeCards.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [activeCards[i], activeCards[j]] = [activeCards[j], activeCards[i]];
+            }
+            currentIndex = 0;
+            seen = new Set();
+            seenCount.textContent = "0";
+            renderCard();
+        }
+
+        categorySelect.addEventListener("change", () => {
+            const selected = categorySelect.value;
+            activeCards = selected === "all" ? [...cards] : cards.filter((card) => card.category === selected);
+            currentIndex = 0;
+            seen = new Set();
+            seenCount.textContent = "0";
+            renderCard();
+        });
+
+        revealButton.addEventListener("click", revealAnswer);
+        flipCard.addEventListener("click", revealAnswer);
+        previousButton.addEventListener("click", () => changeCard(-1));
+        nextButton.addEventListener("click", () => changeCard(1));
+        shuffleButton.addEventListener("click", shuffleCards);
+
+        versionTabs.forEach((tab) => {
+            tab.addEventListener("click", (event) => {
+                event.stopPropagation();
+                renderVersion(Number(tab.dataset.version));
+            });
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowLeft") changeCard(-1);
+            if (event.key === "ArrowRight") changeCard(1);
+            if (event.key === " " || event.key === "Enter") {
+                event.preventDefault();
+                revealAnswer();
+            }
+        });
+
+        renderCard();
+    </script>
+</body>
+</html>
