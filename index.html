@@ -65,6 +65,43 @@
             color: inherit;
         }
 
+        [hidden] {
+            display: none !important;
+        }
+
+        .site-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 28px;
+            padding: 7px;
+            width: fit-content;
+            max-width: 100%;
+            background: rgba(255, 253, 248, 0.82);
+            border: 1px solid var(--line);
+            border-radius: 999px;
+        }
+
+        .site-tab {
+            padding: 12px 22px;
+            color: var(--sage-dark);
+            background: transparent;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .site-tab[aria-selected="true"] {
+            color: var(--paper);
+            background: var(--sage-dark);
+        }
+
+        .site-tab:focus-visible {
+            outline: 3px solid var(--terracotta);
+            outline-offset: 2px;
+        }
+
         .page-shell {
             position: relative;
             width: min(1180px, calc(100% - 36px));
@@ -537,7 +574,12 @@
             </aside>
         </header>
 
-        <section aria-labelledby="lessons-title">
+        <div class="site-tabs" role="tablist" aria-label="Study hub sections">
+            <button class="site-tab" id="lessons-tab" type="button" role="tab" aria-selected="true" aria-controls="lessons-panel" tabindex="0">📚 Lessons</button>
+            <button class="site-tab" id="games-tab" type="button" role="tab" aria-selected="false" aria-controls="games-panel" tabindex="-1">🎲 Games</button>
+        </div>
+
+        <section id="lessons-panel" role="tabpanel" aria-labelledby="lessons-tab">
             <div class="dashboard-bar">
                 <div class="section-heading">
                     <h2 id="lessons-title">Your learning library</h2>
@@ -706,6 +748,23 @@
             </div>
         </section>
 
+        <section id="games-panel" role="tabpanel" aria-labelledby="games-tab" hidden>
+            <div class="dashboard-bar">
+                <div class="section-heading">
+                    <h2>Games</h2>
+                    <p>Practice German by playing. Your new games will live here.</p>
+                </div>
+            </div>
+            <div class="lesson-grid">
+                <a class="lesson-card" href="goethe_a1_two_player_game.html" style="--card-tint:#eee0d5">
+                    <div class="card-top"><span class="lesson-icon">🎲</span><span class="lesson-number">01</span></div>
+                    <h3>Wortwechsel · A1 Game</h3>
+                    <p>Play with a partner or study solo with flashcards and spoken questions.</p>
+                    <div class="card-footer"><span class="category">Solo or two players</span><span class="arrow">→</span></div>
+                </a>
+            </div>
+        </section>
+
         <footer>
             <span>Made with <span class="heart">♥</span> for Nikki's German journey</span>
             <span>Viel Erfolg! You’ve got this.</span>
@@ -713,6 +772,29 @@
     </main>
 
     <script>
+        const siteTabs = [...document.querySelectorAll('.site-tab')];
+        const sitePanels = [document.getElementById('lessons-panel'), document.getElementById('games-panel')];
+
+        function showTab(tab) {
+            siteTabs.forEach((item, index) => {
+                const selected = item === tab;
+                item.setAttribute('aria-selected', String(selected));
+                item.tabIndex = selected ? 0 : -1;
+                sitePanels[index].hidden = !selected;
+            });
+        }
+
+        siteTabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => showTab(tab));
+            tab.addEventListener('keydown', (event) => {
+                if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                event.preventDefault();
+                const nextIndex = (index + (event.key === 'ArrowRight' ? 1 : siteTabs.length - 1)) % siteTabs.length;
+                showTab(siteTabs[nextIndex]);
+                siteTabs[nextIndex].focus();
+            });
+        });
+
         const searchInput = document.getElementById("lesson-search");
         const cards = [...document.querySelectorAll(".lesson-card")];
         const filterButtons = [...document.querySelectorAll(".filter-button")];
