@@ -2,288 +2,411 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="description" content="Nikki's German A1 study hub for grammar, vocabulary, speaking and Goethe exam practice.">
-    <meta name="theme-color" content="#71806a">
+    <meta name="theme-color" content="#234B8C">
     <title>Deutsch mit Nikki | German A1 Hub</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%89%EF%B8%8F%3C/text%3E%3C/svg%3E">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@600;700&amp;family=Caveat:wght@600;700&amp;family=Schibsted+Grotesk:wght@400;500;700&amp;family=Young+Serif&amp;display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --cream: #f8f5ed;
-            --cream-deep: #eee8dc;
-            --paper: #fffdf8;
-            --sage: #71806a;
-            --sage-dark: #4f5d49;
-            --sage-soft: #dce4d8;
-            --sage-pale: #edf1e9;
-            --sand: #d8c9b7;
-            --terracotta: #b8795f;
-            --ink: #293127;
-            --muted: #72786e;
-            --line: rgba(79, 93, 73, 0.14);
-            --shadow: 0 16px 40px rgba(63, 70, 57, 0.09);
-            --radius-lg: 28px;
-            --radius-md: 20px;
-            --radius-sm: 14px;
-        }
-
-        * {
+            --paper: #E8EEF3;
+            --paper-deep: #DCE5EC;
+            --card: #FFFFFF;
+            --ink-text: #1E2F4F;
+            --muted: #56647C;
+            --line: rgba(30, 47, 79, 0.14);
+            --red: #C8333B;
+            --blue: #234B8C;
+            --green: #3B7A57;
+            --ochre: #B26B12;
+            --plum: #7A3E7E;
+            --stamp-paper: #FFFFFF;
+            --s-red: #C8333B; --s-blue: #234B8C; --s-green: #3B7A57; --s-ochre: #B26B12; --s-plum: #7A3E7E;
+            --postmark: rgba(30, 47, 79, 0.72);
+            --shadow: 0 10px 26px rgba(30, 47, 79, 0.12);
+            --f-serif: "Young Serif", Georgia, serif;
+            --f-ui: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+            --f-hand: "Caveat", "Bradley Hand", "Segoe Print", cursive;
+            --f-mark: "Barlow", "Arial Narrow", sans-serif;
+            color-scheme: light;
             box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        html {
-            scroll-behavior: smooth;
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --paper: #121B2C;
+                --paper-deep: #182337;
+                --card: #1D2840;
+                --ink-text: #E6ECF4;
+                --muted: #A3AEC2;
+                --line: rgba(230, 236, 244, 0.14);
+                --red: #E8646B;
+                --blue: #7EA2E6;
+                --green: #6CC08F;
+                --ochre: #E5A54B;
+                --plum: #C88ACB;
+                --stamp-paper: #EEF2F6;
+                --postmark: rgba(230, 236, 244, 0.75);
+                --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+                color-scheme: dark;
+            }
         }
+
+        :root[data-theme="dark"] {
+            --paper: #121B2C; --paper-deep: #182337; --card: #1D2840; --ink-text: #E6ECF4; --muted: #A3AEC2;
+            --line: rgba(230, 236, 244, 0.14); --red: #E8646B; --blue: #7EA2E6; --green: #6CC08F; --ochre: #E5A54B;
+            --plum: #C88ACB; --stamp-paper: #EEF2F6; --postmark: rgba(230, 236, 244, 0.75); --shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+            color-scheme: dark;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+        [hidden] { display: none !important; }
+        .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
         body {
             margin: 0;
-            min-height: 100vh;
-            color: var(--ink);
-            background:
-                radial-gradient(circle at 8% 8%, rgba(216, 201, 183, 0.38), transparent 25rem),
-                radial-gradient(circle at 94% 18%, rgba(220, 228, 216, 0.8), transparent 28rem),
-                var(--cream);
-            font-family: "DM Sans", Arial, sans-serif;
+            min-height: 100%;
+            color: var(--ink-text);
+            background: var(--paper);
+            font-family: var(--f-ui);
+            line-height: 1.5;
         }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.32;
-            background-image: radial-gradient(rgba(79, 93, 73, 0.22) 0.7px, transparent 0.7px);
-            background-size: 18px 18px;
-            mask-image: linear-gradient(to bottom, black, transparent 46%);
+        /* airmail stripe along the top of the page */
+        .airmail {
+            height: 12px;
+            background: repeating-linear-gradient(-45deg,
+                var(--red) 0 22px, var(--paper) 22px 34px,
+                var(--blue) 34px 56px, var(--paper) 56px 68px);
+            background-size: 96px 12px;
+            animation: stripe 14s linear infinite;
         }
+        @keyframes stripe { to { background-position: 96px 0; } }
 
-        a {
-            color: inherit;
-        }
-
-        [hidden] {
-            display: none !important;
-        }
-
-        .site-tabs {
-            display: flex;
-            gap: 10px;
-            margin-top: 28px;
-            padding: 7px;
-            width: fit-content;
-            max-width: 100%;
-            background: rgba(255, 253, 248, 0.82);
-            border: 1px solid var(--line);
-            border-radius: 999px;
-        }
-
-        .site-tab {
-            padding: 12px 22px;
-            color: var(--sage-dark);
-            background: transparent;
-            border: 0;
-            border-radius: 999px;
-            cursor: pointer;
-            font: inherit;
-            font-weight: 700;
-        }
-
-        .site-tab[aria-selected="true"] {
-            color: var(--paper);
-            background: var(--sage-dark);
-        }
-
-        .site-tab:focus-visible {
-            outline: 3px solid var(--terracotta);
-            outline-offset: 2px;
-        }
+        a { color: inherit; }
 
         .page-shell {
-            position: relative;
             width: min(1180px, calc(100% - 36px));
             margin: 0 auto;
-            padding: 28px 0 52px;
+            padding: 26px 0 56px;
         }
 
         .topbar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            margin-bottom: 26px;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
         .brand {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+            font-family: var(--f-serif);
+            font-size: 20px;
         }
 
         .brand-mark {
             display: grid;
             place-items: center;
-            width: 42px;
-            height: 42px;
-            color: var(--paper);
-            background: var(--sage-dark);
-            border-radius: 13px;
-            box-shadow: 0 8px 18px rgba(79, 93, 73, 0.22);
+            width: 44px;
+            height: 44px;
+            color: #fff;
+            background: var(--red);
+            border: 4px dotted var(--paper);
+            outline: 2px solid var(--red);
+            outline-offset: -6px;
             font-size: 20px;
+            rotate: -4deg;
         }
 
         .level-pill {
-            padding: 9px 14px;
-            color: var(--sage-dark);
-            background: rgba(255, 253, 248, 0.74);
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            font-size: 13px;
-            font-weight: 700;
-            backdrop-filter: blur(10px);
+            font-family: var(--f-hand);
+            font-size: 22px;
+            color: var(--blue);
         }
 
-        .hero {
+        /* ---------- hero postcard ---------- */
+        .postcard {
             position: relative;
-            overflow: hidden;
             display: grid;
-            grid-template-columns: 1.3fr 0.7fr;
-            gap: 32px;
-            min-height: 300px;
-            padding: clamp(30px, 5vw, 58px);
-            color: var(--paper);
-            background: linear-gradient(135deg, #465441, #75816d);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: var(--radius-lg);
+            grid-template-columns: 1.25fr 1px 0.9fr;
+            gap: clamp(20px, 4vw, 44px);
+            padding: clamp(26px, 4.5vw, 52px);
+            background: var(--card);
+            border-radius: 6px;
             box-shadow: var(--shadow);
+            overflow: hidden;
         }
 
-        .hero::after {
-            content: "A1";
-            position: absolute;
-            right: 3%;
-            bottom: -28%;
-            color: rgba(255, 255, 255, 0.075);
-            font-size: clamp(160px, 26vw, 330px);
-            font-weight: 700;
-            line-height: 1;
-            letter-spacing: -0.1em;
-        }
-
-        .hero-copy,
-        .hero-panel {
-            position: relative;
-            z-index: 1;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 0 18px;
-            color: #e8eee4;
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-
-        .eyebrow::before {
+        .postcard::before {
             content: "";
-            width: 28px;
-            height: 1px;
-            background: currentColor;
+            position: absolute;
+            inset: 0;
+            border: 10px solid transparent;
+            border-image: repeating-linear-gradient(-45deg,
+                var(--red) 0 14px, var(--card) 14px 21px,
+                var(--blue) 21px 35px, var(--card) 35px 42px) 10;
+            pointer-events: none;
+        }
+
+        .postcard-divider { background: var(--line); }
+
+        .greeting {
+            margin: 0 0 6px;
+            font-family: var(--f-hand);
+            font-size: 26px;
+            color: var(--red);
         }
 
         h1 {
-            max-width: 650px;
             margin: 0;
-            font-size: clamp(38px, 6vw, 68px);
-            line-height: 0.98;
-            letter-spacing: -0.055em;
+            font-family: var(--f-serif);
+            font-weight: 400;
+            font-size: clamp(40px, 6.4vw, 74px);
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .translation {
+            display: block;
+            margin-top: 10px;
+            font-family: var(--f-hand);
+            font-size: clamp(22px, 2.6vw, 28px);
+            color: var(--blue);
         }
 
         .hero-copy > p:last-child {
-            max-width: 560px;
-            margin: 22px 0 0;
-            color: rgba(255, 253, 248, 0.78);
+            max-width: 52ch;
+            margin: 18px 0 0;
+            color: var(--muted);
             font-size: 16px;
-            line-height: 1.7;
         }
 
-        .hero-panel {
-            align-self: end;
-            padding: 22px;
-            background: rgba(255, 253, 248, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: var(--radius-md);
-            backdrop-filter: blur(12px);
+        .address {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            min-height: 260px;
         }
 
-        .hero-panel-label {
-            margin: 0 0 10px;
-            color: rgba(255, 253, 248, 0.68);
-            font-size: 12px;
+        .hero-stamp {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 104px;
+            padding: 6px;
+            background: var(--stamp-paper);
+            border: 6px dotted var(--card);
+            rotate: 3deg;
+            filter: drop-shadow(0 4px 8px rgba(30, 47, 79, 0.18));
+        }
+
+        .hero-stamp span {
+            display: grid;
+            place-items: center;
+            height: 110px;
+            background: var(--s-red);
+            color: #fff;
+            font-family: var(--f-serif);
+            font-size: 40px;
+        }
+
+        .hero-stamp small {
+            display: block;
+            margin-top: 4px;
+            text-align: center;
+            font-size: 11px;
+            color: #1E2F4F;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
         }
 
-        .hero-panel strong {
-            display: block;
-            margin-bottom: 12px;
-            font-size: 20px;
+        .hero-postmark {
+            position: absolute;
+            top: 46px;
+            right: 64px;
+            width: 104px;
+            height: 104px;
+            display: grid;
+            place-items: center;
+            border: 3px solid var(--postmark);
+            border-radius: 50%;
+            color: var(--postmark);
+            font-family: var(--f-mark);
+            font-weight: 700;
+            font-size: 13px;
+            line-height: 1.15;
+            text-align: center;
+            rotate: -14deg;
+            animation: slam 900ms cubic-bezier(.2, .9, .3, 1.2) 450ms both;
         }
 
-        .progress-track {
-            height: 8px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.14);
-            border-radius: 999px;
+        .hero-postmark::after {
+            content: "";
+            position: absolute;
+            left: 92%;
+            top: 30%;
+            width: 90px;
+            height: 40%;
+            background: repeating-linear-gradient(transparent 0 6px, var(--postmark) 6px 9px);
         }
 
-        .progress-track span {
-            display: block;
+        @keyframes slam {
+            0% { opacity: 0; transform: scale(2.4); }
+            60% { opacity: 1; transform: scale(0.94); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .address-lines {
+            display: grid;
+            gap: 4px;
+            margin-top: 150px;
+        }
+
+        .address-lines p {
+            margin: 0;
+            padding: 2px 0 4px;
+            border-bottom: 1.5px solid var(--line);
+            font-family: var(--f-hand);
+            font-size: 25px;
+            line-height: 1.2;
+        }
+
+        .route {
+            margin-top: 18px;
+        }
+
+        .route-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .route-track {
+            position: relative;
+            height: 26px;
+            margin-top: 4px;
+        }
+
+        .route-track::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            border-top: 2px dashed var(--line);
+        }
+
+        .route-track::after {
+            content: "";
+            position: absolute;
+            left: 0;
             width: 62%;
-            height: 100%;
-            background: #e6d4bd;
-            border-radius: inherit;
+            top: 50%;
+            border-top: 2px dashed var(--blue);
         }
 
+        .plane {
+            position: absolute;
+            left: 62%;
+            top: 50%;
+            width: 26px;
+            height: 26px;
+            translate: -50% -50%;
+            color: var(--blue);
+            animation: bob 3.2s ease-in-out infinite;
+        }
+
+        @keyframes bob {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-4px) rotate(-6deg); }
+        }
+
+        /* ---------- tabs ---------- */
+        .site-tabs {
+            display: flex;
+            gap: 4px;
+            margin-top: 34px;
+            border-bottom: 1.5px solid var(--line);
+        }
+
+        .site-tab {
+            position: relative;
+            padding: 12px 22px 11px;
+            color: var(--muted);
+            background: transparent;
+            border: 1.5px solid transparent;
+            border-bottom: 0;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            margin-bottom: -1.5px;
+        }
+
+        .site-tab[aria-selected="true"] {
+            color: var(--ink-text);
+            background: var(--card);
+            border-color: var(--line);
+        }
+
+        .site-tab:focus-visible,
+        .filter-button:focus-visible,
+        .search-input:focus-visible,
+        .stamp:focus-visible {
+            outline: 3px solid var(--blue);
+            outline-offset: 3px;
+        }
+
+        /* ---------- toolbar ---------- */
         .dashboard-bar {
             display: grid;
             grid-template-columns: 1fr auto;
             align-items: end;
-            gap: 22px;
-            margin: 42px 0 20px;
+            gap: 20px;
+            margin: 30px 0 18px;
         }
 
         .section-heading h2 {
-            margin: 0 0 6px;
-            font-size: clamp(26px, 4vw, 36px);
-            letter-spacing: -0.04em;
+            margin: 0;
+            font-family: var(--f-serif);
+            font-weight: 400;
+            font-size: clamp(28px, 4vw, 38px);
+            line-height: 1.1;
         }
 
         .section-heading p {
-            margin: 0;
+            margin: 6px 0 0;
             color: var(--muted);
-            line-height: 1.55;
+        }
+
+        .section-heading .translation {
+            display: inline;
+            margin: 0 0 0 8px;
+            font-size: 22px;
         }
 
         .search-wrap {
             position: relative;
-            width: min(100%, 350px);
+            width: min(100%, 340px);
         }
 
         .search-wrap svg {
             position: absolute;
             top: 50%;
-            left: 17px;
+            left: 16px;
             width: 18px;
             transform: translateY(-50%);
             color: var(--muted);
@@ -291,285 +414,315 @@
 
         .search-input {
             width: 100%;
-            padding: 14px 18px 14px 46px;
-            color: var(--ink);
-            background: rgba(255, 253, 248, 0.82);
-            border: 1px solid var(--line);
+            padding: 13px 18px 13px 44px;
+            color: var(--ink-text);
+            background: var(--card);
+            border: 1.5px solid var(--line);
             border-radius: 999px;
             outline: none;
             font: inherit;
-            box-shadow: 0 8px 24px rgba(63, 70, 57, 0.05);
-            transition: border-color 180ms ease, box-shadow 180ms ease;
+            transition: border-color 180ms ease;
         }
 
-        .search-input:focus {
-            border-color: var(--sage);
-            box-shadow: 0 0 0 4px rgba(113, 128, 106, 0.13);
-        }
+        .search-input:focus { border-color: var(--blue); }
 
         .filters {
             display: flex;
             flex-wrap: wrap;
-            gap: 9px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 26px;
         }
 
         .filter-button {
-            padding: 9px 14px;
-            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            color: var(--ink-text);
             background: transparent;
-            border: 1px solid var(--line);
+            border: 1.5px solid var(--line);
             border-radius: 999px;
             cursor: pointer;
             font: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 180ms ease;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
         }
 
-        .filter-button:hover,
+        .filter-button .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--dot, var(--muted));
+        }
+
+        .filter-button:hover { border-color: var(--ink-text); }
+
         .filter-button.active {
-            color: var(--paper);
-            background: var(--sage-dark);
-            border-color: var(--sage-dark);
+            color: var(--card);
+            background: var(--ink-text);
+            border-color: var(--ink-text);
         }
 
-        .lesson-grid {
+        /* ---------- stamps ---------- */
+        .stamp-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 26px 22px;
         }
 
-        .lesson-card {
+        .stamp {
             position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-height: 220px;
-            padding: 23px;
-            color: var(--ink);
-            background: rgba(255, 253, 248, 0.88);
-            border: 1px solid var(--line);
-            border-radius: var(--radius-md);
+            padding: 9px;
+            color: #1E2F4F;
+            background: var(--stamp-paper);
+            border: 7px dotted var(--paper);
             text-decoration: none;
-            box-shadow: 0 10px 28px rgba(63, 70, 57, 0.055);
-            transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+            filter: drop-shadow(0 6px 10px rgba(30, 47, 79, 0.12));
+            transition: transform 220ms cubic-bezier(.3, 1.4, .5, 1), filter 220ms ease;
         }
 
-        .lesson-card::after {
+        .stamp:nth-child(3n + 1) { --tilt: -1.2deg; }
+        .stamp:nth-child(3n + 2) { --tilt: 0.8deg; }
+        .stamp:nth-child(3n) { --tilt: -0.4deg; }
+        .stamp { transform: rotate(var(--tilt, 0deg)); }
+
+        .stamp:hover {
+            transform: rotate(0deg) translateY(-6px) scale(1.02);
+            filter: drop-shadow(0 14px 18px rgba(30, 47, 79, 0.2));
+        }
+
+        .stamp-art {
+            position: relative;
+            height: 112px;
+            background: var(--ink);
+            overflow: hidden;
+        }
+
+        .stamp-art::before {
             content: "";
             position: absolute;
-            top: -55px;
-            right: -55px;
-            width: 130px;
-            height: 130px;
-            background: var(--card-tint, var(--sage-pale));
+            inset: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.45);
+        }
+
+        .stamp-icon {
+            position: absolute;
+            left: 14px;
+            bottom: 8px;
+            font-size: 44px;
+            line-height: 1;
+            transition: transform 260ms cubic-bezier(.3, 1.6, .5, 1);
+        }
+
+        .stamp:hover .stamp-icon { transform: rotate(-8deg) scale(1.12); }
+
+        .stamp-value {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            color: #fff;
+            font-family: var(--f-serif);
+            font-size: 34px;
+            line-height: 1;
+        }
+
+        .stamp-country {
+            position: absolute;
+            right: 14px;
+            bottom: 12px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .postmark {
+            position: absolute;
+            right: 54px;
+            top: 8px;
+            width: 78px;
+            height: 78px;
+            display: grid;
+            place-content: center;
+            border: 3px solid rgba(255, 255, 255, 0.9);
             border-radius: 50%;
-            transition: transform 240ms ease;
+            color: #fff;
+            font-family: var(--f-mark);
+            text-align: center;
+            line-height: 1.05;
+            rotate: -16deg;
+            animation: slam 900ms cubic-bezier(.2, .9, .3, 1.2) 1.1s both;
         }
 
-        .lesson-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(79, 93, 73, 0.28);
-            box-shadow: 0 18px 38px rgba(63, 70, 57, 0.11);
+        .postmark span { font-size: 20px; font-weight: 700; }
+        .postmark small { font-size: 11px; font-weight: 600; }
+
+        .stamp-body {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 14px 6px 6px;
         }
 
-        .lesson-card:hover::after {
-            transform: scale(1.18);
+        .stamp h3 {
+            margin: 0 0 6px;
+            font-family: var(--f-serif);
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 1.2;
         }
 
-        .lesson-card:focus-visible {
-            outline: 3px solid rgba(113, 128, 106, 0.38);
-            outline-offset: 3px;
+        .stamp p {
+            flex: 1;
+            margin: 0 0 16px;
+            color: #56647C;
+            font-size: 14px;
         }
 
-        .card-top,
-        .card-footer {
-            position: relative;
-            z-index: 1;
+        .stamp-foot {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
-        }
-
-        .lesson-icon {
-            display: grid;
-            place-items: center;
-            width: 44px;
-            height: 44px;
-            background: var(--card-tint, var(--sage-pale));
-            border-radius: 14px;
-            font-size: 21px;
-        }
-
-        .lesson-number {
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-        }
-
-        .lesson-card h3 {
-            position: relative;
-            z-index: 1;
-            margin: 25px 0 8px;
-            font-size: 19px;
-            line-height: 1.25;
-            letter-spacing: -0.025em;
-        }
-
-        .lesson-card > p {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            margin: 0 0 20px;
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.55;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1.5px dashed rgba(30, 47, 79, 0.18);
+            font-size: 13px;
         }
 
         .category {
-            color: var(--sage-dark);
-            font-size: 12px;
+            color: var(--ink);
+            filter: none;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
         }
 
-        .arrow {
-            display: grid;
-            place-items: center;
-            width: 32px;
-            height: 32px;
-            color: var(--sage-dark);
-            background: var(--sage-pale);
-            border-radius: 50%;
+        .open {
+            font-family: var(--f-hand);
+            font-size: 20px;
+            color: #1E2F4F;
             transition: transform 180ms ease;
         }
 
-        .lesson-card:hover .arrow {
-            transform: translateX(3px);
+        .stamp:hover .open { transform: translateX(4px); }
+
+        .stamp.is-new {
+            grid-column: span 2;
+        }
+
+        .stamp.is-new .stamp-art { height: 150px; }
+        .stamp.is-new .stamp-icon { font-size: 60px; }
+        .stamp.is-new h3 { font-size: 26px; }
+
+        .stamp.dealt { animation: deal 380ms cubic-bezier(.3, 1.4, .5, 1) backwards; }
+
+        @keyframes deal {
+            from { opacity: 0; transform: translateY(10px) rotate(-4deg) scale(0.96); }
+            to { opacity: 1; transform: rotate(var(--tilt, 0deg)); }
         }
 
         .no-results {
             display: none;
-            padding: 48px 20px;
-            color: var(--muted);
+            padding: 44px 20px;
             text-align: center;
-            background: rgba(255, 253, 248, 0.74);
-            border: 1px dashed rgba(79, 93, 73, 0.24);
-            border-radius: var(--radius-md);
+            color: var(--muted);
+            border: 2px dashed var(--line);
+            border-radius: 8px;
         }
+
+        .no-results strong {
+            display: block;
+            font-family: var(--f-serif);
+            font-weight: 400;
+            font-size: 22px;
+            color: var(--ink-text);
+        }
+
+        .no-results p { margin: 6px 0 0; }
 
         footer {
             display: flex;
             justify-content: space-between;
             gap: 16px;
-            margin-top: 42px;
-            padding: 22px 2px 0;
+            margin-top: 48px;
+            padding-top: 20px;
             color: var(--muted);
-            border-top: 1px solid var(--line);
-            font-size: 13px;
+            border-top: 1.5px solid var(--line);
+            font-size: 14px;
         }
 
-        .heart {
-            color: var(--terracotta);
+        footer .hand {
+            font-family: var(--f-hand);
+            font-size: 22px;
+            color: var(--blue);
         }
+
+        .heart { color: var(--red); }
 
         @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-panel {
-                max-width: 420px;
-            }
-
-            .lesson-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+            .postcard { grid-template-columns: 1fr; }
+            .postcard-divider { display: none; }
+            .address { min-height: 0; }
+            .hero-stamp, .hero-postmark { display: none; }
+            .address-lines { margin-top: 4px; }
         }
 
-        @media (max-width: 650px) {
-            .page-shell {
-                width: min(100% - 24px, 1180px);
-                padding-top: 18px;
-            }
-
-            .topbar {
-                margin-bottom: 18px;
-            }
-
-            .brand-text {
-                display: none;
-            }
-
-            .hero {
-                min-height: 0;
-                padding: 30px 24px;
-                border-radius: 23px;
-            }
-
-            h1 {
-                font-size: clamp(40px, 13vw, 56px);
-            }
-
-            .dashboard-bar {
-                grid-template-columns: 1fr;
-                margin-top: 32px;
-            }
-
-            .search-wrap {
-                width: 100%;
-            }
-
-            .lesson-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .lesson-card {
-                min-height: 205px;
-            }
-
-            footer {
-                flex-direction: column;
-            }
+        @media (max-width: 640px) {
+            .page-shell { width: calc(100% - 28px); padding-top: 18px; }
+            .brand-text { display: none; }
+            .dashboard-bar { grid-template-columns: 1fr; }
+            .search-wrap { width: 100%; }
+            .stamp.is-new { grid-column: auto; }
+            .stamp-grid { gap: 20px; }
+            footer { flex-direction: column; }
+            .site-tab { flex: 1; padding-inline: 10px; }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
+            *, *::before, *::after {
+                animation: none !important;
                 transition: none !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
 
 <body>
+    <div class="airmail" aria-hidden="true"></div>
     <main class="page-shell">
         <nav class="topbar" aria-label="Main navigation">
             <div class="brand">
                 <span class="brand-mark" aria-hidden="true">N</span>
                 <span class="brand-text">Deutsch mit Nikki</span>
             </div>
-            <span class="level-pill">Goethe A1 Journey</span>
+            <span class="level-pill">par avion → Goethe A1</span>
         </nav>
 
-        <header class="hero">
+        <header class="postcard">
             <div class="hero-copy">
-                <p class="eyebrow">Willkommen zurück, Nikki</p>
-                <h1>Mein Deutsch Lernraum.</h1>
-                <p>Grammar, vocabulary, speaking and exam practice in one calm little corner. Choose a lesson and keep going, one German sentence at a time.</p>
+                <p class="greeting">Willkommen zurück, Nikki! <span lang="en">(welcome back)</span></p>
+                <h1>Grüße aus Deutschland</h1>
+                <span class="translation" lang="en">greetings from Germany</span>
+                <p>Grammar, vocabulary, speaking and exam practice, collected like stamps from your German journey. Pick one and keep going, one sentence at a time.</p>
             </div>
 
-            <aside class="hero-panel" aria-label="Study goal">
-                <p class="hero-panel-label">Current goal</p>
-                <strong>Goethe A1 Exam Prep</strong>
-                <div class="progress-track" aria-label="Study journey progress">
-                    <span></span>
+            <div class="postcard-divider" aria-hidden="true"></div>
+
+            <aside class="address" aria-label="Study goal">
+                <div class="hero-stamp" aria-hidden="true"><span>A1</span><small>DEUTSCHE POST</small></div>
+                <div class="hero-postmark" aria-hidden="true">GOETHE<br>PRÜFUNG<br>2026</div>
+                <div class="address-lines">
+                    <p>an: Nikki</p>
+                    <p>Ziel: Goethe A1 Exam Prep</p>
+                    <p>(goal: pass the A1 exam)</p>
+                </div>
+                <div class="route">
+                    <div class="route-label"><span>Start</span><span>Goethe A1</span></div>
+                    <div class="route-track" aria-label="Study journey progress, about 62 percent">
+                        <svg class="plane" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M2.5 11.2 21 3.5l-4.6 17.2-5.1-5.3-3.1 3.4.4-5.2L18 6.2 7.1 12.6z"/></svg>
+                    </div>
                 </div>
             </aside>
         </header>
@@ -582,12 +735,12 @@
         <section id="lessons-panel" role="tabpanel" aria-labelledby="lessons-tab">
             <div class="dashboard-bar">
                 <div class="section-heading">
-                    <h2 id="lessons-title">Your learning library</h2>
-                    <p><span id="visible-count">16</span> study tools ready for your next session.</p>
+                    <h2>Meine Sammlung <span class="translation" lang="en">my collection</span></h2>
+                    <p><span id="visible-count">18</span> study tools ready for your next session.</p>
                 </div>
 
                 <label class="search-wrap">
-                    <span class="sr-only" hidden>Search lessons</span>
+                    <span class="sr-only">Search lessons</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                         <circle cx="11" cy="11" r="7"></circle>
                         <path d="m20 20-3.6-3.6"></path>
@@ -598,176 +751,282 @@
 
             <div class="filters" aria-label="Filter lessons">
                 <button class="filter-button active" type="button" data-filter="all">All lessons</button>
-                <button class="filter-button" type="button" data-filter="grammar">Grammar</button>
-                <button class="filter-button" type="button" data-filter="vocabulary">Vocabulary</button>
-                <button class="filter-button" type="button" data-filter="speaking">Speaking</button>
-                <button class="filter-button" type="button" data-filter="practice">Practice</button>
+                <button class="filter-button" type="button" data-filter="grammar"><span class="dot" style="--dot:var(--red)"></span>Grammar</button>
+                <button class="filter-button" type="button" data-filter="vocabulary"><span class="dot" style="--dot:var(--green)"></span>Vocabulary</button>
+                <button class="filter-button" type="button" data-filter="speaking"><span class="dot" style="--dot:var(--blue)"></span>Speaking</button>
+                <button class="filter-button" type="button" data-filter="practice"><span class="dot" style="--dot:var(--ochre)"></span>Practice</button>
             </div>
 
-            <div class="lesson-grid" id="lesson-grid">
-                <a class="lesson-card" data-category="grammar" href="german_a1_cheatsheet.html">
-                    <div class="card-top"><span class="lesson-icon">📌</span><span class="lesson-number">01</span></div>
-                    <h3>German A1 Cheatsheet</h3>
-                    <p>Your quick reference for essential A1 rules, forms and sentence patterns.</p>
-                    <div class="card-footer"><span class="category">Grammar</span><span class="arrow">→</span></div>
+            <div class="stamp-grid" id="lesson-grid">
+                <a class="stamp is-new" data-category="grammar vocabulary speaking practice" href="Pr%C3%BCfungsheft_A1.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">📒</span>
+                        <span class="stamp-value" aria-hidden="true">18</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        <span class="postmark" aria-hidden="true"><span>NEU</span><small>16.10.26</small></span>
+                    </div>
+                    <div class="stamp-body">
+                        <h3><span class="sr-only">New. </span>Prüfungsheft A1</h3>
+                        <p>Your exam notebook: speaking, listening, writing, grammar, verbs, words and your own mistakes in one place.</p>
+                        <div class="stamp-foot"><span class="category">Exam notebook</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar practice" href="goethe_a1_article_quiz.html" style="--card-tint:#f0e3d8">
-                    <div class="card-top"><span class="lesson-icon">🧩</span><span class="lesson-number">02</span></div>
-                    <h3>Article Quiz Advanced</h3>
-                    <p>Practise der, die and das with more challenging A1 noun questions.</p>
-                    <div class="card-footer"><span class="category">Grammar Quiz</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar" href="german_a1_cheatsheet.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">📌</span>
+                        <span class="stamp-value" aria-hidden="true">1</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>German A1 Cheatsheet</h3>
+                        <p>Your quick reference for essential A1 rules, forms and sentence patterns.</p>
+                        <div class="stamp-foot"><span class="category">Grammar</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar" href="goethe_a1_grammar_app.html" style="--card-tint:#e8e3d4">
-                    <div class="card-top"><span class="lesson-icon">📖</span><span class="lesson-number">03</span></div>
-                    <h3>Grammar App</h3>
-                    <p>Study core A1 grammar topics with clear examples and guided exercises.</p>
-                    <div class="card-footer"><span class="category">Grammar</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar practice" href="goethe_a1_article_quiz.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🧩</span>
+                        <span class="stamp-value" aria-hidden="true">2</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Article Quiz Advanced</h3>
+                        <p>Practise der, die and das with more challenging A1 noun questions.</p>
+                        <div class="stamp-foot"><span class="category">Grammar Quiz</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar practice" href="goethe_a1_regular_verbs_quiz.html" style="--card-tint:#e5ecdf">
-                    <div class="card-top"><span class="lesson-icon">✍️</span><span class="lesson-number">04</span></div>
-                    <h3>Regular Verbs Quiz</h3>
-                    <p>Build confidence with present tense endings and common regular verbs.</p>
-                    <div class="card-footer"><span class="category">Verb Practice</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar" href="goethe_a1_grammar_app.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">📖</span>
+                        <span class="stamp-value" aria-hidden="true">3</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Grammar App</h3>
+                        <p>Study core A1 grammar topics with clear examples and guided exercises.</p>
+                        <div class="stamp-foot"><span class="category">Grammar</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="speaking practice" href="sprechpruefung-trainer.html" style="--card-tint:#e2e9e6">
-                    <div class="card-top"><span class="lesson-icon">🎙️</span><span class="lesson-number">05</span></div>
-                    <h3>Speaking Trainer</h3>
-                    <p>Prepare short questions and answers for the Goethe A1 speaking exam.</p>
-                    <div class="card-footer"><span class="category">Speaking</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar practice" href="goethe_a1_regular_verbs_quiz.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">✍️</span>
+                        <span class="stamp-value" aria-hidden="true">4</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Regular Verbs Quiz</h3>
+                        <p>Build confidence with present tense endings and common regular verbs.</p>
+                        <div class="stamp-foot"><span class="category">Verb Practice</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar practice" href="a1-german-irregular-verbs-quiz.html" style="--card-tint:#eee0dc">
-                    <div class="card-top"><span class="lesson-icon">⚡</span><span class="lesson-number">06</span></div>
-                    <h3>Irregular Verbs Quiz</h3>
-                    <p>Review stem changes and useful irregular verbs through active recall.</p>
-                    <div class="card-footer"><span class="category">Verb Practice</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="speaking practice" href="sprechpruefung-trainer.html" style="--ink:var(--s-blue)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🎙️</span>
+                        <span class="stamp-value" aria-hidden="true">5</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Speaking Trainer</h3>
+                        <p>Prepare short questions and answers for the Goethe A1 speaking exam.</p>
+                        <div class="stamp-foot"><span class="category">Speaking</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="practice" href="german-a1-quiz/index.html" style="--card-tint:#e8e2d9">
-                    <div class="card-top"><span class="lesson-icon">✅</span><span class="lesson-number">07</span></div>
-                    <h3>Quiz Demo</h3>
-                    <p>Test your overall A1 knowledge in a quick interactive practice round.</p>
-                    <div class="card-footer"><span class="category">Mixed Practice</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar practice" href="a1-german-irregular-verbs-quiz.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">⚡</span>
+                        <span class="stamp-value" aria-hidden="true">6</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Irregular Verbs Quiz</h3>
+                        <p>Review stem changes and useful irregular verbs through active recall.</p>
+                        <div class="stamp-foot"><span class="category">Verb Practice</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="vocabulary speaking" href="1000%20Phrases%20with%20Voice.html" style="--card-tint:#e0e9df">
-                    <div class="card-top"><span class="lesson-icon">🔊</span><span class="lesson-number">08</span></div>
-                    <h3>1,000 Phrases with Voice</h3>
-                    <p>Listen, repeat and remember useful German phrases for daily situations.</p>
-                    <div class="card-footer"><span class="category">Listening</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="practice" href="german-a1-quiz/index.html" style="--ink:var(--s-ochre)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">✅</span>
+                        <span class="stamp-value" aria-hidden="true">7</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Quiz Demo</h3>
+                        <p>Test your overall A1 knowledge in a quick interactive practice round.</p>
+                        <div class="stamp-foot"><span class="category">Mixed Practice</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar" href="goethe_a1_grammar_engine_topic_tables_theory.html" style="--card-tint:#efe5d8">
-                    <div class="card-top"><span class="lesson-icon">🗂️</span><span class="lesson-number">09</span></div>
-                    <h3>A1 Grammar Engine</h3>
-                    <p>Explore topic tables, grammar theory and structured A1 explanations.</p>
-                    <div class="card-footer"><span class="category">Grammar Theory</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="vocabulary speaking" href="1000%20Phrases%20with%20Voice.html" style="--ink:var(--s-green)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🔊</span>
+                        <span class="stamp-value" aria-hidden="true">8</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>1,000 Phrases with Voice</h3>
+                        <p>Listen, repeat and remember useful German phrases for daily situations.</p>
+                        <div class="stamp-foot"><span class="category">Listening</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="vocabulary practice" href="goethe_a1_nouns_320_trainer.html" style="--card-tint:#e4ebe1">
-                    <div class="card-top"><span class="lesson-icon">🧠</span><span class="lesson-number">10</span></div>
-                    <h3>320 Nouns Trainer</h3>
-                    <p>Grow your A1 vocabulary and practise nouns together with their articles.</p>
-                    <div class="card-footer"><span class="category">Vocabulary</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar" href="goethe_a1_grammar_engine_topic_tables_theory.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🗂️</span>
+                        <span class="stamp-value" aria-hidden="true">9</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>A1 Grammar Engine</h3>
+                        <p>Explore topic tables, grammar theory and structured A1 explanations.</p>
+                        <div class="stamp-foot"><span class="category">Grammar Theory</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="speaking practice" href="sprechpruefung_active_trainer_native_details_fixed.html" style="--card-tint:#e2e6dc">
-                    <div class="card-top"><span class="lesson-icon">💬</span><span class="lesson-number">11</span></div>
-                    <h3>Speaking Exercises</h3>
-                    <p>Practise different question types and natural A1 exam responses.</p>
-                    <div class="card-footer"><span class="category">Speaking</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="vocabulary practice" href="goethe_a1_nouns_320_trainer.html" style="--ink:var(--s-green)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🧠</span>
+                        <span class="stamp-value" aria-hidden="true">10</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>320 Nouns Trainer</h3>
+                        <p>Grow your A1 vocabulary and practise nouns together with their articles.</p>
+                        <div class="stamp-foot"><span class="category">Vocabulary</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar practice" href="goethe_a1_grammar_core_final_working_tested.html" style="--card-tint:#eadfd7">
-                    <div class="card-top"><span class="lesson-icon">🧭</span><span class="lesson-number">12</span></div>
-                    <h3>Grammar Core 1.1</h3>
-                    <p>Master essential prepositions and pronouns through focused exercises.</p>
-                    <div class="card-footer"><span class="category">Grammar Core</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="speaking practice" href="sprechpruefung_active_trainer_native_details_fixed.html" style="--ink:var(--s-blue)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">💬</span>
+                        <span class="stamp-value" aria-hidden="true">11</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Speaking Exercises</h3>
+                        <p>Practise different question types and natural A1 exam responses.</p>
+                        <div class="stamp-foot"><span class="category">Speaking</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar vocabulary" href="a1-german-modal-separable-adjectives-nouns-numbers%20CL.html" style="--card-tint:#e1e9e4">
-                    <div class="card-top"><span class="lesson-icon">🧱</span><span class="lesson-number">13</span></div>
-                    <h3>A1 Building Blocks</h3>
-                    <p>Review modal verbs, separable verbs, adjectives, numbers and nouns.</p>
-                    <div class="card-footer"><span class="category">Grammar Mix</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar practice" href="goethe_a1_grammar_core_final_working_tested.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🧭</span>
+                        <span class="stamp-value" aria-hidden="true">12</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Grammar Core 1.1</h3>
+                        <p>Master essential prepositions and pronouns through focused exercises.</p>
+                        <div class="stamp-foot"><span class="category">Grammar Core</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar practice" href="goethe-a1-grammar-engine%20CL.html" style="--card-tint:#ece3d6">
-                    <div class="card-top"><span class="lesson-icon">⚙️</span><span class="lesson-number">14</span></div>
-                    <h3>Grammar Core 1.2</h3>
-                    <p>Continue your grammar training with additional interactive exercises.</p>
-                    <div class="card-footer"><span class="category">Grammar Core</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar vocabulary" href="a1-german-modal-separable-adjectives-nouns-numbers%20CL.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🧱</span>
+                        <span class="stamp-value" aria-hidden="true">13</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>A1 Building Blocks</h3>
+                        <p>Review modal verbs, separable verbs, adjectives, numbers and nouns.</p>
+                        <div class="stamp-foot"><span class="category">Grammar Mix</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="grammar speaking practice" href="goethe_a1_sentence_builder_conversations_no_repeats.html" style="--card-tint:#dfe8dc">
-                    <div class="card-top"><span class="lesson-icon">🧰</span><span class="lesson-number">15</span></div>
-                    <h3>Sentence Builder</h3>
-                    <p>Build correct A1 conversations without repetitive sentence patterns.</p>
-                    <div class="card-footer"><span class="category">Sentence Practice</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar practice" href="goethe-a1-grammar-engine%20CL.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">⚙️</span>
+                        <span class="stamp-value" aria-hidden="true">14</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Grammar Core 1.2</h3>
+                        <p>Continue your grammar training with additional interactive exercises.</p>
+                        <div class="stamp-foot"><span class="category">Grammar Core</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
-                <a class="lesson-card" data-category="speaking practice" href="sprechpruefung-trainer-neue-themen%20(1).html" style="--card-tint:#eee0d5">
-                    <div class="card-top"><span class="lesson-icon">🗣️</span><span class="lesson-number">16</span></div>
-                    <h3>Speaking Exercise 2</h3>
-                    <p>Train with fresh speaking themes and more Goethe style questions.</p>
-                    <div class="card-footer"><span class="category">Speaking</span><span class="arrow">→</span></div>
+                <a class="stamp" data-category="grammar speaking practice" href="goethe_a1_sentence_builder_conversations_no_repeats.html" style="--ink:var(--s-red)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🧰</span>
+                        <span class="stamp-value" aria-hidden="true">15</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Sentence Builder</h3>
+                        <p>Build correct A1 conversations without repetitive sentence patterns.</p>
+                        <div class="stamp-foot"><span class="category">Sentence Practice</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
-
- <a class="lesson-card"
-   data-category="speaking practice"
-   href="goethe_a1_bitte_trainer.html"
-   style="--card-tint:#dce4d8">
-
-    <div class="card-top">
-        <span class="lesson-icon">🙏</span>
-        <span class="lesson-number">17</span>
-    </div>
-
-    <h3>Bitte, bitte!</h3>
-
-    <p>
-        Practise 300 common A1 nouns and polite requests for
-        Goethe Speaking Part 3.
-    </p>
-
-    <div class="card-footer">
-        <span class="category">Speaking Part 3</span>
-        <span class="arrow">→</span>
-    </div>
-</a>
-        
+                <a class="stamp" data-category="speaking practice" href="sprechpruefung-trainer-neue-themen%20(1).html" style="--ink:var(--s-blue)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🗣️</span>
+                        <span class="stamp-value" aria-hidden="true">16</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Speaking Exercise 2</h3>
+                        <p>Train with fresh speaking themes and more Goethe style questions.</p>
+                        <div class="stamp-foot"><span class="category">Speaking</span><span class="open">Öffnen</span></div>
+                    </div>
+                </a>
+                <a class="stamp" data-category="speaking practice" href="goethe_a1_bitte_trainer.html" style="--ink:var(--s-blue)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🙏</span>
+                        <span class="stamp-value" aria-hidden="true">17</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Bitte, bitte!</h3>
+                        <p>Practise 300 common A1 nouns and polite requests for Goethe Speaking Part 3.</p>
+                        <div class="stamp-foot"><span class="category">Speaking Part 3</span><span class="open">Öffnen</span></div>
+                    </div>
+                </a>
             </div>
 
             <div class="no-results" id="no-results">
                 <strong>Keine Lektion gefunden.</strong>
-                <p>Try another search word or choose a different category.</p>
+                <p>No lesson found. Try another search word or choose a different category.</p>
             </div>
         </section>
 
         <section id="games-panel" role="tabpanel" aria-labelledby="games-tab" hidden>
             <div class="dashboard-bar">
                 <div class="section-heading">
-                    <h2>Games</h2>
+                    <h2>Spiele <span class="translation" lang="en">games</span></h2>
                     <p>Practice German by playing. Your new games will live here.</p>
                 </div>
             </div>
-            <div class="lesson-grid">
-                <a class="lesson-card" href="goethe_a1_two_player_game.html" style="--card-tint:#eee0d5">
-                    <div class="card-top"><span class="lesson-icon">🎲</span><span class="lesson-number">01</span></div>
-                    <h3>Wortwechsel · A1 Game</h3>
-                    <p>Play with a partner or study solo with flashcards and spoken questions.</p>
-                    <div class="card-footer"><span class="category">Solo or two players</span><span class="arrow">→</span></div>
+            <div class="stamp-grid">
+                <a class="stamp" href="goethe_a1_two_player_game.html" style="--ink:var(--s-plum)">
+                    <div class="stamp-art">
+                        <span class="stamp-icon" aria-hidden="true">🎲</span>
+                        <span class="stamp-value" aria-hidden="true">1</span>
+                        <span class="stamp-country" aria-hidden="true">Deutsch A1</span>
+                        
+                    </div>
+                    <div class="stamp-body">
+                        <h3>Wortwechsel · A1 Game</h3>
+                        <p>Play with a partner or study solo with flashcards and spoken questions.</p>
+                        <div class="stamp-foot"><span class="category">Solo or two players</span><span class="open">Öffnen</span></div>
+                    </div>
                 </a>
             </div>
         </section>
 
         <footer>
             <span>Made with <span class="heart">♥</span> for Nikki's German journey</span>
-            <span>Viel Erfolg! You’ve got this.</span>
+            <span class="hand">Viel Erfolg! You've got this.</span>
         </footer>
     </main>
 
@@ -781,6 +1040,7 @@
                 item.setAttribute('aria-selected', String(selected));
                 item.tabIndex = selected ? 0 : -1;
                 sitePanels[index].hidden = !selected;
+                if (selected) deal(sitePanels[index].querySelectorAll('.stamp'));
             });
         }
 
@@ -795,42 +1055,48 @@
             });
         });
 
-        const searchInput = document.getElementById("lesson-search");
-        const cards = [...document.querySelectorAll(".lesson-card")];
-        const filterButtons = [...document.querySelectorAll(".filter-button")];
-        const visibleCount = document.getElementById("visible-count");
-        const noResults = document.getElementById("no-results");
-        let activeFilter = "all";
+        const searchInput = document.getElementById('lesson-search');
+        const cards = [...document.querySelectorAll('#lesson-grid .stamp')];
+        const filterButtons = [...document.querySelectorAll('.filter-button')];
+        const visibleCount = document.getElementById('visible-count');
+        const noResults = document.getElementById('no-results');
+        let activeFilter = 'all';
+
+        function deal(list) {
+            [...list].forEach((card, i) => {
+                card.classList.remove('dealt');
+                card.style.animationDelay = Math.min(i, 10) * 30 + 'ms';
+                void card.offsetWidth;
+                card.classList.add('dealt');
+            });
+        }
 
         function updateLessons() {
             const query = searchInput.value.trim().toLowerCase();
-            let count = 0;
-
+            const shown = [];
             cards.forEach((card) => {
-                const content = card.textContent.toLowerCase();
-                const categories = card.dataset.category.split(" ");
-                const matchesSearch = content.includes(query);
-                const matchesFilter = activeFilter === "all" || categories.includes(activeFilter);
-                const isVisible = matchesSearch && matchesFilter;
-
-                card.hidden = !isVisible;
-                if (isVisible) count += 1;
+                const categories = (card.dataset.category || '').split(' ');
+                const matchesFilter = activeFilter === 'all' || categories.includes(activeFilter);
+                const matchesSearch = card.textContent.toLowerCase().includes(query);
+                const visible = matchesFilter && matchesSearch;
+                card.hidden = !visible;
+                if (visible) shown.push(card);
             });
-
-            visibleCount.textContent = count;
-            noResults.style.display = count === 0 ? "block" : "none";
+            visibleCount.textContent = shown.length;
+            noResults.style.display = shown.length ? 'none' : 'block';
+            return shown;
         }
 
-        searchInput.addEventListener("input", updateLessons);
-
         filterButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                filterButtons.forEach((item) => item.classList.remove("active"));
-                button.classList.add("active");
+            button.addEventListener('click', () => {
                 activeFilter = button.dataset.filter;
-                updateLessons();
+                filterButtons.forEach((item) => item.classList.toggle('active', item === button));
+                deal(updateLessons());
             });
         });
+
+        searchInput.addEventListener('input', updateLessons);
+        updateLessons();
     </script>
 </body>
 </html>
